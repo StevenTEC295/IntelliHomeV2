@@ -12,8 +12,8 @@
     <string name="fecha_de_nacimiento">Birthdate</string>
     <string name="ingresa_tus_hobbies">Enter your hobbies</string>
     <string name="tajertas_de_credito">Credit Cards</string>
-    <string name="numero_de_cuenta">Account Number</string>
-    <string name="valido_hasta">"Valid until "</string>
+    <string name="numero_de_cuenta">CR IBAN Account Number</string>
+    <string name="valido_hasta">"Expire Date "</string>
     <string name="cvc">CVC</string>
     <string name="transporte">Transport</string>
     <string name="ingresa_tu_dirección">"Enter your address "</string>
@@ -26,11 +26,18 @@
     <string name="Mensaje_contras_no_son_iguales">The passwords do not match.</string>
     <string name="Mensaje_contras_no_cumple_con_los_requsitos">The password does not meet the requirements.</string>
     <string name="Mensaje_exito_registro">Valid Register</string>
-
+    <string name="telefono">Phone Number</string>
+    <string name="completa_los_campos">Complete all the spaces</string>
 
     <string-array name="house_types">
         <item>Rustic</item>
         <item>Modern</item>
+        <item>Mansion</item>
+    </string-array>
+
+    <string-array name="transport_types">
+        <item>Car</item>
+        <item>Motorbike</item>
         <item>Mansion</item>
     </string-array>
 </resources>
