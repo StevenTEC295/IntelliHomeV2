@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
                     password.text.toString()
 
                 )
-                sendDataToServer("192.168.0.207",8080,jsonData)
+                sendDataToServer("192.168.144.129",8080,jsonData)
                 val intent = Intent(this, HomePage::class.java)
                 startActivity(intent)
             }

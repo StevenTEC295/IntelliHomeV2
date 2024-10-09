@@ -1,5 +1,6 @@
 package com.example.intellihome
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.ImageView
+import android.widget.TextView
 import com.example.intellihome.R
 class Customization : AppCompatActivity() {
     private lateinit var mainLayout:RelativeLayout
@@ -22,6 +24,11 @@ class Customization : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+        val botonAtras = findViewById<TextView>(R.id.back_button)
+        botonAtras.setOnClickListener{
+            val intent = Intent(this,  Setting::class.java)
+            startActivity(intent)
         }
         //Modo claro /Oscuro
         val toggleButton = findViewById<ToggleButton>(R.id.toggleMode)
