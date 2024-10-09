@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IntelliHome</string>
+    <string name="item_label">House Preference</string>
+    <string name="subir_foto">Upload Photo</string>
+    <string name="nombre">Name</string>
+    <string name="apellidos">"Surname "</string>
+    <string name="correo">"Email "</string>
+    <string name="nombre_de_usuario">Username</string>
+    <string name="contrasena">"Password "</string>
+    <string name="confirmar_contrasena">"Confirm Password "</string>
+    <string name="fecha_de_nacimiento">Birthdate</string>
+    <string name="ingresa_tus_hobbies">Enter your hobbies</string>
+    <string name="tajertas_de_credito">Credit Cards</string>
+    <string name="numero_de_cuenta">Account Number</string>
+    <string name="valido_hasta">"Valid until "</string>
+    <string name="cvc">CVC</string>
+    <string name="transporte">Transport</string>
+    <string name="ingresa_tu_dirección">"Enter your address "</string>
+    <string name="registrarse">"Register "</string>
+    <string name="registro_Huésped">Guest Registration</string>
+    <string name="registro_Propietario">Owner Registration</string>
+    <string name="Tomar_Foto">Take Photo</string>
+    <string name="Info_contrasena">1 lowercase letter and 1 uppercase letter, 1 digit, 1 special character, maximum 8 characters</string>
+    <string name="Mensaje_confirmacion_contras">The password is valid.</string>
+    <string name="Mensaje_contras_no_son_iguales">The passwords do not match.</string>
+    <string name="Mensaje_contras_no_cumple_con_los_requsitos">The password does not meet the requirements.</string>
+    <string name="Mensaje_exito_registro">Valid Register</string>
+
+
+    <string-array name="house_types">
+        <item>Rustic</item>
+        <item>Modern</item>
+        <item>Mansion</item>
+    </string-array>
+</resources>

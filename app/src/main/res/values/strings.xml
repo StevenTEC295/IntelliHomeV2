@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">IntelliHome</string>
+    <string name="item_label">Preferencias Casas</string>
+    <string name="subir_foto">Subir Foto</string>
+    <string name="nombre">Nombre </string>
+    <string name="apellidos">Apellidos </string>
+    <string name="correo">Correo </string>
+    <string name="nombre_de_usuario">Nombre de Usuario</string>
+    <string name="contrasena">Contraseña </string>
+    <string name="confirmar_contrasena">Confirmar Contraseña </string>
+    <string name="fecha_de_nacimiento">Fecha de Nacimiento </string>
+    <string name="ingresa_tus_hobbies">Ingresa tus hobbies </string>
+    <string name="tajertas_de_credito">Tarjetas de Crédito </string>
+    <string name="numero_de_cuenta">Número de Cuenta</string>
+    <string name="valido_hasta">Válido hasta</string>
+    <string name="cvc">CVC</string>
+    <string name="transporte">Transporte</string>
+    <string name="ingresa_tu_dirección">Ingresa tu dirección</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="registro_Huésped">Registro Huésped</string>
+    <string name="registro_Propietario">Registro Propietario</string>
+    <string name="Tomar_Foto">Tomar Foto</string>
+    <string name="Info_contrasena">1 letra minuscula y 1 mayuscula, 1 dígito, 1 caracter especial, 8 caracteres máximos</string>
+    <string name="Mensaje_confirmacion_contras">La contraseña es válida.</string>
+    <string name="Mensaje_contras_no_son_iguales">La contraseñas no son iguales.</string>
+    <string name="Mensaje_contras_no_cumple_con_los_requsitos">La contraseña no cumple con los requisitos.</string>
+    <string name="Mensaje_exito_registro">Registro exisitoso</string>
+
+    <string-array name="house_types">
+        <item>Rústica</item>
+        <item>Moderna</item>
+        <item>Mansion</item>
+    </string-array>
+</resources>

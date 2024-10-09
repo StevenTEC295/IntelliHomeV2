@@ -1,0 +1,32 @@
+Cliente: {"nombre":"Palabras ","apellidos":"zjxjx","correo":"pab123758@gmail.com","username":"djxnn12","password":"Rm@345t1","birhtdate":"1\/10\/2001","acountNumber":"1234567890","validuntil":"16564","cvc":"464","houseprefence":"Moderna"}
+
+Cliente: {"nombre":"Pablo","apellidos":"dnfn","correo":"pab123758@gmail.com","username":"xjxj","password":"Rm@345t1","birhtdate":"1\/10\/2024","acountNumber":"1234567890","validuntil":"868686","cvc":"767","houseprefence":"Rústica"}
+
+Cliente: {"nombre":"xd","apellidos":"xd","correo":"a","username":"a","password":"xdR2223@","birhtdate":"1\/10\/2024","acountNumber":"122","validuntil":"885","cvc":"888","direccion":"c"}
+
+Cliente: {"nombre":"palv","apellidos":"odkd","correo":"kddkkd","username":"djdjj","password":"xdR2223@","birhtdate":"2\/10\/2014","acountNumber":"4646","validuntil":"7676","cvc":"676","direccion":"sjshsh"}
+
+Cliente: {"nombre":"crrg","apellidos":"ecxce","correo":"vtfc","username":"vttcc","password":"xdR2223@","birhtdate":"2\/10\/2024","acountNumber":"05","validuntil":"5","cvc":"5","direccion":"yvct"}
+
+Cliente: {"nombre":"hxdhxh","apellidos":"xndj","correo":"djxj","username":"xbxb","password":"pato@R12","birhtdate":"2\/10\/2024","acountNumber":"4646","validuntil":"6776","cvc":"767","direccion":"hsshh"}
+
+Cliente: {"nombre":"sjsj","apellidos":"jdjd","correo":"shsh","username":"jssjhs","password":"Rm@f1233","birhtdate":"2\/10\/2024","acountNumber":"1226","validuntil":"4646","cvc":"565","direccion":"shdh"}
+
+Cliente: {"nombre":"ffjc","apellidos":"xmxnxn","correo":"xnxn","username":"snznd","password":"Rm@f1233","birhtdate":"2\/10\/2024","acountNumber":"1223479","validuntil":"76797","cvc":"797","direccion":"shshsh"}
+
+Cliente: {"nombre":"Pablo ","apellidos":"Ram ","correo":"pab123758@gmail.com","username":"ps","password":"Rm@f1233","birhtdate":"2\/10\/2001","acountNumber":"122","validuntil":"485","cvc":"888","direccion":"cfg"}
+
+Cliente: {"nombre":"zkdn","apellidos":"xjxn","correo":"pab123758@gmail.com","username":"xnxn","password":"Rm@f1233","birhtdate":"2\/10\/2003","acountNumber":"16195","validuntil":"79797","cvc":"797","direccion":"Rm@f1233"}
+
+Cliente: {"nombre":"whsh","apellidos":"shshs","correo":"shshs","username":"shshh","password":"Rm@f1233","birhtdate":"2\/10\/2024","acountNumber":"1646","validuntil":"46464","cvc":"767","houseprefence":"Moderna","hobbie":"jssjsj","transporte":"wjwhwh","direccion":"Rm@f1233"}
+
+Cliente: {"nombre":"xrrx","apellidos":"xrrx","correo":"fxxf","username":"xddx","password":"Rm@f1233","birhtdate":"23\/10\/2011","acountNumber":"425","validuntil":"588","cvc":"488","direccion":"Rm@f1233"}
+
+Cliente: {"nombre":"rcrcr","apellidos":" ddcdcd","correo":"dcdcdc","username":"dccercdc","password":"Rm@f1233","birhtdate":"2\/10\/2024","acountNumber":"11","validuntil":"44","cvc":"77","direccion":"dd"}
+
+Cliente: {"nombre":"edseez","apellidos":"rcxrrc","correo":"rxexex ","username":"dxdxdx","password":"Rm@f1233","birhtdate":"2\/10\/2024","acountNumber":"482818","validuntil":"485050582","cvc":"500","houseprefence":"Rústica","hobbie":"df","transporte":"fvfvfc","direccion":"exdxdxex"}
+
+Cliente: {"nombre":"bbdb","apellidos":"fjdj","correo":"jddjjd","username":"zjxjhd","password":"Rm@f1233","birhtdate":"2\/10\/2024","acountNumber":"4545","validuntil":"767684","cvc":"788","direccion":"dhdh"}
+
+Cliente: {"nombre":"bbdb","apellidos":"fjdj","correo":"jddjjd","username":"zjxjhd","password":"Rm@f1233","birhtdate":"2\/10\/2024","acountNumber":"4545","validuntil":"767684","cvc":"788","direccion":"dhdh"}
+
