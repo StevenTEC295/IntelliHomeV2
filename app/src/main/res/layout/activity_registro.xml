@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <RelativeLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/fondo_color_verde"
+        android:background="@drawable/redbackground"
         tools:context=".RegistroActivity">
 
         <LinearLayout
@@ -21,32 +22,47 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="25dp"
-                android:gravity="center"
-                android:text="@string/registro_Huésped"
-                android:textColor="@color/black"/>
+
+
+
+
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:background="@color/white"
+                >
+                <ImageButton
+                    android:id="@+id/button_tomar_foto"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="left"
 
-                <Button
-                    android:id="@+id/button_subir_foto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="55dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/beige_arena"
-                    android:text="@string/subir_foto"
-                    android:textColor="@color/black" />
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/camara"
+                    android:text="@string/Tomar_Foto"
+                    android:textColor="@color/black"
+                    tools:ignore="ContentDescription" />
 
-                <Button
+
+
+                <ImageView
+                    android:id="@+id/foto_de_perfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+
+                    app:srcCompat="@drawable/icono_perfil" />
+
+
+
+
+                <!--<Button
                     android:id="@+id/button_tomar_foto"
                     android:layout_width="wrap_content"
                     android:layout_height="65dp"
@@ -54,23 +70,42 @@
                     android:layout_marginTop="5dp"
                     android:backgroundTint="@color/beige_arena"
                     android:text="@string/Tomar_Foto"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black" />-->
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/foto_de_perfil"
-                android:layout_width="wrap_content"
-                android:layout_height="150dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/icono_perfil" />
 
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:textColorHint="@color/black"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxStrokeColor="@color/black"
+                app:boxStrokeWidth="3dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etusername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="@string/nombre_de_usuario"
+                    android:maxLength="15"
+
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
                 android:textColorHint="@color/black"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
@@ -133,27 +168,7 @@
                     android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:textColorHint="@color/black"
-                app:boxCornerRadiusBottomEnd="30dp"
-                app:boxCornerRadiusBottomStart="30dp"
-                app:boxCornerRadiusTopEnd="30dp"
-                app:boxCornerRadiusTopStart="30dp"
-                app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="3dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etusername"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:hint="@string/nombre_de_usuario"
-                    android:maxLength="15"
-                    android:textColor="@color/black" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -277,6 +292,30 @@
                     android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColorHint="@color/black"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxStrokeColor="@color/black"
+                app:boxStrokeWidth="3dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phonenumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="@string/telefono"
+                    android:inputType="phone"
+                    android:textColor="@color/black"
+                    android:maxLength="14"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <EditText
                 android:id="@+id/etHobbies"
                 android:layout_width="match_parent"
@@ -330,7 +369,8 @@
                     android:layout_margin="10dp"
                     android:hint="@string/numero_de_cuenta"
                     android:inputType="number"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:maxLength="24"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -352,7 +392,8 @@
                     android:layout_margin="10dp"
                     android:hint="@string/valido_hasta"
                     android:inputType="number"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:focusable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -406,25 +447,30 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:textColorHint="@color/black"
-                app:boxCornerRadiusBottomEnd="30dp"
-                app:boxCornerRadiusBottomStart="30dp"
-                app:boxCornerRadiusTopEnd="30dp"
-                app:boxCornerRadiusTopStart="30dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="3dp">
+                app:boxStrokeWidth="4dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etTransporte"
+                <AutoCompleteTextView
+                    android:id="@+id/autocomplete_transport"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="20dp"
+                    android:contentDescription="NULL"
+                    android:focusable="false"
+                    android:gravity="center"
                     android:hint="@string/transporte"
-                    android:maxLength="30"
-                    android:textColor="@color/black" />
+                    android:inputType="none"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    tools:ignore="EditableContentDescCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <EditText

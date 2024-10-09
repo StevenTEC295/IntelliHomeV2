@@ -1,0 +1,187 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/redbackground">
+
+    <!-- Imagen en la esquina superior izquierda -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="15dp"
+        android:src="@drawable/logo" />
+
+    <!-- Título "Temas" -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_below="@id/logo"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="20dp"
+        android:text="Temas"
+        android:textColor="@android:color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"/>
+
+    <!-- Contenedor para "Modo" y el ToggleButton -->
+    <LinearLayout
+        android:id="@+id/mode_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/title"
+        android:layout_centerInParent="true"
+        android:padding ="16dp"
+        android:background="@drawable/rounded_button_shape"
+        android:gravity="center"
+        >
+        <!-- Texto "Modo" -->
+        <TextView
+            android:id="@+id/box_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Modo"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"/>
+
+        <!-- ToggleButton para cambiar entre Claro/Oscuro -->
+        <ToggleButton
+            android:id="@+id/toggleMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_button_shape"
+            android:textColor="@android:color/black"
+            android:textOff="Claro"
+            android:textOn="Oscuro"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+    <!--Seleccion de colores -->
+    <GridLayout
+        android:id="@+id/color_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mode_container"
+        android:layout_centerHorizontal="true"
+        android:rowCount="2"
+        android:columnCount="2"
+
+        android:padding="8dp"><!-- reduce distancia  -->
+
+        <!-- Tarjeta Rojo -->
+        <LinearLayout
+            android:id="@+id/red_card"
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_button_shape"
+            android:layout_margin="12dp"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rojo"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+            <ImageView
+                android:id="@+id/red_image"
+                android:layout_width="200dp"
+                android:layout_height="140dp"
+                android:src="@drawable/redbackground"
+                android:layout_marginTop="12dp"/>
+        </LinearLayout>
+
+        <!-- Tarjeta Rosado -->
+        <LinearLayout
+            android:id="@+id/pink_card"
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_button_shape"
+            android:layout_margin="12dp"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rosado"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+            <ImageView
+                android:id="@+id/pink_image"
+                android:layout_width="200dp"
+                android:layout_height="140dp"
+                android:src="@drawable/pinkbackground"
+                android:layout_marginTop="12dp"/>
+        </LinearLayout>
+
+        <!-- Tarjeta Verde -->
+        <LinearLayout
+            android:id="@+id/green_card"
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_button_shape"
+            android:layout_margin="12dp"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Verde"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+            <ImageView
+                android:id="@+id/green_image"
+                android:layout_width="200dp"
+                android:layout_height="140dp"
+                android:src="@drawable/greenbackground"
+                android:layout_marginTop="12dp"/>
+        </LinearLayout>
+
+        <!-- Tarjeta Azul -->
+        <LinearLayout
+            android:id="@+id/blue_card"
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_button_shape"
+            android:layout_margin="12dp"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Azul"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+            <ImageView
+                android:id="@+id/blue_image"
+                android:layout_width="200dp"
+                android:layout_height="140dp"
+                android:src="@drawable/bluebackground"
+                android:layout_marginTop="12dp"/>
+        </LinearLayout>
+    </GridLayout>
+
+
+
+
+    <!-- Botón de "Atrás" en la esquina inferior izquierda -->
+    <TextView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="◀ Atrás"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp" />
+
+
+</RelativeLayout>
+
