@@ -3,44 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/redbackground"
+        android:background="@drawable/fondo_color_rojo"
         tools:context=".RegistroActivity">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical">
 
-
-
-
-
-
-            <LinearLayout
-                android:layout_width="200dp"
-                android:layout_height="150dp"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
+            <RelativeLayout
+                android:id="@+id/container_image"
+                android:layout_width="wrap_content"
+                android:layout_height="250dp"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
-                android:background="@color/white"
-                >
+                android:background="@color/white">
+
                 <ImageButton
                     android:id="@+id/button_tomar_foto"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_gravity="left"
-
                     android:background="@null"
                     android:scaleType="fitCenter"
                     android:src="@drawable/camara"
@@ -48,44 +37,27 @@
                     android:textColor="@color/black"
                     tools:ignore="ContentDescription" />
 
-
-
                 <ImageView
                     android:id="@+id/foto_de_perfil"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_below="@id/button_tomar_foto"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
+                    app:srcCompat="@drawable/icono_perfil"/>
 
-                    app:srcCompat="@drawable/icono_perfil" />
-
-
-
-
-                <!--<Button
-                    android:id="@+id/button_tomar_foto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="65dp"
-                    android:layout_marginLeft="150dp"
-                    android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/beige_arena"
-                    android:text="@string/Tomar_Foto"
-                    android:textColor="@color/black" />-->
-            </LinearLayout>
-
-
+            </RelativeLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/container_image"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:textColorHint="@color/black"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
                 app:boxStrokeColor="@color/black"
@@ -98,14 +70,15 @@
                     android:layout_margin="10dp"
                     android:hint="@string/nombre_de_usuario"
                     android:maxLength="15"
-
                     android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/container_image"
                 android:layout_gravity="center"
+                android:layout_marginTop="70dp"
                 android:textColorHint="@color/black"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
@@ -127,7 +100,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/container_image"
                 android:layout_gravity="center"
+                android:layout_marginTop="140dp"
                 android:textColorHint="@color/black"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
@@ -149,7 +124,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/container_image"
                 android:layout_gravity="center"
+                android:layout_marginTop="210dp"
                 android:textColorHint="@color/black"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
@@ -169,110 +146,91 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColorHint="@color/black"
-                    app:boxCornerRadiusBottomEnd="30dp"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    app:boxCornerRadiusTopEnd="30dp"
-                    app:boxCornerRadiusTopStart="30dp"
-                    app:boxStrokeColor="@color/black"
-                    app:boxStrokeWidth="3dp"
-                    app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@color/black">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/contrasena_huesped"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:hint="@string/contrasena"
-                        android:inputType="textPassword"
-                        android:maxLength="8"
-                        android:textColor="@color/black" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/floatingActionButton_contraseña"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:clickable="true"
-                    android:contentDescription="TODO"
-                    app:srcCompat="@drawable/question_mark" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColorHint="@color/black"
-                    app:boxCornerRadiusBottomEnd="30dp"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    app:boxCornerRadiusTopEnd="30dp"
-                    app:boxCornerRadiusTopStart="30dp"
-                    app:boxStrokeColor="@color/black"
-                    app:boxStrokeWidth="3dp"
-                    app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@color/black">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/contrasena_huesped_confirmar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:hint="@string/confirmar_contrasena"
-                        android:inputType="textPassword"
-                        android:maxLength="8"
-                        android:textColor="@color/black" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/floatingActionButton_confimar_contrasena"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:clickable="true"
-                    android:contentDescription="TODO"
-                    android:focusable="true"
-                    app:srcCompat="@drawable/question_mark"/>
-            </LinearLayout>
-
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/container_image"
+                android:layout_marginTop="280dp"
                 android:textColorHint="@color/black"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
                 app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="3dp" />
+                app:boxStrokeWidth="3dp"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/contrasena_huesped"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="@string/contrasena"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton_contraseña"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/container_image"
+                android:layout_gravity="center"
+                android:layout_marginStart="350dp"
+                android:layout_marginTop="285dp"
+                android:clickable="true"
+                android:contentDescription="TODO"
+                android:focusable="true"
+                app:srcCompat="@drawable/question_mark" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="355dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/container_image"
+                android:layout_marginTop="350dp"
+                android:layout_weight="1"
+                android:textColorHint="@color/black"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxStrokeColor="@color/black"
+                app:boxStrokeWidth="3dp"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/contrasena_huesped_confirmar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="@string/confirmar_contrasena"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton_confimar_contrasena"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/container_image"
+                android:layout_gravity="center"
+                android:layout_marginStart="350dp"
+                android:layout_marginTop="360dp"
+                android:layout_marginRight="10dp"
+                android:clickable="true"
+                android:contentDescription="TODO"
+                android:focusable="true"
+                app:srcCompat="@drawable/question_mark" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/container_image"
+                android:layout_gravity="center"
+                android:layout_marginTop="420dp"
+                android:layout_marginBottom="104dp"
                 android:textColorHint="@color/black"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
@@ -292,11 +250,12 @@
                     android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/container_image"
                 android:layout_gravity="center"
+                android:layout_marginTop="490dp"
                 android:textColorHint="@color/black"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
@@ -311,15 +270,16 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:hint="@string/telefono"
-                    android:inputType="phone"
-                    android:textColor="@color/black"
-                    android:maxLength="14"/>
+                    android:inputType="number"
+                    android:maxLength="14"
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <EditText
                 android:id="@+id/etHobbies"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:layout_below="@+id/container_image"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
@@ -330,7 +290,9 @@
                 android:maxLength="150"
                 android:padding="16dp"
                 android:textColor="@color/black"
-                android:textColorHint="@color/black" />
+                android:textColorHint="@color/black"
+                android:layout_marginTop="560dp"
+                android:layout_centerHorizontal="true"/>
 
             <TextView
                 android:id="@+id/textView2"
@@ -340,7 +302,10 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/tajertas_de_credito"
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:layout_below="@id/container_image"
+                android:layout_marginTop="735dp"
+                android:layout_centerHorizontal="true"/>
 
             <ImageView
                 android:id="@+id/imageView"
@@ -348,7 +313,10 @@
                 android:layout_height="143dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="20dp"
-                app:srcCompat="@drawable/tarjetas_credito" />
+                app:srcCompat="@drawable/tarjetas_credito"
+                android:layout_below="@id/container_image"
+                android:layout_marginTop="750dp"
+                android:layout_centerHorizontal="true"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -360,7 +328,9 @@
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
                 app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="3dp">
+                app:boxStrokeWidth="3dp"
+                android:layout_below="@+id/container_image"
+                android:layout_marginTop="860dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etacountNumber"
@@ -370,7 +340,7 @@
                     android:hint="@string/numero_de_cuenta"
                     android:inputType="number"
                     android:textColor="@color/black"
-                    android:maxLength="24"/>
+                    android:maxLength="16"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -383,7 +353,9 @@
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
                 app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="3dp">
+                app:boxStrokeWidth="3dp"
+                android:layout_below="@+id/container_image"
+                android:layout_marginTop="930dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etvalidunitl"
@@ -406,7 +378,9 @@
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
                 app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="3dp">
+                app:boxStrokeWidth="3dp"
+                android:layout_below="@+id/container_image"
+                android:layout_marginTop="1000dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etcvc"
@@ -429,7 +403,10 @@
                 app:boxCornerRadiusTopEnd="10dp"
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="4dp">
+                app:boxStrokeWidth="4dp"
+                android:layout_below="@+id/container_image"
+                android:layout_marginTop="1070dp"
+                android:layout_centerHorizontal="true">
 
                 <AutoCompleteTextView
                     android:id="@+id/autocomplete_text_house"
@@ -456,7 +433,10 @@
                 app:boxCornerRadiusTopEnd="10dp"
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="4dp">
+                app:boxStrokeWidth="4dp"
+                android:layout_below="@+id/container_image"
+                android:layout_marginTop="1140dp"
+                android:layout_centerHorizontal="true">
 
                 <AutoCompleteTextView
                     android:id="@+id/autocomplete_transport"
@@ -487,7 +467,10 @@
                 android:maxLength="150"
                 android:padding="16dp"
                 android:textColor="@color/black"
-                android:textColorHint="@color/black" />
+                android:textColorHint="@color/black"
+                android:layout_below="@+id/container_image"
+                android:layout_marginTop="1210dp"
+                android:layout_centerHorizontal="true"/>
 
             <Button
                 android:id="@+id/button_res"
@@ -496,7 +479,10 @@
                 android:layout_gravity="center"
                 android:backgroundTint="@color/beige_arena"
                 android:text="@string/registrarse"
-                android:textColor="@color/black" />
-        </LinearLayout>
+                android:textColor="@color/black"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/container_image"
+                android:layout_marginTop="1370dp"/>
+        </RelativeLayout>
     </RelativeLayout>
 </ScrollView>
