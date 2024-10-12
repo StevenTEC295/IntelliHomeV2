@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/redbackground"
+    tools:context=".HomePage">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="15dp"
+        android:src="@drawable/logo" />
+    <TextView
+        android:id="@+id/login_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ayuda"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_title"
+        ><TextView
+        android:id="@+id/information_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_button_shape"
+        android:padding="16dp"
+        android:text="Guía para el uso de la aplicación\n\nEl uso de la aplicación consiste en poder ingresar con sus credenciales a la ventana principal, ya estando dentro.
+Puedes navegar por configuración, cambiar temas(colores del fondo), Cambiar el idioma.
+Y si fuera el caso, desde la ventana de inicio, poder crear una cuenta nueva."
+        android:textColor="@android:color/black"
+        android:textSize="16sp" /></ScrollView>
+    <!-- Botón de "Atrás" en la esquina inferior izquierda -->
+    <TextView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="◀ Atrás"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp" />
+
+
+
+</RelativeLayout>

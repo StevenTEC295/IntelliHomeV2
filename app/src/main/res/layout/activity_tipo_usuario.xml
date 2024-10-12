@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/redbackground"
+    tools:context=".HomePage">
+
+    <!-- Logo en la parte superior izquierda -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp"
+        android:src="@drawable/logo" />
+
+    <!-- Título en el centro debajo del logo -->
+    <TextView
+        android:id="@+id/login_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo de Registro"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true" />
+
+    <!-- Sección para el botón de Huésped -->
+    <RelativeLayout
+        android:id="@+id/boton_registro_huesped"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_title"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="60dp">
+
+        <!-- Texto Huésped arriba de la imagen -->
+        <TextView
+            android:id="@+id/text_huesped"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Huésped"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_centerHorizontal="true" />
+
+        <!-- Botón de Huésped con fondo redondeado y blanco -->
+        <ImageButton
+            android:id="@+id/btn_huesped"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/huesped"
+            android:contentDescription="Botón Huésped"
+            android:background="@drawable/rounded_button_shape"
+            android:scaleType="centerInside"
+            android:layout_below="@id/text_huesped"
+            android:layout_marginTop="10dp" />
+    </RelativeLayout>
+
+    <!-- Sección para el botón de Anfitrión -->
+    <RelativeLayout
+        android:id="@+id/boton_registro_propietario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_title"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="60dp">
+
+        <!-- Texto Anfitrión arriba de la imagen -->
+        <TextView
+            android:id="@+id/text_anfitrion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anfitrión"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_centerHorizontal="true" />
+
+        <!-- Botón de Anfitrión con fondo redondeado y blanco -->
+        <ImageButton
+            android:id="@+id/btn_anfitrion"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/alfitrion"
+            android:contentDescription="Botón Anfitrión"
+            android:background="@drawable/rounded_button_shape"
+            android:scaleType="centerInside"
+            android:layout_below="@id/text_anfitrion"
+            android:layout_marginTop="10dp" />
+    </RelativeLayout>
+
+    <!-- Botón de "Atrás" en la esquina inferior izquierda -->
+    <TextView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="◀ Atrás"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp" />
+
+</RelativeLayout>

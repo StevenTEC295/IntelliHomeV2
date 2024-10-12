@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/redbackground"
+    tools:context=".HomePage">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp"
+        android:src="@drawable/logo" />
+    <TextView
+        android:id="@+id/login_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="About"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true"
+        />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_title"
+        > <TextView
+        android:id="@+id/information_box"
+        android:layout_width="wrap_content"
+        android:autoSizeMinTextSize="8dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_button_shape"
+        android:padding="16dp"
+        android:text="Proyecto: IntelliHome\n\nDesarrollado en Android Studio versión 2024.1.1\nCreadores: Skynet\n\nDesarrolladores: Steven Perez, Raymond Araya, Jose Pablo Ramos y Rachell Freer.\nContacto: skynet.tec@ingenieros.cr\n\nFundadores: Smart Home Solutions\nContacto: patito1@intellihome.com\n\nVersión del proyecto: 1.0\nAño: 2024"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" /></ScrollView>
+    <!-- Botón de "Atrás" en la esquina inferior izquierda -->
+    <TextView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="◀ Atrás"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp" />
+
+    <!-- Botón de "Atrás" en la esquina inferior izquierda -->
+    <TextView
+        android:id="@+id/back_butto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="◀ Atrás"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp" />
+
+</RelativeLayout>
