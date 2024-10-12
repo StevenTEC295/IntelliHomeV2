@@ -52,6 +52,7 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var etcvc: TextInputEditText
     private lateinit var etHobbies: EditText
     private lateinit var addressInput  : EditText
+    private lateinit var exitbuton: TextView
 
 
     // Register for camera activity result
@@ -133,6 +134,7 @@ class RegistroActivity : AppCompatActivity() {
         lastNameInput = findViewById(R.id.etApellidos)
         etusername = findViewById(R.id.etusername)
         selectDate = findViewById(R.id.selectDate)
+        exitbuton = findViewById(R.id.back_to_login)
 
         accountNumberInput = findViewById(R.id.etacountNumber)
         accountNumberInput.setText(" CR ")
@@ -292,14 +294,6 @@ class RegistroActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-
-
-        // Set up click listeners
-        /*btnUploadPhoto.setOnClickListener {
-            pickImageGallery()
-        }*/
-
         button_tomar_foto.setOnClickListener {
             imageUrl = createImageUri()
             cameraContract.launch(imageUrl)
@@ -332,6 +326,10 @@ class RegistroActivity : AppCompatActivity() {
                 .setAction("OK") {
                 }
                 .show()
+        }
+
+        exitbuton.setOnClickListener {
+            backToLogin()
         }
     }
 
@@ -477,6 +475,13 @@ class RegistroActivity : AppCompatActivity() {
     // Función para verificar si el nombre de usuario contiene palabras obscenas
     private fun containsObsceneWords(username: String): Boolean {
         return obsceneWords.any { username.contains(it, ignoreCase = true) }
+    }
+
+    private fun backToLogin(){
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+
     }
 
 }

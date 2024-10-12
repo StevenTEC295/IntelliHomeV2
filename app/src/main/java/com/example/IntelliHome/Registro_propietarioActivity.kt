@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -47,6 +48,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
     private lateinit var etcvc: TextInputEditText
     private lateinit var addressInput: EditText
     private lateinit var firstNameInput: TextInputEditText
+    private lateinit var exitbuton: TextView
 
 
 
@@ -143,6 +145,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
         etvalidunitl = findViewById(R.id.etvalidunitl)
         etcvc = findViewById(R.id.etcvc)
         addressInput= findViewById(R.id.Direccion)
+        exitbuton = findViewById(R.id.back_to_login)
 
         accountNumberInput = findViewById(R.id.etacountNumber)
         accountNumberInput.setText(" CR ")
@@ -306,6 +309,9 @@ class Registro_propietarioActivity : AppCompatActivity() {
         etvalidunitl.setOnClickListener {
             showDatePickerDialogValidUntil()
         }
+        exitbuton.setOnClickListener {
+            backToLogin()
+        }
 
     }
 
@@ -418,5 +424,11 @@ class Registro_propietarioActivity : AppCompatActivity() {
     // Función para verificar si el nombre de usuario contiene palabras obscenas
     private fun containsObsceneWords(username: String): Boolean {
         return obsceneWords.any { username.contains(it, ignoreCase = true) }
+    }
+    private fun backToLogin(){
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+
     }
 }

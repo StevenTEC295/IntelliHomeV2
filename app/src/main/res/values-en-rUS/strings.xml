@@ -32,8 +32,9 @@
     <string name="completa_cuenta">The account number must be exactly 12 digits</string>
     <string name="completa_cvc">CVC must be 3 digits</string>
     <string name="palabras_obsecenas">Username contains inappropriate words</string>
-
-
+    <string name="Registro_titulo_huesped">Guest Registration</string>
+    <string name="Registro_titulo_Anfritrion">Host Registration</string>
+    <string name="Atras">&lt; Back</string>
     <string-array name="house_types">
         <item>Rustic</item>
         <item>Modern</item>

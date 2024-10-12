@@ -31,6 +31,9 @@
     <string name="completa_cuenta">El número de cuenta debe tener exactamente 12 dígitos</string>
     <string name="completa_cvc">El CVC debe tener 3 dígitos</string>
     <string name="palabras_obsecenas">El nombre de usuario contiene palabras inapropiadas</string>
+    <string name="Registro_titulo_huesped">Registro Huésped</string>
+    <string name="Registro_titulo_Anfritrion">Registro Anfitrión</string>
+    <string name="Atras">&lt; Atrás</string>
 
     <string-array name="house_types">
         <item>Rústica</item>
