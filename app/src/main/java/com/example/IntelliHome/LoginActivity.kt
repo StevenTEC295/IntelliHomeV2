@@ -25,12 +25,18 @@ import java.io.OutputStream
 import java.io.PrintWriter
 import java.net.Socket
 import kotlin.concurrent.thread
-
+import android.content.SharedPreferences
+import android.widget.RelativeLayout
+import android.content.Context
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var mainLayout: RelativeLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
+        mainLayout = findViewById(R.id.main)
         setupPasswordValidation()
         val btn1 = findViewById<TextView>(R.id.create_new_account)
         val about = findViewById<ImageButton>(R.id.button_help)
@@ -60,6 +66,11 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, About::class.java)
             startActivity(intent)
         }
+        loadSavedBackground()
+    }
+    private fun loadSavedBackground() {
+        val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
+        mainLayout.setBackgroundResource(savedBackground)
     }
 
 

@@ -26,7 +26,9 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.Scanner
 import kotlin.concurrent.thread
-
+import android.content.SharedPreferences
+import android.widget.RelativeLayout
+import android.content.Context
 //El huesped
 
 class RegistroActivity : AppCompatActivity() {
@@ -34,6 +36,8 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private lateinit var btnUploadPhoto: Button
     private lateinit var imageUrl: Uri
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var mainLayout: RelativeLayout
 
     /*private lateinit var socket: Socket
     private lateinit var out_cliente: PrintWriter
@@ -70,7 +74,8 @@ class RegistroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
-
+        sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
+        mainLayout = findViewById(R.id.main)
         // Set up dropdown menu for house types
         //val items = listOf("Rustica", "Moderna", "Mansion")
         val items = resources.getStringArray(R.array.house_types).toList()
@@ -278,6 +283,11 @@ class RegistroActivity : AppCompatActivity() {
                 }
                 .show()
         }
+        loadSavedBackground()
+    }
+    private fun loadSavedBackground() {
+        val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
+        mainLayout.setBackgroundResource(savedBackground)
     }
 
     private fun showDatePickerDialog() {

@@ -75,8 +75,10 @@ class Customization : AppCompatActivity() {
         editor.putInt("background_resource", backgroundResId)
         editor.apply() // Apply the changes
     }
+
     private fun loadSavedBackground() {
         val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
         mainLayout.setBackgroundResource(savedBackground)
+        mainLayout.invalidate()
     }
 }
