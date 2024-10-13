@@ -39,6 +39,7 @@
         <item>Moto</item>
         <item>Bicicleta</item>
     </string-array>
+
     <string name="app_nam">Configuración</string>
     <string name="configuracion">Configuración</string>
     <string name="ayuda">Ayuda</string>

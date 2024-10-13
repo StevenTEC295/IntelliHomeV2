@@ -61,6 +61,7 @@ android:background="@drawable/redbackground">
         android:layout_height="wrap_content"
         android:layout_below="@id/themes_button"
         android:layout_centerHorizontal="true"
+
         android:layout_marginTop="25dp"
         android:background="@drawable/rounded_button_shape"
         android:padding="15dp">
@@ -81,6 +82,7 @@ android:background="@drawable/redbackground">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
+
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:text="@string/espanol"
@@ -88,10 +90,12 @@ android:background="@drawable/redbackground">
             android:textColor="@android:color/black" />
 
         <!-- Botón "Inglés" debajo del botón "Español" -->
+
         <Button
             android:id="@+id/english_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_below="@id/spanish_button"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
@@ -100,10 +104,12 @@ android:background="@drawable/redbackground">
             android:textColor="@android:color/black" />
 
         <!-- Botón "Portugués" debajo del botón "Inglés" -->
+
         <Button
             android:id="@+id/portuguese_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_below="@id/english_button"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
@@ -112,10 +118,12 @@ android:background="@drawable/redbackground">
             android:textColor="@android:color/black" />
 
         <!-- Botón "Francés" debajo del botón "Portugués" -->
+
         <Button
             android:id="@+id/french_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_below="@id/portuguese_button"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
@@ -124,10 +132,12 @@ android:background="@drawable/redbackground">
             android:textColor="@android:color/black" />
 
         <!-- Botón "Húngaro" debajo del botón "Francés" -->
+
         <Button
             android:id="@+id/hungarian_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_below="@id/french_button"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"

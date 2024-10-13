@@ -30,5 +30,6 @@ class About : AppCompatActivity() {
     private fun loadSavedBackground() {
         val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
         mainLayout.setBackgroundResource(savedBackground)
+
     }
 }

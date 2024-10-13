@@ -1,6 +1,5 @@
 package com.example.intellihome
 import android.content.SharedPreferences
-
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -12,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import android.widget.ImageView
 import com.example.intellihome.R
 import android.content.Context
+
 class Customization : AppCompatActivity() {
     private lateinit var mainLayout:RelativeLayout
     private var isDarkMode = false
@@ -20,15 +20,19 @@ class Customization : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_customization)
+
         //iniciar el cambio del fondo
         sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
+
         mainLayout=findViewById(R.id.main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         loadSavedBackground()
+
         //Modo claro /Oscuro
         val toggleButton = findViewById<ToggleButton>(R.id.toggleMode)
         toggleButton.setOnClickListener{
@@ -39,6 +43,7 @@ class Customization : AppCompatActivity() {
                 updateThemeImagesToLight()
             }
         }
+
         findViewById<RelativeLayout>(R.id.red_card).setOnClickListener {
             setColorBackground(if (isDarkMode) R.drawable.darkredbackground else R.drawable.redbackground)
         }
@@ -49,6 +54,7 @@ class Customization : AppCompatActivity() {
             setColorBackground(if (isDarkMode) R.drawable.darkgreenbackground else R.drawable.greenbackground)
         }
         findViewById<RelativeLayout>(R.id.blue_card).setOnClickListener {
+
             setColorBackground(if (isDarkMode) R.drawable.darkbluebackground else R.drawable.bluebackground)
         }
     }
@@ -71,6 +77,7 @@ class Customization : AppCompatActivity() {
     // Cambia el fondo de pantalla según el modo
     private fun setColorBackground(backgroundResId: Int) {
         mainLayout.setBackgroundResource(backgroundResId)
+
         val editor = sharedPreferences.edit()
         editor.putInt("background_resource", backgroundResId)
         editor.apply() // Apply the changes
@@ -80,5 +87,6 @@ class Customization : AppCompatActivity() {
         val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
         mainLayout.setBackgroundResource(savedBackground)
         mainLayout.invalidate()
+
     }
 }

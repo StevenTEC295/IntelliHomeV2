@@ -30,7 +30,9 @@
         android:layout_centerHorizontal="true"/>
 
     <!-- Contenedor para "Modo" y el ToggleButton -->
+
     <RelativeLayout
+
         android:id="@+id/mode_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,6 +52,7 @@
             android:textColor="@android:color/black"
             android:layout_centerHorizontal="true"/>
 
+
         <!-- ToggleButton para cambiar entre Claro/Oscuro -->
         <ToggleButton
             android:id="@+id/toggleMode"
@@ -57,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/box_title"
             android:layout_centerHorizontal="true"
+
             android:background="@drawable/rounded_button_shape"
             android:textColor="@android:color/black"
             android:textOff="Claro"
@@ -66,6 +70,7 @@
 
     <!--Seleccion de colores -->
     <RelativeLayout
+
         android:id="@+id/color_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,7 +88,6 @@
             android:background="@drawable/rounded_button_shape"
             android:layout_margin="12dp"
             >
-
             <ImageView
                 android:id="@+id/red_image"
                 android:layout_width="200dp"
@@ -185,5 +189,21 @@
                 android:textColor="@android:color/black" />
         </RelativeLayout>
     </RelativeLayout>
+              
+      
+
+    <!-- Botón de "Atrás" en la esquina inferior izquierda -->
+    <TextView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="◀ Atrás"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp" />
+
+
 </RelativeLayout>
 

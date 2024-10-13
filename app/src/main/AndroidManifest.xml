@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name="com.example.IntelliHome.About"
+            android:name="com.example.intelliHome.About"
             android:exported="false" />
         <activity
             android:name=".Ayuda"
@@ -31,7 +31,9 @@
             android:name=".HomePage"
             android:exported="false" />
         <activity
+
             android:name="com.example.intellihome.TipoUsuario"
+           
             android:exported="false" />
         <activity
             android:name=".Registro_propietarioActivity"
@@ -48,8 +50,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.intellihome.FileProvider"

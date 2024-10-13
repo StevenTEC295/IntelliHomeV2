@@ -17,7 +17,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.IntelliHome.About
 import com.example.IntelliHome.SocketConnection
+
 import com.example.intellihome.TipoUsuario
+
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -25,6 +27,7 @@ import java.io.OutputStream
 import java.io.PrintWriter
 import java.net.Socket
 import kotlin.concurrent.thread
+
 import android.content.SharedPreferences
 import android.widget.RelativeLayout
 import android.content.Context
@@ -37,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
         mainLayout = findViewById(R.id.main)
+
         setupPasswordValidation()
         val btn1 = findViewById<TextView>(R.id.create_new_account)
         val about = findViewById<ImageButton>(R.id.button_help)
@@ -66,11 +70,13 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, About::class.java)
             startActivity(intent)
         }
+
         loadSavedBackground()
     }
     private fun loadSavedBackground() {
         val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
         mainLayout.setBackgroundResource(savedBackground)
+
     }
 
 
@@ -167,21 +173,8 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
-
-
-
-
-
-
-
-
-
-
     private fun navegar(){
         val intent = Intent(this,TipoUsuario::class.java)
         startActivity(intent)
     }
-
-
-
 }

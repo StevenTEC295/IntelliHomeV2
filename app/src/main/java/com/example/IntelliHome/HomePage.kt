@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.intellihome.R
+
 import android.content.SharedPreferences
 import android.widget.RelativeLayout
 import android.content.Context
@@ -20,8 +21,10 @@ class HomePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_home_page)
+
         sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
         mainLayout = findViewById(R.id.main)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -32,10 +35,12 @@ class HomePage : AppCompatActivity() {
             val intent = Intent(this, Setting::class.java)
             startActivity(intent)
         }
+
         loadSavedBackground()
     }
     private fun loadSavedBackground() {
         val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
         mainLayout.setBackgroundResource(savedBackground)
+
     }
 }
