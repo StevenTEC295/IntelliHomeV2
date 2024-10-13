@@ -10,6 +10,16 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.example.IntelliHome.About
+import com.example.IntelliHome.SocketConnection
+
+import com.example.intellihome.TipoUsuario
+
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -18,22 +28,27 @@ import java.io.PrintWriter
 import java.net.Socket
 import kotlin.concurrent.thread
 
-class LoginActivity : AppCompatActivity() {
-    private val prohibitedWords = mutableListOf<String>()
 
+import android.content.SharedPreferences
+import android.widget.RelativeLayout
+import android.content.Context
+
+class LoginActivity : AppCompatActivity() {
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var mainLayout: RelativeLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
+        mainLayout = findViewById(R.id.main)
 
-        // Cargar las palabras prohibidas desde el archivo de recursos
-        loadProhibitedWords()
 
-        setupPasswordValidation()
-        setupInputFilter()
+        val btn1 = findViewById<TextView>(R.id.create_new_account)
+        val about = findViewById<ImageButton>(R.id.button_help)
 
         val btnIngresar = findViewById<TextView>(R.id.button_login)
         val usuario = findViewById<EditText>(R.id.editTextEmail)
-        val password = findViewById<EditText>(R.id.editTextPassword)
+        val password = findViewById<EditText>(R.id.contrasena_huesped)
         val action = "login"
 
         btnIngresar.setOnClickListener {
@@ -43,7 +58,8 @@ class LoginActivity : AppCompatActivity() {
                     usuario.text.toString(),
                     password.text.toString()
                 )
-                sendDataToServer("192.168.0.207", 8080, jsonData)
+
+                sendDataToServer("192.168.144.129",8080,jsonData)
                 val intent = Intent(this, HomePage::class.java)
                 startActivity(intent)
             }
@@ -58,6 +74,13 @@ class LoginActivity : AppCompatActivity() {
                 prohibitedWords.add(line.trim().lowercase())
             }
         }
+
+        loadSavedBackground()
+    }
+    private fun loadSavedBackground() {
+        val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
+        mainLayout.setBackgroundResource(savedBackground)
+
     }
 
     // Filtro que elimina palabras prohibidas del campo de contraseña en tiempo real
@@ -129,34 +152,9 @@ class LoginActivity : AppCompatActivity() {
         return json.toString()
     }
 
-    private fun setupPasswordValidation() {
-        val passwordField = findViewById<EditText>(R.id.editTextPassword)
-        val errorTextView = findViewById<TextView>(R.id.textViewError)
-
-        passwordField.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val password = s.toString()
-                if (password.length >= 8) {
-                    val hasUppercase = password.any { it.isUpperCase() }
-                    val hasLowercase = password.any { it.isLowerCase() }
-                    val hasDigit = password.any { it.isDigit() }
-                    val hasSpecialChar = password.any { !it.isLetterOrDigit() }
-
-                    if (hasUppercase && hasLowercase && hasDigit && hasSpecialChar) {
-                        errorTextView.visibility = View.GONE
-                    } else {
-                        errorTextView.text =
-                            "Debe contener al menos 1 mayúscula, 1 minúscula, 1 dígito y 1 carácter especial"
-                        errorTextView.visibility = View.GONE
-                    }
-                } else {
-                    errorTextView.text = "La contraseña debe tener exactamente 8 caracteres"
-                    errorTextView.visibility = View.GONE
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
+    private fun navegar(){
+        val intent = Intent(this,TipoUsuario::class.java)
+        startActivity(intent)
     }
+
 }

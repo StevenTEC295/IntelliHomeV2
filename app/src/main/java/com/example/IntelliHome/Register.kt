@@ -27,6 +27,10 @@ import java.net.UnknownHostException
 import java.util.Scanner
 import kotlin.concurrent.thread
 
+import android.content.SharedPreferences
+import android.widget.RelativeLayout
+import android.content.Context
+
 //El huesped
 
 class RegistroActivity : AppCompatActivity() {
@@ -34,6 +38,10 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private lateinit var btnUploadPhoto: Button
     private lateinit var imageUrl: Uri
+
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var mainLayout: RelativeLayout
+
 
     /*private lateinit var socket: Socket
     private lateinit var out_cliente: PrintWriter
@@ -70,6 +78,9 @@ class RegistroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
+
+        sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
+        mainLayout = findViewById(R.id.main)
 
         // Set up dropdown menu for house types
         //val items = listOf("Rustica", "Moderna", "Mansion")
@@ -234,7 +245,7 @@ class RegistroActivity : AppCompatActivity() {
                     addressInput,
                     phoneInput
                 )
-                sendDataToServer("192.168.0.207", 8080,jsonData)
+                sendDataToServer("192.168.144.129", 8080,jsonData)
             }
         }
 
@@ -278,6 +289,13 @@ class RegistroActivity : AppCompatActivity() {
                 }
                 .show()
         }
+
+        loadSavedBackground()
+    }
+    private fun loadSavedBackground() {
+        val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
+        mainLayout.setBackgroundResource(savedBackground)
+
     }
 
     private fun showDatePickerDialog() {
@@ -381,31 +399,8 @@ class RegistroActivity : AppCompatActivity() {
             println("Error al enviar los datos - envio")
         }
     }
-    /*private fun receiveDataFromServer(serverIp: String, serverPort: Int) {
-        try {
-            val socket = Socket(serverIp, serverPort)
-            val inputStream: InputStream = socket.getInputStream()
-            val bufferedReader = BufferedReader(InputStreamReader(inputStream))
-
-            // Escuchar mensajes en un bucle
-            while (true) {
-                val message = bufferedReader.readLine()
-                if (message != null) {
-                    println("Mensaje recibido: $message")
-                } else {
-                    break // Salir si no hay más mensajes
-                }
-            }
-            // Cerrar flujos y socket
-            bufferedReader.close()
-            inputStream.close()
-            socket.close()
-            println("Se cerró la conexión - eschucha")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("Error al recibir los datos - eschuca")
-        }
-    }*/
+  
+   
     private fun confirmPassword(password: String): Boolean {
         val patron = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}$")
         return patron.matches(password)
