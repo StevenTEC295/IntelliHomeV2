@@ -1,24 +1,44 @@
 package com.example.intellihome
 
+
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.widget.Button
+
 import android.widget.TextView
+
+
+import android.widget.RelativeLayout
+
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.IntelliHome.TipoUsuario
+
+
+import com.example.intellihome.Customization
+
 import com.example.intellihome.R
 import java.util.Locale
 
 class Setting : AppCompatActivity() {
+
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var mainLayout: RelativeLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContentView(R.layout.activity_setting)
+
+        sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
+        mainLayout = findViewById(R.id.main)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -51,6 +71,9 @@ class Setting : AppCompatActivity() {
             setLocale("en")
         }
 
+        loadSavedBackground()
+
+
     }
 
     private fun setLocale(languageCode: String) {
@@ -67,4 +90,10 @@ class Setting : AppCompatActivity() {
         startActivity(refresh)
         finish()  // Finaliza la actividad actual para evitar que quede en el stack
     }
+
+    private fun loadSavedBackground() {
+        val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
+        mainLayout.setBackgroundResource(savedBackground)
+    }
+
 }
