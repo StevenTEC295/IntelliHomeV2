@@ -10,6 +10,9 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.widget.Button
 
+import android.widget.TextView
+
+
 import android.widget.RelativeLayout
 
 import androidx.activity.enableEdgeToEdge
@@ -44,6 +47,11 @@ class Setting : AppCompatActivity() {
         val botonTemas = findViewById<Button>(R.id.themes_button)
         botonTemas.setOnClickListener{
             val intent = Intent(this, Customization::class.java)
+            startActivity(intent)
+        }
+        val botonAtras = findViewById<TextView>(R.id.back_button)
+        botonAtras.setOnClickListener{
+            val intent = Intent(this, HomePage::class.java)
             startActivity(intent)
         }
         val botonAyuda = findViewById<Button>(R.id.help_button)

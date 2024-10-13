@@ -233,7 +233,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
                     addressInput,
                     phoneInput
                 )
-                sendDataToServer("192.168.0.207",8080,jsonData)
+                sendDataToServer("192.168.144.129",8080,jsonData)
             }
         }
 
