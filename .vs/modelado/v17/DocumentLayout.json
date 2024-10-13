@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\raymo\\Desktop\\modelado\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\raymo\\Desktop\\modelado\\app\\src\\main\\java\\com\\example\\IntelliHome\\LoginActivity.kt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\src\\main\\java\\com\\example\\IntelliHome\\LoginActivity.kt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "LoginActivity.kt",
+              "DocumentMoniker": "C:\\Users\\raymo\\Desktop\\modelado\\app\\src\\main\\java\\com\\example\\IntelliHome\\LoginActivity.kt",
+              "RelativeDocumentMoniker": "app\\src\\main\\java\\com\\example\\IntelliHome\\LoginActivity.kt",
+              "ToolTip": "C:\\Users\\raymo\\Desktop\\modelado\\app\\src\\main\\java\\com\\example\\IntelliHome\\LoginActivity.kt",
+              "RelativeToolTip": "app\\src\\main\\java\\com\\example\\IntelliHome\\LoginActivity.kt",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAkAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKVSURBVDhPnZQ9aFNRFMf/7768fLyE1o8oWSxRENQitYiboQYHBS3iIFZchOogdNFBJzFdzeLQQSii4FBw0KEObkUrDqJYRKViJdFk6Adt09TmpXkf13Nv7qOm2pr4g8P5uC//d3PveUfDBiQzufBSNZ5dNswBR2OquinTGERCCvJbbUeg6yFZ5rUytJXPh\u002Ba/95eDkXtLRgRlw0SToh81b3D7E4\u002BbZ1WB4GBsce7EzMvlWT2\u002Bp0yCLYjmNSezi6sEd16V8WXORcnZind2N2ymw9YCqAkvLQAP606p4yjQ3a8SX5DTQ46O44\u002Bm8eKHpdaapOsScOaBSpBnqAUAK0hmAF797YVCAbZtY3x8XObJZBK5XE7G/4KhSmJVA5oQdetnlEqlUCwWpW8VJoSkmBD2mrrJTaEdBmbqfzmImhNW5Ubi8ThKpZLKGmHUFb/DuBX66gs6DnliZGQEiURC\u002Bmw2i9HRUQwNDcm19RiegwD3VAZobm/PMJ3d5ZoVRc/bCbxZLqql5oh19iHYO\u002Bz3qbjl4JTcYSnW8KZmCXou2m0LbXYFOv2esYoxpVVCCFlcFlrF4A6JWVK03V6ZFG3zTfYg8V\u002BCtMM2p4K4vfR6m2dfCYB26Pefz9jYmIrWSKfTKmokwldxI3obp6OPL2oZ1C/A23d\u002BnowfM3eKHmjJLnRFOB8E5xkkKa9/6ST2gdzB67PvMVFd6zeXposwMWVcGg7CC/OYhmh4HjFjESf3AjdpPpD8btphXgn2PaPKKRGvp0JjUoywuplgO2bc/Qee6mZ4QT1BcNwlsWsilIenaV5B\u002BL9huqvyFsl\u002BttcqA4e7728xQwtpEvEt5YsJ5A5557kYd9knCjtE/if8\u002BSrMq5HJh3lV2ADgF/9HGoCr/InOAAAAAElFTkSuQmCC",
+              "WhenOpened": "2024-10-09T21:36:01.69Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
