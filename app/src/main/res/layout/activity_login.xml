@@ -13,9 +13,7 @@
         android:background="@drawable/signo_depregunta"
         android:layout_margin="16dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp" />
+        android:layout_alignParentTop="true" />
 
     <ImageView
         android:id="@+id/logo_image"
@@ -23,7 +21,7 @@
         android:layout_height="200dp"
         android:src="@drawable/logo"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/button_help" />
+        android:layout_below="@id/button_help" />
 
     <TextView
         android:id="@+id/login_title"
@@ -33,58 +31,66 @@
         android:textSize="32sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
-        android:layout_below="@+id/logo_image"
+        android:layout_below="@id/logo_image"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp" />
 
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Usuario, Correo o Telefono"
-        android:inputType="textEmailAddress"
-        android:padding="16dp"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
-        android:background="@drawable/rounded_button_shape"
-        android:layout_below="@+id/login_title"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_centerHorizontal="true" />
-
-    <!-- Reemplazamos este EditText con el TextInputLayout para la contraseña -->
+    <!-- Campo de Usuario -->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/usernameLayout"
         android:layout_width="match_parent"
-        android:id="@+id/PasswordLayout"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_below="@+id/editTextEmail"
+        android:layout_below="@id/login_title"
         android:layout_marginTop="16dp"
-        android:textColorHint="@color/black"
-        app:boxCornerRadiusBottomEnd="30dp"
-        app:boxCornerRadiusBottomStart="30dp"
-        app:boxCornerRadiusTopEnd="30dp"
+        app:boxBackgroundMode="filled"
         app:boxCornerRadiusTopStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxBackgroundColor="@android:color/white"
+        app:boxStrokeColor="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Usuario, Correo o Teléfono"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Campo de Contraseña -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/PasswordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_below="@id/usernameLayout"
+        android:layout_marginTop="16dp"
+        app:boxBackgroundMode="filled"
+        app:boxCornerRadiusTopStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxBackgroundColor="@android:color/white"
         app:boxStrokeColor="@color/black"
-        app:boxBackgroundMode="@drawable/rounded_button_shape"
-        app:boxStrokeWidth="3dp"
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="@color/black">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/contrasena_huesped"
+            android:id="@+id/contrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:hint="Contraseña"
-            android:background="@drawable/rounded_button_shape"
             android:inputType="textPassword"
-            android:maxLength="8"
-            android:textColor="@color/black" >
-
-        </com.google.android.material.textfield.TextInputEditText>
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -92,15 +98,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Olvidé mi contraseña"
-
         android:clickable="true"
         android:focusable="true"
         android:textStyle="bold"
-
         android:textColor="@android:color/black"
         android:textSize="14sp"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/PasswordLayout"
+        android:layout_below="@id/PasswordLayout"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp" />
 
@@ -113,13 +117,10 @@
         android:textColor="@android:color/white"
         android:background="@drawable/rounded_button_shape"
         android:backgroundTint="@color/white"
-        android:layout_below="@+id/recover_password"
+        android:layout_below="@id/recover_password"
         android:layout_marginTop="20dp"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_centerHorizontal="true" />
-
-
+        android:layout_marginEnd="32dp" />
 
     <TextView
         android:id="@+id/create_new_account"
@@ -129,10 +130,9 @@
         android:clickable="true"
         android:focusable="true"
         android:textStyle="bold"
-
         android:textColor="@android:color/black"
         android:textSize="14sp"
-        android:layout_below="@+id/button_login"
+        android:layout_below="@id/button_login"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />
 
@@ -142,12 +142,9 @@
         android:layout_height="wrap_content"
         android:text="Iniciar sesión con"
         android:textStyle="bold"
-        android:clickable="true"
-        android:focusable="true"
-
         android:textColor="@android:color/black"
         android:textSize="14sp"
-        android:layout_below="@+id/create_new_account"
+        android:layout_below="@id/create_new_account"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />
 
@@ -155,7 +152,7 @@
         android:id="@+id/social_login_icons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_with"
+        android:layout_below="@id/login_with"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:orientation="horizontal">
@@ -175,3 +172,5 @@
     </LinearLayout>
 
 </RelativeLayout>
+
+
