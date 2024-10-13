@@ -47,4 +47,18 @@
         <item>Bus</item>
         <item>Motorcycle</item>
     </string-array>
+
+    <string name="app_nam">Settings</string>
+    <string name="configuracion">Settings</string>
+    <string name="ayuda">Help</string>
+    <string name="temas">Themes</string>
+    <string name="espanol">Spanish</string>
+    <string name="ingles">English</string>
+    <string name="portugues">Portuguese</string>
+    <string name="frances">French</string>
+    <string name="hungaro">Hungarian</string>
+    <string name="atras">◀ Back</string>
+    <string name="idiomas">Languages</string>
+
+
 </resources>

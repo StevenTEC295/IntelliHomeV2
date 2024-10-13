@@ -7,7 +7,7 @@ from Crypto.Random import get_random_bytes
 import base64
 import json
 
-class ChatServer:
+class Server:
     def __init__(self, host='0.0.0.0', port=8080):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((host, port))
@@ -30,7 +30,7 @@ class ChatServer:
                 #Convierte el texto en formato json
                 data = json.loads(message)
            
-                print(data["action"])
+                
                 if data["action"] == "registro":
                     self.register(message, client_socket)  # mandar mensaje a todo mundo 
                 elif data["action"] == "login":
@@ -46,19 +46,18 @@ class ChatServer:
     def login(self, data, sender_socket):
         self.travelFile(sender_socket, data)
 
-        
-        #TODO: RAYMOND AQUI VA EL CODIGO DE LOGIN Y LA Lógica de preguntar registro
+    
 
     def register(self, message, sender_socket):
         nonce, ciphertext, tag = self.encrypt_message(message)
         encrypted_message = self.compose_message(nonce, ciphertext, tag)
         if encrypted_message:
-            print("Mensaje cifrado:", encrypted_message)
+            print("Registro exitoso")
             self.save_encrypted_message(encrypted_message)
             self.travelFile()  # Leer y desencriptar el archivo
 
     def save_encrypted_message(self, encrypted_message):
-        with open("chat_messages_encrypted.txt", "a") as f:  # Guardar mensajes cifrados
+        with open("register_encrypted.txt", "a") as f:  # Guardar mensajes cifrados
             f.write(base64.b64encode(encrypted_message).decode() + "\n")
 
     def encrypt_message(self, message):
@@ -87,17 +86,17 @@ class ChatServer:
         return nonce, ciphertext, tag
 
     def travelFile(self,client_socket, data):
-        with open("chat_messages_encrypted.txt", "r") as file:
+        with open("register_encrypted.txt", "r") as file:
             for line in file:
                 nonce, ciphertext, tag = self.extract_message(line.strip())  # Decodificar línea del archivo
                 try:
+                    
                     # Desencriptar el mensaje
                     plaintext = self.decrypt_message(nonce, ciphertext, tag)
                     registro = json.loads(plaintext)  # Convertir el texto desencriptado en un diccionario
-                    print(registro)
                     # Comparamos los datos recibidos (username, email o password) con los del registro
                     if (registro["username"] == data["usuario"] or registro['email'] == data["usuario"] or 
-                        registro["phone"] == data["usuario"] and registro["password"] == data["password"]):
+                        registro["phone"].split(" ")[1] == data["usuario"] and registro["password"] == data["password"]):
                         client_socket.send("1\n".encode('utf-8'))
                         print("Login exitoso")
                         return  # Salimos si el login fue exitoso
@@ -111,4 +110,4 @@ class ChatServer:
         # Si recorremos todo el archivo y no encontramos coincidencias
         
 if __name__ == "__main__":
-    ChatServer()
+    Server()

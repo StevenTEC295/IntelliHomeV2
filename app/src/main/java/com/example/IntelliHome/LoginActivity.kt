@@ -17,7 +17,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.IntelliHome.About
 import com.example.IntelliHome.SocketConnection
-import com.example.IntelliHome.TipoUsuario
+
+import com.example.intellihome.TipoUsuario
+
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -26,17 +28,25 @@ import java.io.PrintWriter
 import java.net.Socket
 import kotlin.concurrent.thread
 
+import android.content.SharedPreferences
+import android.widget.RelativeLayout
+import android.content.Context
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var mainLayout: RelativeLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        setupPasswordValidation()
+        sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
+        mainLayout = findViewById(R.id.main)
+
+
         val btn1 = findViewById<TextView>(R.id.create_new_account)
         val about = findViewById<ImageButton>(R.id.button_help)
         val btnIngresar = findViewById<TextView>(R.id.button_login)
         val usuario = findViewById<EditText>(R.id.editTextEmail)
-        val password = findViewById<EditText>(R.id.editTextPassword)
+        val password = findViewById<EditText>(R.id.contrasena_huesped)
         val action = "login"
         btnIngresar.setOnClickListener{
             thread {
@@ -46,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
                     password.text.toString()
 
                 )
-                sendDataToServer("192.168.0.207",8080,jsonData)
+                sendDataToServer("192.168.144.129",8080,jsonData)
                 val intent = Intent(this, HomePage::class.java)
                 startActivity(intent)
             }
@@ -60,6 +70,13 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, About::class.java)
             startActivity(intent)
         }
+
+        loadSavedBackground()
+    }
+    private fun loadSavedBackground() {
+        val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
+        mainLayout.setBackgroundResource(savedBackground)
+
     }
 
 
@@ -116,61 +133,10 @@ class LoginActivity : AppCompatActivity() {
         json.put("password", password)
         return json.toString()
     }
-    private fun setupPasswordValidation() {
-        val passwordField = findViewById<EditText>(R.id.editTextPassword)
-        val errorTextView = findViewById<TextView>(R.id.textViewError)
-
-        passwordField.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val password = s.toString()
-
-                // Verificar si el texto tiene exactamente 8 caracteres
-                if (password.length == 8) {
-                    val hasUppercase = password.count { it.isUpperCase() } >= 1
-                    val hasLowercase = password.count { it.isLowerCase() } >= 1
-                    val hasDigit = password.count { it.isDigit() } >= 1
-                    val hasSpecialChar = password.any { !it.isLetterOrDigit() }
-
-                    // Validar la contraseña
-                    if (hasUppercase && hasLowercase && hasDigit && hasSpecialChar) {
-                        errorTextView.visibility = View.GONE  // Ocultar el mensaje de error
-                        Toast.makeText(this@LoginActivity, "Contraseña válida", Toast.LENGTH_SHORT).show()
-                    } else {
-                        // Mostrar el error si no cumple con los requisitos
-                        errorTextView.text = "Debe contener al menos 1 mayúscula, 1 minúscula, 1 dígito y 1 carácter especial"
-                        errorTextView.visibility = View.VISIBLE
-                    }
-                } else {
-                    // Mostrar error si no tiene exactamente 8 caracteres
-                    errorTextView.text = "La contraseña debe tener exactamente 8 caracteres"
-                    errorTextView.visibility = View.VISIBLE
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // No necesario
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // No necesario
-            }
-        })
-    }
-
-
-
-
-
-
-
-
-
 
     private fun navegar(){
         val intent = Intent(this,TipoUsuario::class.java)
         startActivity(intent)
     }
-
-
 
 }

@@ -48,4 +48,17 @@
         <item>Buseta</item>
         <item>Moto</item>
     </string-array>
+
+    <string name="app_nam">Configuración</string>
+    <string name="configuracion">Configuración</string>
+    <string name="ayuda">Ayuda</string>
+    <string name="temas">Temas</string>
+    <string name="espanol">Español</string>
+    <string name="ingles">Inglés</string>
+    <string name="portugues">Portugués</string>
+    <string name="frances">Francés</string>
+    <string name="hungaro">Húngaro</string>
+    <string name="atras">◀ Atrás</string>
+    <string name="idiomas">Idiomas</string>
+
 </resources>

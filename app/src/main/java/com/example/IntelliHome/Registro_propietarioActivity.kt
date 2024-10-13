@@ -26,6 +26,10 @@ import java.io.PrintWriter
 import java.net.Socket
 import kotlin.concurrent.thread
 
+import android.content.SharedPreferences
+import android.widget.RelativeLayout
+import android.content.Context
+
 class Registro_propietarioActivity : AppCompatActivity() {
     private lateinit var selectDate: TextInputEditText
     private lateinit var imageView: ImageView
@@ -33,6 +37,11 @@ class Registro_propietarioActivity : AppCompatActivity() {
     private lateinit var imageUrl: Uri
     private lateinit var registerButton: Button
     private val obsceneWords = ObsceneWords.words //Palabras que me cancelaran en un futuro
+
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var mainLayout: RelativeLayout
+
+
 
     /*private lateinit var socket: Socket
     private lateinit var out_cliente: PrintWriter
@@ -64,8 +73,12 @@ class Registro_propietarioActivity : AppCompatActivity() {
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_propietario)
+        sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
+        mainLayout = findViewById(R.id.main)
 
         //selectDate = findViewById(R.id.selectDate)
 
@@ -292,7 +305,6 @@ class Registro_propietarioActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
-            }
         }
 
         /*thread {
@@ -312,6 +324,16 @@ class Registro_propietarioActivity : AppCompatActivity() {
         exitbuton.setOnClickListener {
             backToLogin()
         }
+
+
+        loadSavedBackground()
+
+
+    }
+    private fun loadSavedBackground() {
+        val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
+        mainLayout.setBackgroundResource(savedBackground)
+        mainLayout.invalidate()
 
     }
 
