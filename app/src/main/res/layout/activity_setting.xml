@@ -1,126 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/redbackground">
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_margin="15dp"
-        android:src="@drawable/logo" />
+android:id="@+id/main"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@drawable/redbackground">
 
-    <!-- Título "Configuracion" -->
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_below="@id/logo"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="45dp"
-        android:text="Configuración"
-        android:textColor="@android:color/black"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"/>
-    <!-- Botón "Ayuda" -->
-    <Button
-        android:id="@+id/help_button"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:text="Ayuda"
-        android:backgroundTint="@color/white"
-        android:textColor="@android:color/black"
-        android:padding="10dp"
-        android:layout_marginBottom="10dp"/>
+<!-- Logo en la esquina superior izquierda -->
+<ImageView
+    android:id="@+id/logo"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true"
+    android:layout_margin="15dp"
+    android:src="@drawable/logo" />
 
-    <!-- Botón "Temas" -->
-    <Button
-        android:id="@+id/themes_button"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/help_button"
-        android:layout_centerHorizontal="true"
-        android:text="Temas"
-        android:backgroundTint="@color/white"
-        android:textColor="@android:color/black"
-        android:padding="10dp"
-        android:layout_marginBottom="10dp"/>
+<!-- Título "Configuración" centrado debajo del logo -->
+<TextView
+    android:id="@+id/title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/logo"
+    android:layout_marginTop="30dp"
+    android:text="@string/configuracion"
+    android:textColor="@android:color/black"
+    android:textSize="32sp"
+    android:textStyle="bold"
+    android:layout_centerHorizontal="true" />
 
-    <!-- Contenedor para los botones de idioma -->
-    <LinearLayout
+<!-- Botón "Ayuda" centrado -->
+<Button
+    android:id="@+id/help_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/title"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="20dp"
+    android:text="@string/ayuda"
+    android:backgroundTint="@android:color/white"
+    android:textColor="@android:color/black"
+    android:padding="10dp" />
+
+<!-- Botón "Temas" debajo del botón "Ayuda" -->
+<Button
+    android:id="@+id/themes_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/help_button"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="15dp"
+    android:text="@string/temas"
+    android:backgroundTint="@android:color/white"
+    android:textColor="@android:color/black"
+    android:padding="10dp" />
+
+    <RelativeLayout
         android:id="@+id/language_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/themes_button"
         android:layout_centerHorizontal="true"
-        android:orientation="vertical"
+        android:layout_marginTop="25dp"
         android:background="@drawable/rounded_button_shape"
-        android:padding="9dp">
+        android:padding="15dp">
 
-        <!-- Botones de idioma -->
+        <!-- Botón "Español" debajo del botón "Temas" -->
         <Button
             android:id="@+id/spanish_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Español"
+
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:text="@string/espanol"
             android:backgroundTint="@android:color/white"
             android:textColor="@android:color/black" />
 
+        <!-- Botón "Inglés" debajo del botón "Español" -->
         <Button
             android:id="@+id/english_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Inglés"
+            android:layout_below="@id/spanish_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/ingles"
             android:backgroundTint="@android:color/white"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="10dp" />
+            android:textColor="@android:color/black" />
 
+        <!-- Botón "Portugués" debajo del botón "Inglés" -->
         <Button
             android:id="@+id/portuguese_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Portugués"
+            android:layout_below="@id/english_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/portugues"
             android:backgroundTint="@android:color/white"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="10dp" />
+            android:textColor="@android:color/black" />
 
+        <!-- Botón "Francés" debajo del botón "Portugués" -->
         <Button
             android:id="@+id/french_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Francés"
+            android:layout_below="@id/portuguese_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/frances"
             android:backgroundTint="@android:color/white"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="10dp" />
+            android:textColor="@android:color/black" />
 
+        <!-- Botón "Húngaro" debajo del botón "Francés" -->
         <Button
             android:id="@+id/hungarian_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Húngaro"
+            android:layout_below="@id/french_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/hungaro"
             android:backgroundTint="@android:color/white"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="10dp" />
-    </LinearLayout>
+            android:textColor="@android:color/black" />
+    </RelativeLayout>
 
-    <!-- Botón "Atrás" -->
-    <TextView
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="◀ Atrás"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_margin="16dp" />
+        <!-- Botón "Atrás" en la esquina inferior izquierda -->
+<TextView
+    android:id="@+id/back_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/atras"
+    android:textSize="16sp"
+    android:textColor="@android:color/black"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentStart="true"
+    android:layout_margin="16dp" />
 
 </RelativeLayout>
