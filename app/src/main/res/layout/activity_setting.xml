@@ -64,6 +64,16 @@ android:background="@drawable/redbackground">
         android:layout_marginTop="25dp"
         android:background="@drawable/rounded_button_shape"
         android:padding="15dp">
+        <TextView
+            android:id="@+id/language_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/idiomas"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp" />
 
         <!-- Botón "Español" debajo del botón "Temas" -->
         <Button
