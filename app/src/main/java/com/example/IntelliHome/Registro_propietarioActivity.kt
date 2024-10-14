@@ -42,7 +42,6 @@ class Registro_propietarioActivity : AppCompatActivity() {
     private lateinit var mainLayout: RelativeLayout
 
 
-
     /*private lateinit var socket: Socket
     private lateinit var out_cliente: PrintWriter
     private lateinit var input_server: Scanner
@@ -60,18 +59,19 @@ class Registro_propietarioActivity : AppCompatActivity() {
     private lateinit var exitbuton: TextView
 
 
-
     // Register for camera activity result
     private val cameraContract = registerForActivityResult(ActivityResultContracts.TakePicture()) {
         imageView.setImageURI(imageUrl)
     }
 
     // Register for gallery activity result
-    private val galleryContract = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let {
-            imageView.setImageURI(it)
+    private val galleryContract =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                imageView.setImageURI(it)
+            }
         }
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
@@ -96,7 +96,8 @@ class Registro_propietarioActivity : AppCompatActivity() {
         }
 
 
-        val floatingActionButtonPassword = findViewById<FloatingActionButton>(R.id.floatingActionButton_contraseña)
+        val floatingActionButtonPassword =
+            findViewById<FloatingActionButton>(R.id.floatingActionButton_contraseña)
         floatingActionButtonPassword.setOnClickListener {
             val message = getString(R.string.Info_contrasena)
             Snackbar.make(it, message, Snackbar.LENGTH_LONG)
@@ -105,7 +106,8 @@ class Registro_propietarioActivity : AppCompatActivity() {
                 .show()
         }
 
-        val floatingActionButtonConfirmPassword = findViewById<FloatingActionButton>(R.id.floatingActionButton_confimar_contrasena)
+        val floatingActionButtonConfirmPassword =
+            findViewById<FloatingActionButton>(R.id.floatingActionButton_confimar_contrasena)
         floatingActionButtonConfirmPassword.setOnClickListener {
             val message = getString(R.string.Info_contrasena)
             Snackbar.make(it, message, Snackbar.LENGTH_LONG)
@@ -143,6 +145,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
                     }
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {}
         })
 
@@ -157,7 +160,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
         selectDate = findViewById(R.id.selectDate)
         etvalidunitl = findViewById(R.id.etvalidunitl)
         etcvc = findViewById(R.id.etcvc)
-        addressInput= findViewById(R.id.Direccion)
+        addressInput = findViewById(R.id.Direccion)
         exitbuton = findViewById(R.id.back_to_login)
 
         accountNumberInput = findViewById(R.id.etacountNumber)
@@ -174,18 +177,19 @@ class Registro_propietarioActivity : AppCompatActivity() {
                         accountNumberInput.setText(" CR ")
                         accountNumberInput.setSelection(accountNumberInput.text?.length ?: 0)
                         isUpdatingAccountNumber = false
-                    }
-                    else {
+                    } else {
                         // Después del prefijo, la longitud debe ser exactamente 8 caracteres
                         val accountWithoutPrefix = s.toString().removePrefix(" CR ")
                         if (accountWithoutPrefix.length != 12) {
                             accountNumberInput.error = getString(R.string.completa_cuenta)
                         } else {
-                            accountNumberInput.error = null // Elimina el error si cumple con la longitud
+                            accountNumberInput.error =
+                                null // Elimina el error si cumple con la longitud
                         }
                     }
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {}
         })
 
@@ -196,14 +200,16 @@ class Registro_propietarioActivity : AppCompatActivity() {
         etcvc.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val cvcThreeCharacters = p0.toString()
-                if(cvcThreeCharacters.length !=3){
+                if (cvcThreeCharacters.length != 3) {
                     etcvc.error = getString(R.string.completa_cvc)
-                }else{
+                } else {
                     etcvc.error = null
                 }
             }
+
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -224,36 +230,40 @@ class Registro_propietarioActivity : AppCompatActivity() {
             val addressInput = addressInput.text.toString()
             val phoneInput = phoneInput.text.toString()
             // Verificar que ningún campo esté vacío
-            val campos = listOf(firstName, email, lastName, username, birthdate, accountNumberInput, etvalidunitl,
-                etcvc,addressInput,phoneInput)
+            val campos = listOf(
+                firstName, email, lastName, username, birthdate, accountNumberInput, etvalidunitl,
+                etcvc, addressInput, phoneInput
+            )
             if (campos.any { it.isEmpty() }) {
-                Toast.makeText(this, getString(R.string.completa_los_campos), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.completa_los_campos), Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener // Salir del evento si hay campos vacíos
             }
 
             val numberWithoutPrefix = phoneInput.removePrefix(" +506 ")
             if (numberWithoutPrefix.length != 8) {
-                Toast.makeText(this, getString(R.string.completa_telefono), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.completa_telefono), Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener // Salir del evento si el número no tiene 8 dígitos
             }
 
 
             val accountWithoutPrefix = accountNumberInput.removePrefix(" CR ")
-            if(accountWithoutPrefix.length !=12){
+            if (accountWithoutPrefix.length != 12) {
                 Toast.makeText(this, getString(R.string.completa_cuenta), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (etcvc.length !=3){
+            if (etcvc.length != 3) {
                 Toast.makeText(this, getString(R.string.completa_cvc), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (containsObsceneWords(username)){
-                Toast.makeText(this, getString(R.string.palabras_obsecenas), Toast.LENGTH_SHORT).show()
+            if (containsObsceneWords(username)) {
+                Toast.makeText(this, getString(R.string.palabras_obsecenas), Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener // Salir del evento si se encuentra una palabra inapropiada
             }
-
 
 
             // Obtener las contraseñas
@@ -301,10 +311,11 @@ class Registro_propietarioActivity : AppCompatActivity() {
                     addressInput,
                     phoneInput
                 )
-                sendDataToServer("192.168.0.196",8080,jsonData)
+                sendDataToServer("192.168.0.196", 8080, jsonData)
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
+            }
         }
 
         /*thread {
@@ -325,16 +336,22 @@ class Registro_propietarioActivity : AppCompatActivity() {
             backToLogin()
         }
 
-
         loadSavedBackground()
+
+        /*loadSavedBackground()
 
 
     }
     private fun loadSavedBackground() {
         val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
         mainLayout.setBackgroundResource(savedBackground)
-        mainLayout.invalidate()
+        mainLayout.invalidate()*/
 
+    }
+
+    private fun loadSavedBackground() {
+        val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
+        mainLayout.setBackgroundResource(savedBackground)
     }
 
     private fun showDatePickerDialog() {
@@ -343,7 +360,8 @@ class Registro_propietarioActivity : AppCompatActivity() {
         val cMonth = c.get(Calendar.MONTH)
         val cYear = c.get(Calendar.YEAR)
 
-        val calendarDialog = DatePickerDialog(this,
+        val calendarDialog = DatePickerDialog(
+            this,
             { _, year, month, dayOfMonth ->
                 val selectedDate = "$dayOfMonth/${month + 1}/$year"
                 textMessage(selectedDate)
@@ -363,7 +381,8 @@ class Registro_propietarioActivity : AppCompatActivity() {
         val cMonth = c.get(Calendar.MONTH)
         val cYear = c.get(Calendar.YEAR)
 
-        val calendarDialog = DatePickerDialog(this,
+        val calendarDialog = DatePickerDialog(
+            this,
             { _, year, month, dayOfMonth ->
                 val selectedDate = "$dayOfMonth/${month + 1}/$year"
                 textMessage(selectedDate)
@@ -404,7 +423,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
         validuntil: String,
         cvc: String,
         address: String,
-        phone : String
+        phone: String
     ): String {
         val json = JSONObject()
         json.put("action", action)
@@ -418,12 +437,12 @@ class Registro_propietarioActivity : AppCompatActivity() {
         json.put("validuntil", validuntil)
         json.put("cvc", cvc)
         json.put("address", address)
-        json.put("phone",phone)
+        json.put("phone", phone)
         return json.toString()
     }
 
 
-    private fun sendDataToServer(serverIp: String, serverPort: Int,jsonData: String) {
+    private fun sendDataToServer(serverIp: String, serverPort: Int, jsonData: String) {
         try {
             val socket = Socket(serverIp, serverPort)
             val outputStream: OutputStream = socket.getOutputStream()
@@ -439,15 +458,18 @@ class Registro_propietarioActivity : AppCompatActivity() {
             println("Error al enviar los datos - envio")
         }
     }
+
     private fun confirmPassword(password: String): Boolean {
         val patron = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}$")
         return patron.matches(password)
     }
+
     // Función para verificar si el nombre de usuario contiene palabras obscenas
     private fun containsObsceneWords(username: String): Boolean {
         return obsceneWords.any { username.contains(it, ignoreCase = true) }
     }
-    private fun backToLogin(){
+
+    private fun backToLogin() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
