@@ -27,6 +27,14 @@
     <string name="Mensaje_exito_registro">Registro exisitoso</string>
     <string name="telefono">Teléfono</string>
     <string name="completa_los_campos">Completa todos los campos</string>
+    <string name="completa_telefono">El número de télefono debe tener exactamente 8 dígitos</string>
+    <string name="completa_cuenta">El número de cuenta debe tener exactamente 12 dígitos</string>
+    <string name="completa_cvc">El CVC debe tener 3 dígitos</string>
+    <string name="palabras_obsecenas">El nombre de usuario contiene palabras inapropiadas</string>
+    <string name="Registro_titulo_huesped">Registro Huésped</string>
+    <string name="Registro_titulo_Anfritrion">Registro Anfitrión</string>
+    <string name="Atras">&lt; Atrás</string>
+
     <string-array name="house_types">
         <item>Rústica</item>
         <item>Moderna</item>
@@ -35,9 +43,10 @@
 
 
     <string-array name="transport_types">
-        <item>Carro</item>
+        <item>Carro de cajón</item>
+        <item>Sedán</item>
+        <item>Buseta</item>
         <item>Moto</item>
-        <item>Bicicleta</item>
     </string-array>
 
     <string name="app_nam">Configuración</string>

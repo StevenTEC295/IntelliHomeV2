@@ -28,7 +28,13 @@
     <string name="Mensaje_exito_registro">Valid Register</string>
     <string name="telefono">Phone Number</string>
     <string name="completa_los_campos">Complete all the spaces</string>
-
+    <string name="completa_telefono">The phone number must be exactly 8 digits</string>
+    <string name="completa_cuenta">The account number must be exactly 12 digits</string>
+    <string name="completa_cvc">CVC must be 3 digits</string>
+    <string name="palabras_obsecenas">Username contains inappropriate words</string>
+    <string name="Registro_titulo_huesped">Guest Registration</string>
+    <string name="Registro_titulo_Anfritrion">Host Registration</string>
+    <string name="Atras">&lt; Back</string>
     <string-array name="house_types">
         <item>Rustic</item>
         <item>Modern</item>
@@ -36,9 +42,10 @@
     </string-array>
 
     <string-array name="transport_types">
-        <item>Car</item>
-        <item>Motorbike</item>
-        <item>Mansion</item>
+        <item>Pickup Truck</item>
+        <item>Sedan</item>
+        <item>Bus</item>
+        <item>Motorcycle</item>
     </string-array>
 
     <string name="app_nam">Settings</string>
