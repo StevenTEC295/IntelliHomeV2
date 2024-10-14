@@ -59,6 +59,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
     private lateinit var exitbuton: TextView
 
 
+
     // Register for camera activity result
     private val cameraContract = registerForActivityResult(ActivityResultContracts.TakePicture()) {
         imageView.setImageURI(imageUrl)
@@ -145,7 +146,6 @@ class Registro_propietarioActivity : AppCompatActivity() {
                     }
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {}
         })
 
@@ -161,6 +161,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
         etvalidunitl = findViewById(R.id.etvalidunitl)
         etcvc = findViewById(R.id.etcvc)
         addressInput = findViewById(R.id.Direccion)
+
         exitbuton = findViewById(R.id.back_to_login)
 
         accountNumberInput = findViewById(R.id.etacountNumber)
@@ -185,6 +186,15 @@ class Registro_propietarioActivity : AppCompatActivity() {
                         } else {
                             accountNumberInput.error =
                                 null // Elimina el error si cumple con la longitud
+                        }
+                    }
+                    else {
+                        // Después del prefijo, la longitud debe ser exactamente 8 caracteres
+                        val accountWithoutPrefix = s.toString().removePrefix(" CR ")
+                        if (accountWithoutPrefix.length != 12) {
+                            accountNumberInput.error = getString(R.string.completa_cuenta)
+                        } else {
+                            accountNumberInput.error = null // Elimina el error si cumple con la longitud
                         }
                     }
                 }
@@ -250,11 +260,13 @@ class Registro_propietarioActivity : AppCompatActivity() {
 
             val accountWithoutPrefix = accountNumberInput.removePrefix(" CR ")
             if (accountWithoutPrefix.length != 12) {
+
                 Toast.makeText(this, getString(R.string.completa_cuenta), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (etcvc.length != 3) {
+
                 Toast.makeText(this, getString(R.string.completa_cvc), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -262,8 +274,10 @@ class Registro_propietarioActivity : AppCompatActivity() {
             if (containsObsceneWords(username)) {
                 Toast.makeText(this, getString(R.string.palabras_obsecenas), Toast.LENGTH_SHORT)
                     .show()
+
                 return@setOnClickListener // Salir del evento si se encuentra una palabra inapropiada
             }
+
 
 
             // Obtener las contraseñas
@@ -316,6 +330,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+
         }
 
         /*thread {
@@ -470,6 +485,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
     }
 
     private fun backToLogin() {
+
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()

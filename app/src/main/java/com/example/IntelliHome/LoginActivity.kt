@@ -31,10 +31,12 @@ import kotlin.concurrent.thread
 import android.content.SharedPreferences
 import android.widget.RelativeLayout
 import android.content.Context
+import com.google.android.material.textfield.TextInputEditText
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var mainLayout: RelativeLayout
+    private lateinit var password: TextInputEditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -46,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
         val about = findViewById<ImageButton>(R.id.button_help)
         val btnIngresar = findViewById<TextView>(R.id.button_login)
         val usuario = findViewById<EditText>(R.id.editTextEmail)
-        val password = findViewById<EditText>(R.id.contrasena_huesped)
+        password = findViewById(R.id.contrasena)
         val action = "login"
         btnIngresar.setOnClickListener{
             thread {
