@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name="com.example.intelliHome.About"
+            android:name="com.example.IntelliHome.About"
             android:exported="false" />
         <activity
             android:name=".Ayuda"
