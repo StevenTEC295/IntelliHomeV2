@@ -179,17 +179,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
                         accountNumberInput.setSelection(accountNumberInput.text?.length ?: 0)
                         isUpdatingAccountNumber = false
                     } else {
-                        // Después del prefijo, la longitud debe ser exactamente 8 caracteres
-                        val accountWithoutPrefix = s.toString().removePrefix(" CR ")
-                        if (accountWithoutPrefix.length != 12) {
-                            accountNumberInput.error = getString(R.string.completa_cuenta)
-                        } else {
-                            accountNumberInput.error =
-                                null // Elimina el error si cumple con la longitud
-                        }
-                    }
-                    else {
-                        // Después del prefijo, la longitud debe ser exactamente 8 caracteres
+                        // Después del prefijo, la longitud debe ser exactamente 12 caracteres (incluyendo el prefijo)
                         val accountWithoutPrefix = s.toString().removePrefix(" CR ")
                         if (accountWithoutPrefix.length != 12) {
                             accountNumberInput.error = getString(R.string.completa_cuenta)
@@ -361,6 +351,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
         val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
         mainLayout.setBackgroundResource(savedBackground)
         mainLayout.invalidate()*/
+
 
     }
 
