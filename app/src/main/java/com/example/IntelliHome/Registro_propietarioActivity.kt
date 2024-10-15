@@ -354,11 +354,6 @@ class Registro_propietarioActivity : AppCompatActivity() {
 
 
     }
-    private fun loadSavedBackground() {
-        val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
-        mainLayout.setBackgroundResource(savedBackground)
-        mainLayout.invalidate()
-    }
 
     private fun loadSavedBackground() {
         val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
