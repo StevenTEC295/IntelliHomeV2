@@ -315,7 +315,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
                     addressInput,
                     phoneInput
                 )
-                sendDataToServer("192.168.0.196", 8080, jsonData)
+                sendDataToServer("192.168.0.119", 8080, jsonData)
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()

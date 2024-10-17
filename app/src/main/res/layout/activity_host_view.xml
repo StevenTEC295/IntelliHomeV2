@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/redbackground"
+        tools:context=".HostViewActivity">
+
+        <!-- Logo en la parte superior -->
+        <ImageView
+            android:id="@+id/imagenlogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo" />
+
+        <!-- Foto de perfil alineada a la derecha -->
+        <ImageView
+            android:id="@+id/foto_de_perfil_propietario"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:srcCompat="@drawable/icono_perfil" />
+
+        <!-- Título debajo del logo y de la foto de perfil -->
+        <TextView
+            android:id="@+id/formulario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imagenlogo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:text="@string/formulario"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/container_image_foto"
+            android:layout_width="350dp"
+            android:layout_height="250dp"
+            android:layout_below="@+id/formulario"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/imageProperty"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/image_casas_template" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="200dp"
+                android:layout_marginTop="100dp"
+                android:text="@string/aviso_cuantas_fotos_subir"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/container_image_foto"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColorHint="@color/black"
+            app:boxCornerRadiusBottomEnd="40dp"
+            app:boxCornerRadiusBottomStart="40dp"
+            app:boxCornerRadiusTopEnd="40dp"
+            app:boxCornerRadiusTopStart="40dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="3dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ubicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded_button_shape"
+                android:hint="@string/Ubicacion"
+                android:maxLength="15"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/container_image_foto"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"
+            android:textColorHint="@color/black"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="4dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/autocomplete_tipo_de_casa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@color/white"
+                android:contentDescription="NULL"
+                android:focusable="false"
+                android:gravity="center"
+                android:hint="@string/tipo_de_casa"
+                android:inputType="none"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                tools:ignore="EditableContentDescCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/container_image_foto"
+            android:layout_gravity="center"
+            android:layout_marginTop="140dp"
+            android:layout_marginBottom="104dp"
+            android:textColorHint="@color/black"
+            app:boxCornerRadiusBottomEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="3dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/Disponibilidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded_button_shape"
+                android:focusable="false"
+                android:hint="@string/disponibilidad"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RelativeLayout
+            android:id="@+id/aceptarmascotar"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/container_image_foto"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="210dp"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5sp"
+                android:text="@string/aceptan_mascotas"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/checkBoxYes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20sp"
+                android:text="@string/si"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/checkBoxNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="150dp"
+                android:layout_marginTop="20sp"
+                android:text="@string/no"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/container_image_foto"
+            android:layout_gravity="center"
+            android:layout_marginTop="280dp"
+            android:textColorHint="@color/black"
+            app:boxCornerRadiusBottomEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="3dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded_button_shape"
+                android:hint="@string/cantidad_de_personas"
+                android:maxLength="30"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Cambiar lo de AMENIDADES -->
+        <RelativeLayout
+            android:id="@+id/amenidades"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/container_image_foto"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="350dp"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5sp"
+                android:text="@string/selecciona_las_amenidades"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_cocina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30sp"
+                android:text="@string/cocina_equipada"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_AC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="60sp"
+                android:text="@string/Aire_acondicionado"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_calefaccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="90sp"
+                android:text="@string/CalefacciOn"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="120sp"
+                android:text="@string/wifi"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/tv_o"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="150sp"
+                android:text="@string/tv_o_cable"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_lavadora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="180sp"
+                android:text="@string/Lavadora_y_secadora"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_piscina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="210sp"
+                android:text="@string/Piscina"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_jardin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="240sp"
+                android:text="@string/Jardín_o_patio"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_barbacoa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="270sp"
+                android:text="@string/Barbacoa_o_parrilla"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_terraza"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="300sp"
+                android:text="@string/Terraza_o_balcón"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_gym"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="330sp"
+                android:text="@string/Gimnasio_en_casa"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_garaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="360sp"
+                android:text="@string/Garaje"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_seguridad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="390sp"
+                android:text="@string/Sistema_de_seguridad"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_habitaciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="420sp"
+                android:text="@string/habitaciones_con_bano_en_suite"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_muebles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="450sp"
+                android:text="@string/muebles_de_exterior"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/amenidad_micro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="480sp"
+                android:text="@string/microondas"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_lavajillas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="510sp"
+                android:text="@string/lavavajillas"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+            <CheckBox
+                android:id="@+id/amenidad_cafetera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="540sp"
+                android:text="@string/cafetera"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_ropa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="570sp"
+                android:text="@string/ropa_de_cama_y_toallas_incluidas"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_comunes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="600sp"
+                android:text="@string/acceso_a_areas_comunes"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_camas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="630sp"
+                android:text="@string/camas_adicionales_o_sofa_cama"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_limpieza"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="660sp"
+                android:text="@string/servicios_de_limpieza_opcionales"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_transportePublico"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="690sp"
+                android:text="@string/acceso_a_transporte_publico_cercano"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_cercania"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="720sp"
+                android:text="@string/cercania_a_tiendas_y_restaurantes"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_radiacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="750sp"
+                android:text="@string/sistema_de_calefaccion_por_suelo_radiante"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_escritorio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="780sp"
+                android:text="@string/escritorio_o_area_de_trabajo"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_entretenimiento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="810sp"
+                android:text="@string/sistemas_de_entretenimiento"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_chimenea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="840sp"
+                android:text="@string/chimenea"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/amenidad_internetalta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="870sp"
+                android:text="@string/acceso_a_internet_de_alta_velocidad"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/reglas"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@+id/container_image_foto"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="1280dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edit_text_background"
+            android:gravity="top|start"
+            android:hint="@string/reglas"
+            android:inputType="textMultiLine"
+            android:maxLength="150"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/container_image_foto"
+            android:layout_gravity="center"
+            android:layout_marginTop="1390dp"
+            android:textColorHint="@color/black"
+            app:boxCornerRadiusBottomEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="3dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/precio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded_button_shape"
+                android:hint="@string/precio_por_noche"
+                android:maxLength="30"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- Botón Registrarse -->
+        <Button
+            android:id="@+id/button_res"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/container_image_foto"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="1470dp"
+            android:backgroundTint="@color/rojo_de_la_app"
+            android:text="@string/subir_propiedad"
+            android:textColor="@color/black" />
+
+
+        <TextView
+            android:id="@+id/back_to_home_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_res"
+            android:layout_marginTop="30dp"
+            android:text="@string/Atras"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+</ScrollView>

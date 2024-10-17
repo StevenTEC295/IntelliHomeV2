@@ -35,6 +35,53 @@
     <string name="Registro_titulo_Anfritrion">Registro Anfitrión</string>
     <string name="Atras">&lt; Atrás</string>
 
+    <string name="formulario">Formulario </string>
+    <string name="subir_propiedad">Subir Propiedad </string>
+    <string name="aviso_cuantas_fotos_subir">Subir fotos de la casa\n\nNo más de 10 fotos</string>
+    <string name="disponibilidad">Disponibilidad</string>
+    <string name="Ubicacion">Ubicación</string>
+    <string name="tipo_de_casa">Tipo de Casa</string>
+    <string name="cantidad_de_personas">Cantidad de Personas</string>
+    <string name="amenidades">Amenidades</string>
+    <string name="reglas">Reglas</string>
+    <string name="precio_por_noche">Precio por Noche</string>
+    <string name="Select_Date_Range">Seleccionar rango de fechas</string>
+    <string name="end_date_warning">La fecha de finalización debe ser posterior a la fecha de inicio </string>
+    <string name="si">Sí</string>
+    <string name="no">No</string>
+    <string name="aceptan_mascotas">¿Acepta mascotas?</string>
+
+    <string name="selecciona_las_amenidades">Selecciona las Amenidades de tu propiedad</string>
+    <string name="cocina_equipada">Cocina equipada (con electrodomésticos modernos)</string>
+    <string name="Aire_acondicionado">Aire acondicionado</string>
+    <string name="CalefacciOn">Calefacción</string>
+    <string name="wifi">Wi-Fi gratuito</string>
+    <string name="tv_o_cable">Televisión por cable o satélite</string>
+    <string name="Lavadora_y_secadora">Lavadora y secadora</string>
+    <string name="Piscina">Piscina</string>
+    <string name="Jardín_o_patio">Jardín o patio</string>
+    <string name="Barbacoa_o_parrilla">Barbacoa o parrilla</string>
+    <string name="Terraza_o_balcón">Terraza o balcón</string>
+    <string name="Gimnasio_en_casa">Gimnasio en casa</string>
+    <string name="Garaje">Garaje o espacio de estacionamiento</string>
+    <string name="Sistema_de_seguridad">Sistema de seguridad</string>
+    <string name="habitaciones_con_bano_en_suite">Habitaciones con baño en suite</string>
+    <string name="muebles_de_exterior">Muebles de exterior</string>
+    <string name="microondas">Microondas</string>
+    <string name="lavavajillas">Lavavajillas</string>
+    <string name="cafetera">Cafetera</string>
+    <string name="ropa_de_cama_y_toallas_incluidas">Ropa de cama y toallas incluidas</string>
+    <string name="acceso_a_areas_comunes">Acceso a áreas comunes (piscina, gimnasio)</string>
+    <string name="camas_adicionales_o_sofa_cama">Camas adicionales o sofá cama</string>
+    <string name="servicios_de_limpieza_opcionales">Servicios de limpieza opcionales</string>
+    <string name="acceso_a_transporte_publico_cercano">Acceso a transporte público cercano</string>
+    <string name="cercania_a_tiendas_y_restaurantes">Cercanía a tiendas y restaurantes</string>
+    <string name="sistema_de_calefaccion_por_suelo_radiante">Sistema de calefacción por suelo radiante</string>
+    <string name="escritorio_o_area_de_trabajo">Escritorio o área de trabajo</string>
+    <string name="sistemas_de_entretenimiento">Sistemas de entretenimiento (videojuegos, equipo de música)</string>
+    <string name="chimenea">Chimenea</string>
+    <string name="acceso_a_internet_de_alta_velocidad">Acceso a internet de alta velocidad</string>
+
     <string-array name="house_types">
         <item>Rústica</item>
         <item>Moderna</item>

@@ -13,9 +13,12 @@ import com.example.intellihome.R
 import android.content.SharedPreferences
 import android.widget.RelativeLayout
 import android.content.Context
+import com.example.IntelliHome.HostViewActivity
+
 class HomePage : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var mainLayout: RelativeLayout
+    private lateinit var btnforNavigation: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,10 @@ class HomePage : AppCompatActivity() {
             val intent = Intent(this, Setting::class.java)
             startActivity(intent)
         }
+        btnforNavigation = findViewById(R.id.boton_para_probar)
+        btnforNavigation.setOnClickListener {
+            navegar()
+        }
 
         loadSavedBackground()
     }
@@ -42,5 +49,9 @@ class HomePage : AppCompatActivity() {
         val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
         mainLayout.setBackgroundResource(savedBackground)
 
+    }
+    private fun navegar(){
+        val intent = Intent(this,HostViewActivity::class.java)
+        startActivity(intent)
     }
 }
