@@ -3,9 +3,6 @@ Este script es un cliente de socket que se conecta al servidor y envía un mensa
 
 TESTING ONLY!!!
 """
-
-
-
 import socket
 import json as js
 def cliente_socket():
