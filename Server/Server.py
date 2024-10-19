@@ -6,7 +6,6 @@ from Crypto.Cipher import ChaCha20_Poly1305
 from Crypto.Random import get_random_bytes
 import base64
 import json
-import ArduinoConnection as arduino
 
 class Server:
     def __init__(self, host='0.0.0.0', port=8080):
@@ -28,21 +27,17 @@ class Server:
             try:
                 message = client_socket.recv(1024).decode('utf-8')  # recibe los mensajes
 
-                if message:  # Si no hay mensaje
-                    #Convierte el texto en formato json
-                    data = json.loads(message)
-            
+                #Convierte el texto en formato json
+                data = json.loads(message)
+           
                 
-                    
-                    if data["action"] == "registro":
-                        self.register(message, client_socket)  # mandar mensaje a todo mundo 
-                    elif data["action"] == "login":
-                        self.login(data, client_socket)
-                    elif data["action"] == "arduino":
-                        self.arduino(data, client_socket)  
+                if data["action"] == "registro":
+                    self.register(message, client_socket)  # mandar mensaje a todo mundo 
+                elif data["action"] == "login":
+                    self.login(data, client_socket)  
                     
             except Exception as e:
-                print(f"Surgió un Error: {e}")
+                print(f"Error: {e}")
                 break  # Salir del bucle en caso de error
 
         client_socket.close()
@@ -51,13 +46,6 @@ class Server:
     def login(self, data, sender_socket):
         self.travelFile(sender_socket, data)
 
-    def arduino(self, data, sender_socket):
-        arduino_connection = arduino.ArduinoConnection()
-        arduino_connection.send(data["command"])
-        #response = arduino_connection.receive()
-        response = "Comando enviado"
-        sender_socket.send(response.encode('utf-8'))
-        #arduino_connection.close()
     
 
     def register(self, message, sender_socket):
