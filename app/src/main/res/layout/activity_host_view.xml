@@ -159,52 +159,14 @@
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <RelativeLayout
-            android:id="@+id/aceptarmascotar"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/container_image_foto"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="210dp"
-            android:background="@color/white">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5sp"
-                android:text="@string/aceptan_mascotas"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <CheckBox
-                android:id="@+id/checkBoxYes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="20sp"
-                android:text="@string/si"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <CheckBox
-                android:id="@+id/checkBoxNo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="150dp"
-                android:layout_marginTop="20sp"
-                android:text="@string/no"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-        </RelativeLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/container_image_foto"
             android:layout_gravity="center"
-            android:layout_marginTop="280dp"
+            android:layout_marginTop="210dp"
             android:textColorHint="@color/black"
             app:boxCornerRadiusBottomEnd="30dp"
             app:boxCornerRadiusBottomStart="30dp"
@@ -214,7 +176,7 @@
             app:boxStrokeWidth="3dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etNombre"
+                android:id="@+id/cantofPeople"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -231,7 +193,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/container_image_foto"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="350dp"
+            android:layout_marginTop="280dp"
             android:background="@color/white">
 
             <TextView
@@ -533,6 +495,16 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
 
+            <CheckBox
+                android:id="@+id/amenidad_mascotas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="900sp"
+                android:text="@string/aceptan_mascotas"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
 
         </RelativeLayout>
 
@@ -543,7 +515,7 @@
             android:layout_below="@+id/container_image_foto"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="1280dp"
+            android:layout_marginTop="1240dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/edit_text_background"
@@ -560,7 +532,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/container_image_foto"
             android:layout_gravity="center"
-            android:layout_marginTop="1390dp"
+            android:layout_marginTop="1360dp"
             android:textColorHint="@color/black"
             app:boxCornerRadiusBottomEnd="30dp"
             app:boxCornerRadiusBottomStart="30dp"
@@ -576,7 +548,8 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/rounded_button_shape"
                 android:hint="@string/precio_por_noche"
-                android:maxLength="30"
+                android:maxLength="12"
+                android:inputType="number"
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 

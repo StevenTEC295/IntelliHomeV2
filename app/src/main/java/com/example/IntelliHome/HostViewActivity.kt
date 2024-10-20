@@ -1,9 +1,11 @@
 package com.example.IntelliHome
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -11,10 +13,12 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -25,11 +29,17 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.OutputStream
+import java.io.PrintWriter
+import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.concurrent.thread
 
 class HostViewActivity : AppCompatActivity() {
     private lateinit var mainLayout: RelativeLayout
@@ -68,10 +78,19 @@ class HostViewActivity : AppCompatActivity() {
     private lateinit var amenidadEntretenimiento: CheckBox
     private lateinit var amenidadChimenea: CheckBox
     private lateinit var amenidadInternetAlta: CheckBox
+    private lateinit var imageProperty: ImageView
+    private lateinit var amenidadAnimales: CheckBox
 
     private lateinit var registerButton: Button
+    private var imageUri: Uri? = null
 
+    //Campos de texto
+    private lateinit var ubicacion: TextInputEditText
+    private lateinit var cantofPeople: TextInputEditText
+    private lateinit var reglas: EditText
+    private lateinit var precio: TextInputEditText
 
+    private val CODE =50
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_host_view)
@@ -102,8 +121,14 @@ class HostViewActivity : AppCompatActivity() {
 
         val selectDate = findViewById<TextInputEditText>(R.id.Disponibilidad)
         exitbuton = findViewById(R.id.back_to_home_page)
-        checkBoxYes = findViewById(R.id.checkBoxYes)
-        checkBoxNo = findViewById(R.id.checkBoxNo)
+        imageProperty = findViewById(R.id.imageProperty)
+
+        ubicacion= findViewById(R.id.ubicacion)
+        cantofPeople = findViewById(R.id.cantofPeople)
+        reglas = findViewById(R.id.reglas)
+        precio = findViewById(R.id.precio)
+
+
 
         //LISTA DE AMENIDADES
         checkBoxCocina = findViewById(R.id.amenidad_cocina)
@@ -135,6 +160,7 @@ class HostViewActivity : AppCompatActivity() {
         amenidadEntretenimiento = findViewById(R.id.amenidad_entretenimiento)
         amenidadChimenea = findViewById(R.id.amenidad_chimenea)
         amenidadInternetAlta = findViewById(R.id.amenidad_internetalta)
+        amenidadAnimales = findViewById(R.id.amenidad_mascotas)
 
 
         amenidadesManager = AmenidadesManager(this)
@@ -149,26 +175,54 @@ class HostViewActivity : AppCompatActivity() {
             amenidadRopa, amenidadComunes, amenidadCamas,
             amenidadLimpieza, amenidadTransportePublico,
             amenidadCercania, amenidadRadiacion, amenidadEscritorio, amenidadEntretenimiento,
-            amenidadChimenea, amenidadInternetAlta
+            amenidadChimenea, amenidadInternetAlta, amenidadAnimales
         )
 
 
-        val lista =amenidadesManager.obtenerAmenidadesSeleccionadas()
+
+
+        //BOTON DE SUBIR PROPIEDAD
         registerButton = findViewById(R.id.button_res)
         registerButton.setOnClickListener {
-            println(lista)
+            val lista =amenidadesManager.obtenerAmenidadesSeleccionadas()
+            val ubicacion = ubicacion.text.toString()
+            val autoComplete = autoComplete.text.toString()
+            val disponibilidad = selectDate.text.toString()
+            val cantofPeople = cantofPeople.text.toString()
+            val reglas = reglas.text.toString()
+            val precio = precio.text.toString()
+            val action = "ventana_host_view"
 
-        }
-        checkBoxYes.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                checkBoxNo.isChecked = false // Desmarcar "No"
-            }
-        }
 
-        checkBoxNo.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                checkBoxYes.isChecked = false // Desmarcar "No"
+            val campos = listOf(ubicacion,autoComplete,disponibilidad,cantofPeople,reglas,precio)
+            if (campos.any { it.isEmpty() }) {
+                Toast.makeText(this, getString(R.string.completa_los_campos), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener // Salir del evento si hay campos vacíos
             }
+            if (lista.any { it.isEmpty() }) {
+                Toast.makeText(this, getString(R.string.advertencia_amenidades), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener // Salir del evento si hay campos vacíos
+            }
+            
+            thread {
+                val jsonData = createJsonData(
+                    action,
+                    ubicacion,
+                    autoComplete,
+                    disponibilidad,
+                    cantofPeople,
+                    lista,
+                    reglas,
+                    precio
+                )
+                sendDataToServer("192.168.0.119", 8080,jsonData)
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+
+            }
+
+
         }
 
         // Disable keyboard input
@@ -181,7 +235,69 @@ class HostViewActivity : AppCompatActivity() {
         exitbuton.setOnClickListener {
             backtoHomePage()
         }
+
+        imageProperty.setOnClickListener {
+            ImageController.selectPhotoFromGallery(this,CODE)
+        }
+
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when{
+            requestCode == CODE && resultCode == Activity.RESULT_OK -> {
+                imageUri = data!!.data
+                imageProperty.setImageURI(imageUri)
+
+            }
+        }
+    }
+
+    private fun createJsonData(
+        action: String,
+        location: String,
+        typeofHouse: String,
+        availability: String,
+        cantofPeople: String,
+        amenidades: List<String>,
+        rules: String,
+        price: String
+    ): String {
+        val json = JSONObject()
+        json.put("action", action)
+        json.put("location", location)
+        json.put("typeofHouse", typeofHouse)
+        json.put("availability", availability)
+        json.put("cantofPeople", cantofPeople)
+
+        /*val amenidadesJsonArray = JSONArray(amenidades)
+        json.put("amenidades", amenidadesJsonArray.toString()) // Convierte a cadena*/
+
+        val amenidadesJsonArray = JSONArray(amenidades)
+        json.put("amenidades", amenidadesJsonArray)
+
+        json.put("rules", rules)
+        json.put("price", price)
+        return json.toString()
+    }
+
+    private fun sendDataToServer(serverIp: String, serverPort: Int,jsonData: String) {
+        try {
+            val socket = Socket(serverIp, serverPort)
+            val outputStream: OutputStream = socket.getOutputStream()
+            val printWriter = PrintWriter(outputStream, true)
+
+            printWriter.println(jsonData)
+            outputStream.close()
+            printWriter.close()
+            socket.close()
+            println("Se cerro la conexion - envio")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            println("Error al enviar los datos - envio")
+        }
+    }
+
 
     private fun loadSavedBackground() {
         val savedBackground =

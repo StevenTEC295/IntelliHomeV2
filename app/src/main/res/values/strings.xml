@@ -49,7 +49,7 @@
     <string name="end_date_warning">La fecha de finalización debe ser posterior a la fecha de inicio </string>
     <string name="si">Sí</string>
     <string name="no">No</string>
-    <string name="aceptan_mascotas">¿Acepta mascotas?</string>
+
 
     <string name="selecciona_las_amenidades">Selecciona las Amenidades de tu propiedad</string>
     <string name="cocina_equipada">Cocina equipada (con electrodomésticos modernos)</string>
@@ -81,6 +81,10 @@
     <string name="sistemas_de_entretenimiento">Sistemas de entretenimiento (videojuegos, equipo de música)</string>
     <string name="chimenea">Chimenea</string>
     <string name="acceso_a_internet_de_alta_velocidad">Acceso a internet de alta velocidad</string>
+
+    <string name="aceptan_mascotas"> Mascotas permitidas</string>
+    <string name="advertencia_amenidades">Selecciona por lo menos una amenidad</string>
+
 
     <string-array name="house_types">
         <item>Rústica</item>

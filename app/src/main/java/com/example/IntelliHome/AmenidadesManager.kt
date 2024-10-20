@@ -20,7 +20,7 @@ class AmenidadesManager(private val context: Context) {
         checkBoxRopa: CheckBox, checkBoxComunes: CheckBox, checkBoxCamas: CheckBox,
         checkBoxLimpieza: CheckBox, checkBoxTransportePublico: CheckBox, checkBoxCercania: CheckBox,
         checkBoxRadiacion: CheckBox, checkBoxEscritorio: CheckBox, checkBoxEntretenimiento: CheckBox,
-        checkBoxChimenea: CheckBox, checkBoxInternetAlta: CheckBox) {
+        checkBoxChimenea: CheckBox, checkBoxInternetAlta: CheckBox,checkBoxMascota:CheckBox ) {
         // Listeners para cada amenidad
         checkBoxCocina.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -251,6 +251,14 @@ class AmenidadesManager(private val context: Context) {
                 amenidadesSeleccionadas.add(context.getString(R.string.acceso_a_internet_de_alta_velocidad))
             } else {
                 amenidadesSeleccionadas.remove(context.getString(R.string.acceso_a_internet_de_alta_velocidad))
+            }
+        }
+
+        checkBoxMascota.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                amenidadesSeleccionadas.add(context.getString(R.string.aceptan_mascotas))
+            } else {
+                amenidadesSeleccionadas.remove(context.getString(R.string.aceptan_mascotas))
             }
         }
     }

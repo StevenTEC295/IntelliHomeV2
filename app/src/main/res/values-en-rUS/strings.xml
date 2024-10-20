@@ -50,7 +50,6 @@
     <string name="end_date_warning">The end date must be after the start date</string>
     <string name="si">Yes</string>
     <string name="no">No</string>
-    <string name="aceptan_mascotas">Do you accept pets?</string>
 
     <string name="selecciona_las_amenidades">Select the amenities of your property</string>
     <string name="cocina_equipada">Fully equipped kitchen (with modern appliances)</string>
@@ -83,6 +82,8 @@
     <string name="chimenea">Fireplace</string>
     <string name="acceso_a_internet_de_alta_velocidad">High-speed internet access</string>
 
+    <string name="aceptan_mascotas"> Pets allowed</string>
+    <string name="advertencia_amenidades">Select at least one amenity</string>
 
 
 
