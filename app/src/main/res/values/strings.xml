@@ -84,6 +84,9 @@
 
     <string name="aceptan_mascotas"> Mascotas permitidas</string>
     <string name="advertencia_amenidades">Selecciona por lo menos una amenidad</string>
+    <string name="advertencia_cantofPeople">La cantidad de personas máxima es 30 y no se puede digitar 0</string>
+    <string name="advertencia_precio">El precio debe ser mayor a 0</string>
+    <string name="valor_cero">El valor no puede comenzar con 0.</string>
 
 
     <string-array name="house_types">

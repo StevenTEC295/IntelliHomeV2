@@ -182,7 +182,8 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/rounded_button_shape"
                 android:hint="@string/cantidad_de_personas"
-                android:maxLength="30"
+                android:maxLength="2"
+                android:inputType="number"
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 

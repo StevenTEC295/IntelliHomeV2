@@ -1,9 +1,14 @@
 package com.example.IntelliHome
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Base64
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 object ImageController {
@@ -13,14 +18,26 @@ object ImageController {
         activity.startActivityForResult(intent, code)
     }
 
-    fun saveImage(context: Context, id: Long, uri: Uri) {
+    fun saveImage(context: Context, id: Long, uri: Uri): String {
         val file = File(context.filesDir, id.toString())
 
+        // Leer bytes de la imagen
         val bytes = context.contentResolver.openInputStream(uri)?.readBytes()!!
 
+        // Guardar la imagen en un archivo
         file.writeBytes(bytes)
+
+        // Convertir los bytes de la imagen a Base64
+        return Base64.encodeToString(bytes, Base64.DEFAULT)
     }
 
+    fun convertImageToBase64(context: Context, uri: Uri): String {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
+        return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
+    }
 
     fun deleteImage(context: Context, id: Long) {
         val file = File(context.filesDir, id.toString())

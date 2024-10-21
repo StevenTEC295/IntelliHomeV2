@@ -29,6 +29,10 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.OutputStream
@@ -39,15 +43,15 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import java.util.UUID
 import kotlin.concurrent.thread
 
 class HostViewActivity : AppCompatActivity() {
     private lateinit var mainLayout: RelativeLayout
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var selectDate: TextInputEditText
-    private lateinit var checkBoxYes: CheckBox
-    private lateinit var checkBoxNo: CheckBox
     private lateinit var exitbuton: TextView
+    //ESTO SON LOS CHECKBOXES DE LAS AMENIDADES
     private lateinit var amenidadesManager: AmenidadesManager
     private lateinit var checkBoxCocina: CheckBox
     private lateinit var checkBoxAC: CheckBox
@@ -81,22 +85,25 @@ class HostViewActivity : AppCompatActivity() {
     private lateinit var imageProperty: ImageView
     private lateinit var amenidadAnimales: CheckBox
 
+    //BOTON DE REGISTRO
     private lateinit var registerButton: Button
+    //EL URI DE LA IMAGEN
     private var imageUri: Uri? = null
 
-    //Campos de texto
+    //Campos de textos del FORMULARIO
     private lateinit var ubicacion: TextInputEditText
     private lateinit var cantofPeople: TextInputEditText
     private lateinit var reglas: EditText
     private lateinit var precio: TextInputEditText
 
+    //UN CODIGO DE RESQUEST EL VALOR NO IMPORTA
     private val CODE =50
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_host_view)
-
+        //LOGICA DEL CAMBIAR EL FONDO DE PANTALLA
         sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
-
         mainLayout = findViewById(R.id.main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -118,7 +125,7 @@ class HostViewActivity : AppCompatActivity() {
 
         loadSavedBackground()
 
-
+        //FINDVIEW DE LOS CAMPOS DE TEXTOS
         val selectDate = findViewById<TextInputEditText>(R.id.Disponibilidad)
         exitbuton = findViewById(R.id.back_to_home_page)
         imageProperty = findViewById(R.id.imageProperty)
@@ -178,7 +185,10 @@ class HostViewActivity : AppCompatActivity() {
             amenidadChimenea, amenidadInternetAlta, amenidadAnimales
         )
 
-
+        //PARA SELECCIONAR UNA IMAGEN EN EL IMAGE VIEW
+        imageProperty.setOnClickListener {
+            ImageController.selectPhotoFromGallery(this,CODE)
+        }
 
 
         //BOTON DE SUBIR PROPIEDAD
@@ -192,8 +202,11 @@ class HostViewActivity : AppCompatActivity() {
             val reglas = reglas.text.toString()
             val precio = precio.text.toString()
             val action = "ventana_host_view"
-
-
+            
+            //SE CREA UN ID UNICO PARA CADA PROPIEDAD
+            val idPropertyRegister = UUID.randomUUID().toString()
+            
+            //VERIFICAR LOS CAMPOS DE TEXTO que cumplan con lo especificado
             val campos = listOf(ubicacion,autoComplete,disponibilidad,cantofPeople,reglas,precio)
             if (campos.any { it.isEmpty() }) {
                 Toast.makeText(this, getString(R.string.completa_los_campos), Toast.LENGTH_SHORT).show()
@@ -203,8 +216,39 @@ class HostViewActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.advertencia_amenidades), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener // Salir del evento si hay campos vacíos
             }
-            
-            thread {
+
+            // Verifica si tiene ceros iniciales pero no es exactamente "0"
+            if (cantofPeople.startsWith("0") && cantofPeople != "0") {
+                Toast.makeText(this, getString(R.string.valor_cero), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener // Salir del evento si empieza con 0 pero no es 0
+            }
+
+            val cantofPeopleInt = cantofPeople.toIntOrNull()
+            if (cantofPeopleInt != null && (cantofPeopleInt >= 30 || cantofPeopleInt <= 0) ){
+                Toast.makeText(this, getString(R.string.advertencia_cantofPeople), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener // Salir del evento si hay campos vacíos
+            }
+
+            // Verifica si tiene ceros iniciales pero no es exactamente "0"
+            if (precio.startsWith("0") && precio != "0") {
+                Toast.makeText(this, getString(R.string.valor_cero), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener // Salir del evento si empieza con 0 pero no es 0
+            }
+
+            val precioInt = precio.toIntOrNull()
+            if (precioInt != null && precioInt <= 0){
+                Toast.makeText(this, getString(R.string.advertencia_precio), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener // Salir del evento si hay campos vacíos
+            }
+
+
+            var base64Image = ""
+            imageUri?.let {
+                base64Image = ImageController.convertImageToBase64(this, it)
+            }
+            println(base64Image)
+
+            /*thread {
                 val jsonData = createJsonData(
                     action,
                     ubicacion,
@@ -213,18 +257,40 @@ class HostViewActivity : AppCompatActivity() {
                     cantofPeople,
                     lista,
                     reglas,
-                    precio
+                    precio,
+                    base64Image
                 )
                 sendDataToServer("192.168.0.119", 8080,jsonData)
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
 
+            }*/
+            //MEJORA PARA NO USAR THREADS SINO FUNCIONES DE KOTLIN COMO CoroutineScope
+            CoroutineScope(Dispatchers.IO).launch {
+                val jsonData = createJsonData(
+                    action,
+                    idPropertyRegister,
+                    ubicacion,
+                    autoComplete,
+                    disponibilidad,
+                    cantofPeople,
+                    lista,
+                    reglas,
+                    precio,
+                    base64Image
+                )
+                sendDataToServer("192.168.0.119", 8080, jsonData)
+
+                // Regresar al hilo principal para iniciar la nueva actividad
+                withContext(Dispatchers.Main) {
+                    val intent = Intent(this@HostViewActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
 
-
         }
-
         // Disable keyboard input
         selectDate.isFocusable = false
 
@@ -235,11 +301,6 @@ class HostViewActivity : AppCompatActivity() {
         exitbuton.setOnClickListener {
             backtoHomePage()
         }
-
-        imageProperty.setOnClickListener {
-            ImageController.selectPhotoFromGallery(this,CODE)
-        }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -252,32 +313,33 @@ class HostViewActivity : AppCompatActivity() {
             }
         }
     }
-
+    
     private fun createJsonData(
         action: String,
+        idPropertyRegister: String,
         location: String,
         typeofHouse: String,
         availability: String,
         cantofPeople: String,
         amenidades: List<String>,
         rules: String,
-        price: String
+        price: String,
+        base64Image: String
     ): String {
         val json = JSONObject()
         json.put("action", action)
+        json.put("idPropertyRegister",idPropertyRegister)
         json.put("location", location)
         json.put("typeofHouse", typeofHouse)
         json.put("availability", availability)
         json.put("cantofPeople", cantofPeople)
 
-        /*val amenidadesJsonArray = JSONArray(amenidades)
-        json.put("amenidades", amenidadesJsonArray.toString()) // Convierte a cadena*/
-
         val amenidadesJsonArray = JSONArray(amenidades)
         json.put("amenidades", amenidadesJsonArray)
-
         json.put("rules", rules)
         json.put("price", price)
+        json.put("image", base64Image)
+
         return json.toString()
     }
 
@@ -285,11 +347,11 @@ class HostViewActivity : AppCompatActivity() {
         try {
             val socket = Socket(serverIp, serverPort)
             val outputStream: OutputStream = socket.getOutputStream()
-            val printWriter = PrintWriter(outputStream, true)
+            val bufferedWriter  = PrintWriter(outputStream, true)
 
-            printWriter.println(jsonData)
+            bufferedWriter .println(jsonData)
             outputStream.close()
-            printWriter.close()
+            bufferedWriter .close()
             socket.close()
             println("Se cerro la conexion - envio")
         } catch (e: Exception) {
