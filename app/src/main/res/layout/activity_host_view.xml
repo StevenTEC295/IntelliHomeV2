@@ -567,6 +567,33 @@
             android:text="@string/subir_propiedad"
             android:textColor="@color/black" />
 
+        <ImageView
+            android:id="@+id/imagen2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/container_image_foto"
+            android:layout_marginTop="1600dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/image_casas_template" />
+
+        <ImageView
+            android:id="@+id/imagen3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/container_image_foto"
+            android:layout_marginTop="1800dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/image_casas_template" />
+
+
+        <ImageView
+            android:id="@+id/imagen4"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/container_image_foto"
+            android:layout_marginTop="2000dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/image_casas_template" />
 
         <TextView
             android:id="@+id/back_to_home_page"

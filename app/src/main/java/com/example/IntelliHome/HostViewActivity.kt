@@ -83,12 +83,16 @@ class HostViewActivity : AppCompatActivity() {
     private lateinit var amenidadChimenea: CheckBox
     private lateinit var amenidadInternetAlta: CheckBox
     private lateinit var imageProperty: ImageView
+    private lateinit var imageProperty2: ImageView
+    private lateinit var imageProperty3: ImageView
+    private lateinit var imageProperty4: ImageView
     private lateinit var amenidadAnimales: CheckBox
 
     //BOTON DE REGISTRO
     private lateinit var registerButton: Button
     //EL URI DE LA IMAGEN
     private var imageUri: Uri? = null
+    private var imageUris: MutableList<Uri> = mutableListOf()
 
     //Campos de textos del FORMULARIO
     private lateinit var ubicacion: TextInputEditText
@@ -129,7 +133,9 @@ class HostViewActivity : AppCompatActivity() {
         val selectDate = findViewById<TextInputEditText>(R.id.Disponibilidad)
         exitbuton = findViewById(R.id.back_to_home_page)
         imageProperty = findViewById(R.id.imageProperty)
-
+        imageProperty2 = findViewById(R.id.imagen2)
+        imageProperty3= findViewById(R.id.imagen3)
+        imageProperty4 = findViewById(R.id.imagen4)
         ubicacion= findViewById(R.id.ubicacion)
         cantofPeople = findViewById(R.id.cantofPeople)
         reglas = findViewById(R.id.reglas)
@@ -187,7 +193,7 @@ class HostViewActivity : AppCompatActivity() {
 
         //PARA SELECCIONAR UNA IMAGEN EN EL IMAGE VIEW
         imageProperty.setOnClickListener {
-            ImageController.selectPhotoFromGallery(this,CODE)
+            ImageController.multiplephotos(this,CODE)
         }
 
 
@@ -205,6 +211,8 @@ class HostViewActivity : AppCompatActivity() {
             
             //SE CREA UN ID UNICO PARA CADA PROPIEDAD
             val idPropertyRegister = UUID.randomUUID().toString()
+
+
             
             //VERIFICAR LOS CAMPOS DE TEXTO que cumplan con lo especificado
             val campos = listOf(ubicacion,autoComplete,disponibilidad,cantofPeople,reglas,precio)
@@ -212,6 +220,12 @@ class HostViewActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.completa_los_campos), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener // Salir del evento si hay campos vacíos
             }
+
+            if (imageUris.size < 1 || imageUris.size > 10) {
+                Toast.makeText(this, "Please select between 1 to 10 images", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             if (lista.any { it.isEmpty() }) {
                 Toast.makeText(this, getString(R.string.advertencia_amenidades), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener // Salir del evento si hay campos vacíos
@@ -241,12 +255,16 @@ class HostViewActivity : AppCompatActivity() {
                 return@setOnClickListener // Salir del evento si hay campos vacíos
             }
 
-
-            var base64Image = ""
+            //Una sola imagen a base64
+            /*var base64Image = ""
             imageUri?.let {
                 base64Image = ImageController.convertImageToBase64(this, it)
             }
-            println(base64Image)
+            println(base64Image)*/
+
+            //Multiples imagenes en base 64
+            val base64Images = ImageController.multipleconvertImagesToBase64(this, imageUris)
+
 
             /*thread {
                 val jsonData = createJsonData(
@@ -278,7 +296,7 @@ class HostViewActivity : AppCompatActivity() {
                     lista,
                     reglas,
                     precio,
-                    base64Image
+                    base64Images
                 )
                 sendDataToServer("192.168.0.119", 8080, jsonData)
 
@@ -303,13 +321,40 @@ class HostViewActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when{
             requestCode == CODE && resultCode == Activity.RESULT_OK -> {
                 imageUri = data!!.data
                 imageProperty.setImageURI(imageUri)
 
+            }
+        }
+    }*/
+    //Para lograr cargar varias imagenes
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CODE && resultCode == Activity.RESULT_OK) {
+            imageUris.clear() // Clear previous images
+
+            // Check if multiple images were selected
+            if (data?.clipData != null) {
+                val clipData = data.clipData
+                for (i in 0 until clipData!!.itemCount) {
+                    val imageUri = clipData.getItemAt(i).uri
+                    imageUris.add(imageUri)
+                }
+            } else if (data?.data != null) { // Single image selected
+                val imageUri = data.data!!
+                imageUris.add(imageUri)
+            }
+
+            // Show the first selected image in the ImageView
+            if (imageUris.isNotEmpty()) {
+                imageProperty.setImageURI(imageUris[0])
+                imageProperty2.setImageURI(imageUris[1])
+                imageProperty3.setImageURI(imageUris[2])
+                imageProperty4.setImageURI(imageUris[3])
             }
         }
     }
@@ -324,7 +369,7 @@ class HostViewActivity : AppCompatActivity() {
         amenidades: List<String>,
         rules: String,
         price: String,
-        base64Image: String
+        base64Image: List<String>
     ): String {
         val json = JSONObject()
         json.put("action", action)
@@ -338,7 +383,9 @@ class HostViewActivity : AppCompatActivity() {
         json.put("amenidades", amenidadesJsonArray)
         json.put("rules", rules)
         json.put("price", price)
-        json.put("image", base64Image)
+
+        val imagenesJSONArray = JSONArray(base64Image)
+        json.put("image", imagenesJSONArray)
 
         return json.toString()
     }
