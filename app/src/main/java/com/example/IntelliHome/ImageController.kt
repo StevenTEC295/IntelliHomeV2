@@ -1,6 +1,5 @@
 package com.example.IntelliHome
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -61,7 +60,6 @@ object ImageController {
         }
         return base64Images
     }
-
     fun deleteImage(context: Context, id: Long) {
         val file = File(context.filesDir, id.toString())
         file.delete()

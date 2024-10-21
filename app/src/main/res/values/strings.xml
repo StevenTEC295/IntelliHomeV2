@@ -87,7 +87,8 @@
     <string name="advertencia_cantofPeople">La cantidad de personas máxima es 30 y no se puede digitar 0</string>
     <string name="advertencia_precio">El precio debe ser mayor a 0</string>
     <string name="valor_cero">El valor no puede comenzar con 0.</string>
-
+    <string name="no_hay_imagenes">No hay imagenes que ha subido</string>
+    <string name="porfavor_selccione_10_imgs">Por favor seleccione entre 1 y 10 imágenes</string>
 
     <string-array name="house_types">
         <item>Rústica</item>

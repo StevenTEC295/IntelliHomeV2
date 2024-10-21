@@ -53,7 +53,7 @@
         <RelativeLayout
             android:id="@+id/container_image_foto"
             android:layout_width="350dp"
-            android:layout_height="250dp"
+            android:layout_height="300dp"
             android:layout_below="@+id/formulario"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
@@ -75,6 +75,12 @@
                 android:text="@string/aviso_cuantas_fotos_subir"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
+            <Button
+                android:id="@+id/next_Image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Siguiente imagen"
+                android:layout_marginTop="250dp" />
         </RelativeLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -566,35 +572,6 @@
             android:backgroundTint="@color/rojo_de_la_app"
             android:text="@string/subir_propiedad"
             android:textColor="@color/black" />
-
-        <ImageView
-            android:id="@+id/imagen2"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@id/container_image_foto"
-            android:layout_marginTop="1600dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/image_casas_template" />
-
-        <ImageView
-            android:id="@+id/imagen3"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@id/container_image_foto"
-            android:layout_marginTop="1800dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/image_casas_template" />
-
-
-        <ImageView
-            android:id="@+id/imagen4"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@id/container_image_foto"
-            android:layout_marginTop="2000dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/image_casas_template" />
-
         <TextView
             android:id="@+id/back_to_home_page"
             android:layout_width="wrap_content"

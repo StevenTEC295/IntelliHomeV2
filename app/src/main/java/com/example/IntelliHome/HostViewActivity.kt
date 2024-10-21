@@ -17,8 +17,6 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -44,7 +42,6 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import java.util.UUID
-import kotlin.concurrent.thread
 
 class HostViewActivity : AppCompatActivity() {
     private lateinit var mainLayout: RelativeLayout
@@ -83,9 +80,7 @@ class HostViewActivity : AppCompatActivity() {
     private lateinit var amenidadChimenea: CheckBox
     private lateinit var amenidadInternetAlta: CheckBox
     private lateinit var imageProperty: ImageView
-    private lateinit var imageProperty2: ImageView
-    private lateinit var imageProperty3: ImageView
-    private lateinit var imageProperty4: ImageView
+
     private lateinit var amenidadAnimales: CheckBox
 
     //BOTON DE REGISTRO
@@ -93,6 +88,7 @@ class HostViewActivity : AppCompatActivity() {
     //EL URI DE LA IMAGEN
     private var imageUri: Uri? = null
     private var imageUris: MutableList<Uri> = mutableListOf()
+    private lateinit var btnNextImage: Button
 
     //Campos de textos del FORMULARIO
     private lateinit var ubicacion: TextInputEditText
@@ -102,6 +98,7 @@ class HostViewActivity : AppCompatActivity() {
 
     //UN CODIGO DE RESQUEST EL VALOR NO IMPORTA
     private val CODE =50
+    private var nulllist = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,14 +130,11 @@ class HostViewActivity : AppCompatActivity() {
         val selectDate = findViewById<TextInputEditText>(R.id.Disponibilidad)
         exitbuton = findViewById(R.id.back_to_home_page)
         imageProperty = findViewById(R.id.imageProperty)
-        imageProperty2 = findViewById(R.id.imagen2)
-        imageProperty3= findViewById(R.id.imagen3)
-        imageProperty4 = findViewById(R.id.imagen4)
         ubicacion= findViewById(R.id.ubicacion)
         cantofPeople = findViewById(R.id.cantofPeople)
         reglas = findViewById(R.id.reglas)
         precio = findViewById(R.id.precio)
-
+        btnNextImage = findViewById(R.id.next_Image)
 
 
         //LISTA DE AMENIDADES
@@ -194,7 +188,12 @@ class HostViewActivity : AppCompatActivity() {
         //PARA SELECCIONAR UNA IMAGEN EN EL IMAGE VIEW
         imageProperty.setOnClickListener {
             ImageController.multiplephotos(this,CODE)
+            nulllist++
         }
+        btnNextImage.setOnClickListener {
+            cycleImage()
+        }
+
 
 
         //BOTON DE SUBIR PROPIEDAD
@@ -222,7 +221,7 @@ class HostViewActivity : AppCompatActivity() {
             }
 
             if (imageUris.size < 1 || imageUris.size > 10) {
-                Toast.makeText(this, "Please select between 1 to 10 images", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.porfavor_selccione_10_imgs), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -264,8 +263,7 @@ class HostViewActivity : AppCompatActivity() {
 
             //Multiples imagenes en base 64
             val base64Images = ImageController.multipleconvertImagesToBase64(this, imageUris)
-
-
+            println(base64Images)
             /*thread {
                 val jsonData = createJsonData(
                     action,
@@ -285,6 +283,7 @@ class HostViewActivity : AppCompatActivity() {
 
             }*/
             //MEJORA PARA NO USAR THREADS SINO FUNCIONES DE KOTLIN COMO CoroutineScope
+
             CoroutineScope(Dispatchers.IO).launch {
                 val jsonData = createJsonData(
                     action,
@@ -331,6 +330,19 @@ class HostViewActivity : AppCompatActivity() {
             }
         }
     }*/
+    private var currentIndex = 0
+
+    private fun cycleImage() {
+
+        if(nulllist == 0){
+            Toast.makeText(this, getString(R.string.no_hay_imagenes), Toast.LENGTH_SHORT).show()
+        }else{
+            currentIndex = (currentIndex + 1) % imageUris.size
+            imageProperty.setImageURI(imageUris[currentIndex])
+        }
+    }
+
+
     //Para lograr cargar varias imagenes
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -352,9 +364,6 @@ class HostViewActivity : AppCompatActivity() {
             // Show the first selected image in the ImageView
             if (imageUris.isNotEmpty()) {
                 imageProperty.setImageURI(imageUris[0])
-                imageProperty2.setImageURI(imageUris[1])
-                imageProperty3.setImageURI(imageUris[2])
-                imageProperty4.setImageURI(imageUris[3])
             }
         }
     }
