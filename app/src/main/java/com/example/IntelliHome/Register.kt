@@ -33,6 +33,8 @@ import kotlin.concurrent.thread
 import android.content.SharedPreferences
 import android.widget.RelativeLayout
 import android.content.Context
+import android.view.View
+import com.example.IntelliHome.SquarePasswordTransformationMethod
 
 //El huesped
 
@@ -80,7 +82,8 @@ class RegistroActivity : AppCompatActivity() {
                 imageView.setImageURI(it)
             }
         }
-
+    private var changeStatePassword=0
+    private var changeStatePasswordConfirm=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
@@ -110,8 +113,56 @@ class RegistroActivity : AppCompatActivity() {
         }
 
         val guestPasswordInput: TextInputEditText = findViewById(R.id.contrasena_huesped)
-        val guestPasswordConfirmInput: TextInputEditText = findViewById(R.id.contrasena_huesped_confirmar)
+        val passwordInputLayout: TextInputLayout = findViewById(R.id.passwordInputLayout)
 
+        val guestPasswordConfirmInput: TextInputEditText = findViewById(R.id.contrasena_huesped_confirmar)
+        val  guestPasswordConfirmLayout: TextInputLayout = findViewById(R.id.passwordInputLayout_confirmpassword)
+
+        guestPasswordInput.transformationMethod = SquarePasswordTransformationMethod()
+        guestPasswordConfirmInput.transformationMethod = SquarePasswordTransformationMethod()
+
+
+        passwordInputLayout.setEndIconOnClickListener {
+            // Verificar si el ícono está activado (contraseña visible)
+            if (changeStatePasswordConfirm==0) {
+                // Si el ícono está activado, muestra el texto sin transformación
+                guestPasswordInput.transformationMethod = null
+                changeStatePasswordConfirm=1
+            } else {
+                // Si el ícono está desactivado, vuelve a aplicar la transformación de cuadrados
+                guestPasswordInput.transformationMethod = SquarePasswordTransformationMethod()
+                changeStatePasswordConfirm=0
+            }
+        }
+
+        guestPasswordConfirmLayout.setEndIconOnClickListener {
+            // Verificar si el ícono está activado (contraseña visible)
+            if (changeStatePassword==0) {
+                // Si el ícono está activado, muestra el texto sin transformación
+                guestPasswordConfirmInput.transformationMethod = null
+                changeStatePassword=1
+            } else {
+                // Si el ícono está desactivado, vuelve a aplicar la transformación de cuadrados
+                guestPasswordConfirmInput.transformationMethod = SquarePasswordTransformationMethod()
+                changeStatePassword=0
+            }
+        }
+
+
+
+        guestPasswordInput.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                // Reaplica el método de transformación para asegurarte de que se mantenga
+                guestPasswordInput.transformationMethod = SquarePasswordTransformationMethod()
+            }
+        }
+
+        guestPasswordConfirmInput.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                // Reaplica el método de transformación para asegurarte de que se mantenga
+                guestPasswordConfirmInput.transformationMethod = SquarePasswordTransformationMethod()
+            }
+        }
 
         //PHONE NUMBER LOGIC
         val phoneInput = findViewById<TextInputEditText>(R.id.phonenumber)
@@ -484,5 +535,7 @@ class RegistroActivity : AppCompatActivity() {
         finish()
 
     }
+
+
 
 }
