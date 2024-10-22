@@ -31,6 +31,7 @@ class Server:
                 if message:  # Si no hay mensaje
                     #Convierte el texto en formato json
                     data = json.loads(message)
+                    print(data)
             
                 
                     
@@ -52,6 +53,7 @@ class Server:
         self.travelFile(sender_socket, data)
 
     def arduino(self, data, sender_socket):
+        print("Comando recibido")
         arduino_connection = arduino.ArduinoConnection(port="COM5")
         arduino_connection.send(data["command"])
         #response = arduino_connection.receive()
