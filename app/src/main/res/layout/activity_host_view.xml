@@ -79,8 +79,9 @@
                 android:id="@+id/next_Image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Siguiente imagen"
-                android:layout_marginTop="250dp" />
+                android:text="@string/siguiente_imagen"
+                android:layout_marginTop="250dp"
+                android:layout_marginStart="15dp"/>
         </RelativeLayout>
 
         <com.google.android.material.textfield.TextInputLayout

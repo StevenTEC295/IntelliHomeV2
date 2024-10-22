@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name="com.example.IntelliHome.ListofHostViewActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.IntelliHome.HostViewActivity"
             android:exported="false" />
         <activity

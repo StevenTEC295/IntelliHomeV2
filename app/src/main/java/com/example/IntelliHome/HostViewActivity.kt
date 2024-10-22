@@ -301,7 +301,7 @@ class HostViewActivity : AppCompatActivity() {
 
                 // Regresar al hilo principal para iniciar la nueva actividad
                 withContext(Dispatchers.Main) {
-                    val intent = Intent(this@HostViewActivity, LoginActivity::class.java)
+                    val intent = Intent(this@HostViewActivity, HomePage::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -477,7 +477,7 @@ class HostViewActivity : AppCompatActivity() {
     }
 
     private fun backtoHomePage() {
-        val intent = Intent(this, HomePage::class.java)
+        val intent = Intent(this, ListofHostViewActivity::class.java)
         startActivity(intent)
         finish()
 

@@ -14,6 +14,7 @@ import android.content.SharedPreferences
 import android.widget.RelativeLayout
 import android.content.Context
 import com.example.IntelliHome.HostViewActivity
+import com.example.IntelliHome.ListofHostViewActivity
 
 class HomePage : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -51,7 +52,7 @@ class HomePage : AppCompatActivity() {
 
     }
     private fun navegar(){
-        val intent = Intent(this,HostViewActivity::class.java)
+        val intent = Intent(this,ListofHostViewActivity::class.java)
         startActivity(intent)
     }
 }
