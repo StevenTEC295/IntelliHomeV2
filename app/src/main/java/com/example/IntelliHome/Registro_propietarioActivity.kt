@@ -29,6 +29,9 @@ import kotlin.concurrent.thread
 import android.content.SharedPreferences
 import android.widget.RelativeLayout
 import android.content.Context
+import android.view.View
+import com.example.IntelliHome.SquarePasswordTransformationMethod
+import com.google.android.material.textfield.TextInputLayout
 
 class Registro_propietarioActivity : AppCompatActivity() {
     private lateinit var selectDate: TextInputEditText
@@ -57,7 +60,8 @@ class Registro_propietarioActivity : AppCompatActivity() {
     private lateinit var addressInput: EditText
     private lateinit var firstNameInput: TextInputEditText
     private lateinit var exitbuton: TextView
-
+    private var changeStatePassword=0
+    private var changeStatePasswordConfirm=0
 
 
     // Register for camera activity result
@@ -118,8 +122,52 @@ class Registro_propietarioActivity : AppCompatActivity() {
         }
 
         val ownerPassword: TextInputEditText = findViewById(R.id.cotra_propietario)
+        val layoutownerPassword: TextInputLayout = findViewById(R.id.layout_cotra_propietario)
         val ownerPasswordConfirm: TextInputEditText = findViewById(R.id.confimar_cotra_propietario)
+        val layoutownerPasswordConfirm: TextInputLayout = findViewById(R.id.layout_confimar_cotra_propietario)
 
+        ownerPassword.transformationMethod = SquarePasswordTransformationMethod()
+        ownerPasswordConfirm.transformationMethod = SquarePasswordTransformationMethod()
+
+        layoutownerPassword.setEndIconOnClickListener {
+            // Verificar si el ícono está activado (contraseña visible)
+            if (changeStatePasswordConfirm==0) {
+                // Si el ícono está activado, muestra el texto sin transformación
+                ownerPassword.transformationMethod = null
+                changeStatePasswordConfirm=1
+            } else {
+                // Si el ícono está desactivado, vuelve a aplicar la transformación de cuadrados
+                ownerPassword.transformationMethod = SquarePasswordTransformationMethod()
+                changeStatePasswordConfirm=0
+            }
+        }
+
+        layoutownerPasswordConfirm.setEndIconOnClickListener {
+            // Verificar si el ícono está activado (contraseña visible)
+            if (changeStatePassword==0) {
+                // Si el ícono está activado, muestra el texto sin transformación
+                ownerPasswordConfirm.transformationMethod = null
+                changeStatePassword=1
+            } else {
+                // Si el ícono está desactivado, vuelve a aplicar la transformación de cuadrados
+                ownerPasswordConfirm.transformationMethod = SquarePasswordTransformationMethod()
+                changeStatePassword=0
+            }
+        }
+
+        ownerPassword.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                // Reaplica el método de transformación para asegurarte de que se mantenga
+                ownerPassword.transformationMethod = SquarePasswordTransformationMethod()
+            }
+        }
+
+        ownerPasswordConfirm.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                // Reaplica el método de transformación para asegurarte de que se mantenga
+                ownerPasswordConfirm.transformationMethod = SquarePasswordTransformationMethod()
+            }
+        }
         //PHONE NUMBER LOGIC
         val phoneInput = findViewById<TextInputEditText>(R.id.phonenumber)
         phoneInput.setText(" +506 ")
@@ -315,7 +363,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
                     addressInput,
                     phoneInput
                 )
-                sendDataToServer("192.168.0.196", 8080, jsonData)
+                sendDataToServer("192.168.0.119", 8080, jsonData)
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()

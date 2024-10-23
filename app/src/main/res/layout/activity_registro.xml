@@ -156,6 +156,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordInputLayout"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/container_image"
@@ -195,6 +196,7 @@
                 app:srcCompat="@drawable/question_mark" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordInputLayout_confirmpassword"
                 android:layout_width="355dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/container_image"

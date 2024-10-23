@@ -35,6 +35,70 @@
     <string name="Registro_titulo_huesped">Guest Registration</string>
     <string name="Registro_titulo_Anfritrion">Host Registration</string>
     <string name="Atras">&lt; Back</string>
+
+    <string name="formulario">Form</string>
+    <string name="subir_propiedad">Upload Property  </string>
+    <string name="aviso_cuantas_fotos_subir">Upload photos of the house\n\nNo more than 10 photos</string>
+    <string name="disponibilidad">Availability</string>
+    <string name="Ubicacion">Location</string>
+    <string name="tipo_de_casa">House Type</string>
+    <string name="cantidad_de_personas">Number of People</string>
+    <string name="amenidades">Amenities</string>
+    <string name="reglas">Rules</string>
+    <string name="precio_por_noche">Price per night</string>
+    <string name="Select_Date_Range">Select Date Range</string>
+    <string name="end_date_warning">The end date must be after the start date</string>
+    <string name="si">Yes</string>
+    <string name="no">No</string>
+
+    <string name="selecciona_las_amenidades">Select the amenities of your property</string>
+    <string name="cocina_equipada">Fully equipped kitchen (with modern appliances)</string>
+    <string name="Aire_acondicionado">Air conditioning</string>
+    <string name="CalefacciOn">Heating</string>
+    <string name="wifi">Free Wi-Fi</string>
+    <string name="tv_o_cable">Cable or satellite television</string>
+    <string name="Lavadora_y_secadora">Washer and dryer</string>
+    <string name="Piscina">Swimming pool</string>
+    <string name="Jardín_o_patio">Garden or patio</string>
+    <string name="Barbacoa_o_parrilla">Barbecue or grill</string>
+    <string name="Terraza_o_balcón">Terrace or balcony</string>
+    <string name="Gimnasio_en_casa">Home gym</string>
+    <string name="Garaje">Garage or parking space</string>
+    <string name="Sistema_de_seguridad">Security system</string>
+    <string name="habitaciones_con_bano_en_suite">Bedrooms with en-suite bathrooms</string>
+    <string name="muebles_de_exterior">Outdoor furniture</string>
+    <string name="microondas">Microwave</string>
+    <string name="lavavajillas">Dishwasher</string>
+    <string name="cafetera">Coffee maker</string>
+    <string name="ropa_de_cama_y_toallas_incluidas">Bed linen and towels included</string>
+    <string name="acceso_a_areas_comunes">Access to common areas (pool, gym)</string>
+    <string name="camas_adicionales_o_sofa_cama">Extra beds or sofa bed</string>
+    <string name="servicios_de_limpieza_opcionales">Optional cleaning services</string>
+    <string name="acceso_a_transporte_publico_cercano">Access to nearby public transport</string>
+    <string name="cercania_a_tiendas_y_restaurantes">Close to shops and restaurants</string>
+    <string name="sistema_de_calefaccion_por_suelo_radiante">Underfloor heating system</string>
+    <string name="escritorio_o_area_de_trabajo">Desk or workspace</string>
+    <string name="sistemas_de_entretenimiento">Entertainment systems (video games, sound system)</string>
+    <string name="chimenea">Fireplace</string>
+    <string name="acceso_a_internet_de_alta_velocidad">High-speed internet access</string>
+
+    <string name="aceptan_mascotas"> Pets allowed</string>
+    <string name="advertencia_amenidades">Select at least one amenity</string>
+    <string name="advertencia_cantofPeople">The maximum number of people is 30 and cannot input 0</string>
+    <string name="advertencia_precio">El precio debe ser mayor a 0</string>
+
+    <string name="valor_cero">The value cannot start with 0.</string>
+    <string name="no_hay_imagenes">There are no images you have uploaded</string>
+
+    <string name="porfavor_selccione_10_imgs">Please select between 1 to 10 images</string>
+    <string name="siguiente_imagen">Next Image</string>
+    <string name="Lista_de_casa">List of House</string>
+
+
+
+
+
+
     <string-array name="house_types">
         <item>Rustic</item>
         <item>Modern</item>
