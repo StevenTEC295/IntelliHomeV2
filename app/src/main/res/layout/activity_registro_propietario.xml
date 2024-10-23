@@ -155,6 +155,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_cotra_propietario"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/container_image"
@@ -194,6 +195,7 @@
                 app:srcCompat="@drawable/question_mark" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_confimar_cotra_propietario"
                 android:layout_width="355dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/container_image"
