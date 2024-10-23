@@ -262,8 +262,9 @@ class HostViewActivity : AppCompatActivity() {
             println(base64Image)*/
 
             //Multiples imagenes en base 64
-            val base64Images = ImageController.multipleconvertImagesToBase64(this, imageUris)
-            println(base64Images)
+           /* val base64Images = ImageController.multipleconvertImagesToBase64(this, imageUris)
+            println(base64Images)*/
+            
             /*thread {
                 val jsonData = createJsonData(
                     action,
@@ -294,8 +295,8 @@ class HostViewActivity : AppCompatActivity() {
                     cantofPeople,
                     lista,
                     reglas,
-                    precio,
-                    base64Images
+                    precio
+                    //base64Images
                 )
                 sendDataToServer("192.168.0.119", 8080, jsonData)
 
@@ -377,8 +378,8 @@ class HostViewActivity : AppCompatActivity() {
         cantofPeople: String,
         amenidades: List<String>,
         rules: String,
-        price: String,
-        base64Image: List<String>
+        price: String
+        //base64Image: List<String>
     ): String {
         val json = JSONObject()
         json.put("action", action)
@@ -393,8 +394,8 @@ class HostViewActivity : AppCompatActivity() {
         json.put("rules", rules)
         json.put("price", price)
 
-        val imagenesJSONArray = JSONArray(base64Image)
-        json.put("image", imagenesJSONArray)
+       /* val imagenesJSONArray = JSONArray(base64Image)
+        json.put("image", imagenesJSONArray)*/
 
         return json.toString()
     }
@@ -420,7 +421,7 @@ class HostViewActivity : AppCompatActivity() {
     private fun loadSavedBackground() {
         val savedBackground =
             sharedPreferences.getInt("background_resource", R.drawable.redbackground)
-        mainLayout.setBackgroundResource(savedBackground)
+            mainLayout.setBackgroundResource(savedBackground)
 
     }
 
