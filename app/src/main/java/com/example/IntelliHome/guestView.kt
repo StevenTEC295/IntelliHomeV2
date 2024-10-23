@@ -23,6 +23,35 @@ class guestView : AppCompatActivity() {
     private lateinit var backgroundDim: View
     private lateinit var hamburgerMenu: View
     private lateinit var recycler: RecyclerView
+    private lateinit var checkBoxCocina: CheckBox
+    private lateinit var checkBoxAC: CheckBox
+    private lateinit var checkBoxCalefaccion: CheckBox
+    private lateinit var amenidadWifi: CheckBox
+    private lateinit var tvO: CheckBox
+    private lateinit var amenidadLavadora: CheckBox
+    private lateinit var amenidadPiscina: CheckBox
+    private lateinit var amenidadJardin: CheckBox
+    private lateinit var amenidadBarbacoa: CheckBox
+    private lateinit var amenidadTerraza: CheckBox
+    private lateinit var amenidadGym: CheckBox
+    private lateinit var amenidadGaraje: CheckBox
+    private lateinit var amenidadSeguridad: CheckBox
+    private lateinit var amenidadHabitaciones: CheckBox
+    private lateinit var amenidadMuebles: CheckBox
+    private lateinit var amenidadMicro: CheckBox
+    private lateinit var amenidadLavajillas: CheckBox
+    private lateinit var amenidadCafetera: CheckBox
+    private lateinit var amenidadRopa: CheckBox
+    private lateinit var amenidadComunes: CheckBox
+    private lateinit var amenidadCamas: CheckBox
+    private lateinit var amenidadLimpieza: CheckBox
+    private lateinit var amenidadTransportePublico: CheckBox
+    private lateinit var amenidadCercania: CheckBox
+    private lateinit var amenidadRadiacion: CheckBox
+    private lateinit var amenidadEscritorio: CheckBox
+    private lateinit var amenidadEntretenimiento: CheckBox
+    private lateinit var amenidadChimenea: CheckBox
+    private lateinit var amenidadInternetAlta: CheckBox
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
