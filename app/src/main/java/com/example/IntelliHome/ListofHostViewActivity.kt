@@ -42,7 +42,14 @@ class ListofHostViewActivity : AppCompatActivity() {
         home.setOnClickListener {
             navegarAlHome()
         }
-        setupRecyclerView()
+        val myDataSet = listOf(
+            Pair("Información Casa 1", R.drawable.image_casas_template),
+            Pair("Información Casa 4", R.drawable.image_casas_template)
+            // Agrega más casas según sea necesario
+        )
+
+        setupRecyclerView(recycler, myDataSet)
+
 
         loadSavedBackground()
 
@@ -56,7 +63,7 @@ class ListofHostViewActivity : AppCompatActivity() {
 
     }
 
-    private fun setupRecyclerView() {
+    /*private fun setupRecyclerView() {
         // Crear un conjunto de datos
         val myDataSet = listOf(
             Pair("Información Casa 1", R.drawable.image_casas_template),
@@ -71,7 +78,18 @@ class ListofHostViewActivity : AppCompatActivity() {
         recycler.adapter = adapter
         // Establecer un LayoutManager para el RecyclerView
         recycler.layoutManager = LinearLayoutManager(this)
+    }*/
+    private fun setupRecyclerView(recyclerView: RecyclerView, dataSet: List<Pair<String, Int>>) {
+        // Inicializar el adaptador con el conjunto de datos proporcionado
+        val adapter = CustomAdapter(dataSet)
+
+        // Establecer el adaptador en el RecyclerView
+        recyclerView.adapter = adapter
+
+        // Establecer un LayoutManager para el RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     }
+
 
     private fun navegarAlFormulariopropiedad() {
         val intent = Intent(this, HostViewActivity::class.java)
