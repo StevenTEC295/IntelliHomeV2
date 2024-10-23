@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    xmlns:andriod="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/container_image_foto"
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
+        andriod:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/imageProperty"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            andriod:srcCompat="@drawable/image_casas_template"
+            andriod:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/info_de_la_casa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="100dp"
+            android:text="aqui debe ir la info"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
