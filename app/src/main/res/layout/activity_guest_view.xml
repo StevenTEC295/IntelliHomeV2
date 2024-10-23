@@ -59,7 +59,7 @@
 
                 <!-- Campo de Búsqueda con íconos internos -->
                 <LinearLayout
-                    android:id="@id/layout_barra_busqueda"
+                    android:id="@+id/layout_barra_busqueda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -77,6 +77,12 @@
                         android:contentDescription="Menú de búsqueda" />
 
                     <!-- EditText para la búsqueda -->
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/white"
+                        android:text="Disponibilidad" />
+
                     <EditText
                         android:id="@+id/search_field"
                         android:layout_width="300dp"
@@ -90,14 +96,14 @@
 
                     <ImageView
                         android:id="@+id/internal_search_button"
-                        android:layout_width="25dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="24dp"
                         android:layout_alignParentEnd="true"
                         android:layout_gravity="end"
                         android:contentDescription="Buscar"
                         android:src="@drawable/search"
-                        tools:layout_editor_absoluteX="311dp"
-                        tools:layout_editor_absoluteY="0dp" />
+                        tools:layout_editor_absoluteX="50dp"
+                        tools:layout_editor_absoluteY="20dp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -108,47 +114,54 @@
                 android:id="@+id/recycleViewListadeCasas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_barra_busqueda"
+                android:layout_below="@+id/top_bar"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="300dp"
+                android:layout_marginTop="100dp"
                 />
-
-            <ImageView
-                android:id="@+id/rectanguloblanco"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/recycleViewListadeCasas"
-                app:srcCompat="@drawable/fondorectanguloblanco"
-                android:layout_marginTop="300dp"
-                android:layout_centerHorizontal="true"
-                tools:ignore="ContentDescription" />
-            <ImageView
-                android:id="@+id/historial"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/h_de _historial"
-                android:layout_below="@+id/recycleViewListadeCasas"
-                android:layout_marginTop="310dp"
-                android:layout_marginStart="280dp"
-                tools:ignore="ContentDescription" />
-
-
-
-            <ImageView
-                android:id="@+id/home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/home_menu"
-                android:layout_below="@+id/recycleViewListadeCasas"
-                android:layout_marginTop="320dp"
-                android:layout_marginStart="50dp"
-                tools:ignore="ContentDescription" />
-
-
-
-
         </RelativeLayout>
+
+
+
+
     </ScrollView>
+    <!-- BARRA DE ABAJO  -->
+    <RelativeLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:background="@android:color/white">
+
+        <!-- Icono de casa -->
+        <ImageView
+            android:id="@+id/homeIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/home" />
+
+        <!-- Icono de búsqueda -->
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/search" />
+
+        <!-- Icono de historial-->
+        <ImageView
+            android:id="@+id/menuIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_historial" />
+    </RelativeLayout>
+
+
+
+
 
     <!-- Diálogo de Filtros (inicialmente oculto) -->
     <LinearLayout
@@ -265,5 +278,6 @@
             android:text="Cerrar"
             android:onClick="closeMenu"/>
     </LinearLayout>
+
 
 </FrameLayout>
