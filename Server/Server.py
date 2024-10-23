@@ -10,7 +10,9 @@ import ArduinoConnection as arduino
 
 class Server:
     def __init__(self, host='0.0.0.0', port=8080):
+        self.buffer_size =64 * 1024
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, self.buffer_size)
         self.server_socket.bind((host, port))
         self.server_socket.listen(5)
         self.clients = []
@@ -26,7 +28,7 @@ class Server:
     def handle_client(self, client_socket):
         while True:  # Siempre estar atento a recibir mensajes de cualquier cliente
             try:
-                message = client_socket.recv(1024).decode('utf-8')  # recibe los mensajes
+                message = client_socket.recv(self.buffer_size).decode('utf-8')  # recibe los mensajes
 
                 if message:  # Si no hay mensaje
                     #Convierte el texto en formato json
@@ -41,6 +43,10 @@ class Server:
                         self.login(data, client_socket)
                     elif data["action"] == "arduino":
                         self.arduino(data, client_socket)  
+                    elif data["action"] == "rq_housing":
+                        self.rq_housing(data, client_socket)
+                    elif data["action"] == "sv_house":
+                        self.sv_house(data, client_socket)
                     
             except Exception as e:
                 print(f"Surgió un Error: {e}")
@@ -48,6 +54,12 @@ class Server:
 
         client_socket.close()
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
+
+    def rq_housing(self, data, sender_socket):
+        pass
+
+    def sv_house(self, data, sender_socket):
+        print(data)
 
     def login(self, data, sender_socket):
         self.travelFile(sender_socket, data)
@@ -67,11 +79,11 @@ class Server:
         encrypted_message = self.compose_message(nonce, ciphertext, tag)
         if encrypted_message:
             print("Registro exitoso")
-            self.save_encrypted_message(encrypted_message)
+            self.save_encrypted_message("register",encrypted_message)
             self.travelFile()  # Leer y desencriptar el archivo
 
-    def save_encrypted_message(self, encrypted_message):
-        with open("register_encrypted.txt", "a") as f:  # Guardar mensajes cifrados
+    def save_encrypted_message(self, namefile,encrypted_message):
+        with open(f"{namefile}.txt", "a") as f:  # Guardar mensajes cifrados
             f.write(base64.b64encode(encrypted_message).decode() + "\n")
 
     def encrypt_message(self, message):

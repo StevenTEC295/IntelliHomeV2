@@ -206,7 +206,7 @@ class HostViewActivity : AppCompatActivity() {
             val cantofPeople = cantofPeople.text.toString()
             val reglas = reglas.text.toString()
             val precio = precio.text.toString()
-            val action = "ventana_host_view"
+            val action = "sv_house"
             
             //SE CREA UN ID UNICO PARA CADA PROPIEDAD
             val idPropertyRegister = UUID.randomUUID().toString()
@@ -297,7 +297,7 @@ class HostViewActivity : AppCompatActivity() {
                     precio,
                     base64Images
                 )
-                sendDataToServer("192.168.0.119", 8080, jsonData)
+                sendDataToServer("192.168.0.207", 8080, jsonData)
 
                 // Regresar al hilo principal para iniciar la nueva actividad
                 withContext(Dispatchers.Main) {
@@ -406,9 +406,9 @@ class HostViewActivity : AppCompatActivity() {
             val bufferedWriter  = PrintWriter(outputStream, true)
 
             bufferedWriter .println(jsonData)
-            outputStream.close()
-            bufferedWriter .close()
-            socket.close()
+            //outputStream.close()
+            //bufferedWriter .close()
+            //socket.close()
             println("Se cerro la conexion - envio")
         } catch (e: Exception) {
             e.printStackTrace()

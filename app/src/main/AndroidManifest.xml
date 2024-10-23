@@ -46,10 +46,10 @@
             android:name=".RegistroActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ControlHouse"
             android:exported="false" />
         <activity
-            android:name=".ControlHouse"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
