@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/redbackground">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Contenido Principal -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Logo en la parte superior -->
+            <ImageView
+                android:id="@+id/imagenlogo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo" />
+
+            <!-- Foto de perfil alineada a la derecha -->
+            <ImageView
+                android:id="@+id/foto_de_perfil_propietario"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:srcCompat="@drawable/icono_perfil" />
+
+            <!-- LinearLayout para la Barra de Búsqueda -->
+            <LinearLayout
+                android:id="@+id/top_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/foto_de_perfil_propietario"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <!-- Botón de Menú (fuera del campo de búsqueda) -->
+                <ImageView
+                    android:id="@+id/menu_button"
+                    android:layout_width="26dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/nav_menu" />
+
+                <!-- Campo de Búsqueda con íconos internos -->
+                <LinearLayout
+                    android:id="@+id/layout_barra_busqueda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_text_background"
+                    android:padding="8dp">
+
+                    <!-- Ícono de Menú dentro del campo de búsqueda -->
+                    <ImageView
+                        android:id="@+id/internal_menu_button"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_alignParentStart="true"
+                        android:src="@drawable/equalizer_interface_square_button_symbol_icon_icons_com_73259"
+                        android:contentDescription="Menú de búsqueda" />
+
+                    <!-- EditText para la búsqueda -->
+
+                    <EditText
+                        android:id="@+id/search_field"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:hint="Búsqueda"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        tools:layout_editor_absoluteX="112dp"
+                        tools:layout_editor_absoluteY="0dp" />
+
+                    <ImageButton
+                        android:id="@+id/internal_search_button"
+                        android:layout_width="20dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="end"
+                        android:contentDescription="Buscar"
+                        android:src="@drawable/search"
+                        tools:layout_editor_absoluteX="50dp"
+                        tools:layout_editor_absoluteY="20dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/boton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_bar"
+
+                android:layout_marginTop="35dp"
+                android:layout_centerHorizontal="true"
+                android:text="Control de la Casa Alquilada" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleViewListadeCasas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_bar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="100dp"
+                />
+
+
+        </RelativeLayout>
+
+
+
+
+    </ScrollView>
+    <!-- BOTON DE ABAJO -->
+    <RelativeLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:background="@android:color/white">
+
+        <!-- Icono de casa -->
+        <ImageView
+            android:id="@+id/homeIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/home" />
+
+        <!-- Icono de búsqueda -->
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/search" />
+
+        <ImageView
+            android:id="@+id/historial"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/h_de_historial" />
+    </RelativeLayout>
+
+
+
+
+
+    <!-- Diálogo de Filtros (inicialmente oculto) -->
+    <LinearLayout
+        android:id="@+id/filter_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white"
+        android:visibility="gone"
+        android:elevation="10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Rango de Precio -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rango de Precio"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/black"/>
+
+                <SeekBar
+                    android:id="@+id/priceSeekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="10000" />
+
+                <TextView
+                    android:id="@+id/priceValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Precio seleccionado: $0"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="8dp" />
+
+                <!-- Checkbox para Mascotas -->
+                <CheckBox
+                    android:id="@+id/petsAllowed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Se aceptan mascotas"
+                    android:textColor="@color/black"/>
+
+                <!-- Selección de Personas con SeekBar -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cantidad de Personas"
+                    android:textSize="18sp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/black"/>
+
+                <SeekBar
+                    android:id="@+id/peopleSeekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="29" />
+
+                <TextView
+                    android:id="@+id/peopleValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Personas seleccionadas: 1"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"/>
+
+                <!-- Amenidades (CheckBoxes) -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amenidades"
+                    android:textSize="18sp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/amenidad_cocina"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cocina equipada"
+                    android:textColor="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/amenidad_AC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Aire acondicionado"
+                    android:textColor="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/amenidad_calefaccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calefacción"
+                    android:textColor="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/amenidad_wifi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wi-Fi"
+                    android:textColor="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/tv_o"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TV o cable"
+                    android:textColor="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/amenidad_lavadora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lavadora y secadora"
+                    android:textColor="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/amenidad_piscina"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Piscina"
+                    android:textColor="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/amenidad_jardin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jardín o patio"
+                    android:textColor="@color/black"/>
+                <CheckBox
+                    android:id="@+id/amenidad_barbacoa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/Barbacoa_o_parrilla"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_terraza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/Terraza_o_balcón"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_gym"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/Gimnasio_en_casa"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_garaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/Garaje"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_seguridad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/Sistema_de_seguridad"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_habitaciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/habitaciones_con_bano_en_suite"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_muebles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/muebles_de_exterior"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_micro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/microondas"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_lavajillas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/lavavajillas"
+                    android:textColor="@color/black"
+                    />
+                <CheckBox
+                    android:id="@+id/amenidad_cafeteria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/cafetera"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_ropa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/ropa_de_cama_y_toallas_incluidas"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_comunes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/acceso_a_areas_comunes"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_camas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/camas_adicionales_o_sofa_cama"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_limpieza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/servicios_de_limpieza_opcionales"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_transportePublico"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/acceso_a_transporte_publico_cercano"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_cercania"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/cercania_a_tiendas_y_restaurantes"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_radiacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/sistema_de_calefaccion_por_suelo_radiante"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_escritorio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/escritorio_o_area_de_trabajo"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_Entretenimiento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/sistemas_de_entretenimiento"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_chimenea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/chimenea"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_internetalta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/acceso_a_internet_de_alta_velocidad"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/amenidad_mascotas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/aceptan_mascotas"
+                    android:textColor="@color/black"
+                    />
+                <!-- Botón para Aplicar Filtros -->
+                <Button
+                    android:id="@+id/applyFiltersButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Aplicar Filtros"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <!-- Fondo oscurecido para el diálogo -->
+    <View
+        android:id="@+id/backgroundDim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"/>
+
+    <!-- Menú hamburguesa -->
+    <LinearLayout
+        android:id="@+id/hamburger_menu"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:visibility="gone"
+        android:elevation="10dp"
+        android:layout_gravity="start">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Configuración"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reviews"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Metodo de pago"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cerrar sesion"
+            android:onClick="closeMenu"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/info_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@android:color/white"
+        android:elevation="10dp"
+        android:padding="16dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:visibility="gone">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleViewListadeCasa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/INFO_container"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
+            />
+
+        <!-- Desglose -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_breakdown_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Desglose"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/tv_iva"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IVA:"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/tv_page_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ganancia página:"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/tv_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total:"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+        <!-- Botón de Alquilar -->
+        <Button
+            android:id="@+id/btn_rent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Alquilar"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:backgroundTint="@color/rojo_de_la_app"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+
+
+</FrameLayout>

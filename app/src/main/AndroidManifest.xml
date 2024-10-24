@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name="com.example.intellihome.guestView"
+            android:exported="false" />
+        <activity
+            android:name=".CambioUser"
+            android:exported="false" />
+        <activity
             android:name="com.example.IntelliHome.ListofHostViewActivity"
             android:exported="false" />
         <activity
@@ -46,10 +52,10 @@
             android:name=".RegistroActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ControlHouse"
             android:exported="false" />
         <activity
-            android:name=".ControlHouse"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

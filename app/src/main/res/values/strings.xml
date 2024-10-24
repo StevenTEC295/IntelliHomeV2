@@ -51,6 +51,34 @@
     <string name="no">No</string>
 
 
+
+
+
+    <string-array name="house_types">
+        <item>Rústica</item>
+        <item>Moderna</item>
+        <item>Mansion</item>
+    </string-array>
+
+
+    <string-array name="transport_types">
+        <item>Carro de cajón</item>
+        <item>Sedán</item>
+        <item>Buseta</item>
+        <item>Moto</item>
+    </string-array>
+
+    <string name="app_nam">Configuración</string>
+    <string name="configuracion">Configuración</string>
+    <string name="ayuda">Ayuda</string>
+    <string name="temas">Temas</string>
+    <string name="espanol">Español</string>
+    <string name="ingles">Inglés</string>
+    <string name="portugues">Portugués</string>
+    <string name="frances">Francés</string>
+    <string name="hungaro">Húngaro</string>
+    <string name="atras">◀ Atrás</string>
+    <string name="idiomas">Idiomas</string>
     <string name="selecciona_las_amenidades">Selecciona las Amenidades de tu propiedad</string>
     <string name="cocina_equipada">Cocina equipada (con electrodomésticos modernos)</string>
     <string name="Aire_acondicionado">Aire acondicionado</string>
@@ -91,39 +119,6 @@
     <string name="porfavor_selccione_10_imgs">Por favor seleccione entre 1 y 10 imágenes</string>
     <string name="siguiente_imagen">Siguiente Imagen</string>
     <string name="Lista_de_casa">Lista de casas</string>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <string-array name="house_types">
-        <item>Rústica</item>
-        <item>Moderna</item>
-        <item>Mansion</item>
-    </string-array>
 
-
-    <string-array name="transport_types">
-        <item>Carro de cajón</item>
-        <item>Sedán</item>
-        <item>Buseta</item>
-        <item>Moto</item>
-    </string-array>
-
-    <string name="app_nam">Configuración</string>
-    <string name="configuracion">Configuración</string>
-    <string name="ayuda">Ayuda</string>
-    <string name="temas">Temas</string>
-    <string name="espanol">Español</string>
-    <string name="ingles">Inglés</string>
-    <string name="portugues">Portugués</string>
-    <string name="frances">Francés</string>
-    <string name="hungaro">Húngaro</string>
-    <string name="atras">◀ Atrás</string>
-    <string name="idiomas">Idiomas</string>
 
 </resources>

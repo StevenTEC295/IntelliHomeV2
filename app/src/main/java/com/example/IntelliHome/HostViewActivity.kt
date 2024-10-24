@@ -206,13 +206,13 @@ class HostViewActivity : AppCompatActivity() {
             val cantofPeople = cantofPeople.text.toString()
             val reglas = reglas.text.toString()
             val precio = precio.text.toString()
-            val action = "ventana_host_view"
-            
+            val action = "sv_house"
+
             //SE CREA UN ID UNICO PARA CADA PROPIEDAD
             val idPropertyRegister = UUID.randomUUID().toString()
 
 
-            
+
             //VERIFICAR LOS CAMPOS DE TEXTO que cumplan con lo especificado
             val campos = listOf(ubicacion,autoComplete,disponibilidad,cantofPeople,reglas,precio)
             if (campos.any { it.isEmpty() }) {
@@ -262,8 +262,9 @@ class HostViewActivity : AppCompatActivity() {
             println(base64Image)*/
 
             //Multiples imagenes en base 64
-            val base64Images = ImageController.multipleconvertImagesToBase64(this, imageUris)
-            println(base64Images)
+            /* val base64Images = ImageController.multipleconvertImagesToBase64(this, imageUris)
+             println(base64Images)*/
+
             /*thread {
                 val jsonData = createJsonData(
                     action,
@@ -294,10 +295,10 @@ class HostViewActivity : AppCompatActivity() {
                     cantofPeople,
                     lista,
                     reglas,
-                    precio,
-                    base64Images
+                    precio
+                    //base64Images
                 )
-                sendDataToServer("192.168.0.119", 8080, jsonData)
+                sendDataToServer("192.168.0.207", 8080, jsonData)
 
                 // Regresar al hilo principal para iniciar la nueva actividad
                 withContext(Dispatchers.Main) {
@@ -367,7 +368,7 @@ class HostViewActivity : AppCompatActivity() {
             }
         }
     }
-    
+
     private fun createJsonData(
         action: String,
         idPropertyRegister: String,
@@ -377,8 +378,8 @@ class HostViewActivity : AppCompatActivity() {
         cantofPeople: String,
         amenidades: List<String>,
         rules: String,
-        price: String,
-        base64Image: List<String>
+        price: String
+        //base64Image: List<String>
     ): String {
         val json = JSONObject()
         json.put("action", action)
@@ -393,8 +394,8 @@ class HostViewActivity : AppCompatActivity() {
         json.put("rules", rules)
         json.put("price", price)
 
-        val imagenesJSONArray = JSONArray(base64Image)
-        json.put("image", imagenesJSONArray)
+        /* val imagenesJSONArray = JSONArray(base64Image)
+         json.put("image", imagenesJSONArray)*/
 
         return json.toString()
     }
