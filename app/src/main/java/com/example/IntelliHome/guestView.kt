@@ -53,7 +53,6 @@ class guestView : AppCompatActivity() {
     private lateinit var amenidadChimenea: CheckBox
     private lateinit var amenidadInternetAlta: CheckBox
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_guest_view)
@@ -63,7 +62,6 @@ class guestView : AppCompatActivity() {
         peopleSeekBar = findViewById(R.id.peopleSeekBar)
         priceValue = findViewById(R.id.priceValue)
         peopleValue = findViewById(R.id.peopleValue)
-        petsAllowed = findViewById(R.id.petsAllowed)
         filterDialog = findViewById(R.id.filter_dialog)
         backgroundDim = findViewById(R.id.backgroundDim)
         hamburgerMenu = findViewById(R.id.hamburger_menu) // Inicializa el menú hamburguesa
