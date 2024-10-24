@@ -19,8 +19,19 @@ def cliente_socket():
         print(f"Conectado al servidor {host}:{port}")
 
         # Enviar datos
-        json = {"action": "arduino", "command": "C1_1"}
+        json = {"action": "sv_house","idPropertyRegister":"54545454", "location":"jdfsdjfds", "typeofHouse":"Rústica", "availabitily": "no se","cantofPeople":"5","amenidades":["algo","algo","algo"],"rules":"nada", "price":"5000"}
 
+        """"
+        action: String,
+        idPropertyRegister: String,
+        location: String,
+        typeofHouse: String,
+        availability: String,
+        cantofPeople: String,
+        amenidades: List<String>,
+        rules: String,
+        price: String
+        """
         mensaje = js.dumps(json)  # Convertir el diccionario a cadena JSON
         cliente.sendall(mensaje.encode('utf-8'))  # Enviar mensaje codificado en utf-8
         print(f"Mensaje enviado: {mensaje}")
