@@ -89,7 +89,7 @@
                         tools:layout_editor_absoluteX="112dp"
                         tools:layout_editor_absoluteY="0dp" />
 
-                    <ImageView
+                    <ImageButton
                         android:id="@+id/internal_search_button"
                         android:layout_width="20dp"
                         android:layout_height="24dp"
@@ -525,7 +525,6 @@
             </LinearLayout>
 
         </ScrollView>
-
 
 
     </LinearLayout>
