@@ -44,7 +44,7 @@ class CambioUser : AppCompatActivity() {
             startActivity(intent)
         }
         btnHuesped.setOnClickListener {
-            val intent = Intent(this, RegistroActivity::class.java)
+            val intent = Intent(this, guestView::class.java)
             startActivity(intent)
         }
         loadSavedBackground()
