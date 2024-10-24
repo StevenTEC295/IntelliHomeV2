@@ -91,15 +91,8 @@
     <string name="porfavor_selccione_10_imgs">Por favor seleccione entre 1 y 10 imágenes</string>
     <string name="siguiente_imagen">Siguiente Imagen</string>
     <string name="Lista_de_casa">Lista de casas</string>
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
     <string-array name="house_types">
         <item>Rústica</item>
         <item>Moderna</item>
