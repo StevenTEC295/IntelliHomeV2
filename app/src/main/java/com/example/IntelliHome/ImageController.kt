@@ -60,4 +60,3 @@ object ImageController {
     }
 }
 
-

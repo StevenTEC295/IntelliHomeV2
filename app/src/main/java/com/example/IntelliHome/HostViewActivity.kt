@@ -206,13 +206,13 @@ class HostViewActivity : AppCompatActivity() {
             val cantofPeople = cantofPeople.text.toString()
             val reglas = reglas.text.toString()
             val precio = precio.text.toString()
-            val action = "sv_house"
-            
+            val action = "ventana_host_view"
+
             //SE CREA UN ID UNICO PARA CADA PROPIEDAD
             val idPropertyRegister = UUID.randomUUID().toString()
 
 
-            
+
             //VERIFICAR LOS CAMPOS DE TEXTO que cumplan con lo especificado
             val campos = listOf(ubicacion,autoComplete,disponibilidad,cantofPeople,reglas,precio)
             if (campos.any { it.isEmpty() }) {
@@ -262,9 +262,9 @@ class HostViewActivity : AppCompatActivity() {
             println(base64Image)*/
 
             //Multiples imagenes en base 64
-           /* val base64Images = ImageController.multipleconvertImagesToBase64(this, imageUris)
-            println(base64Images)*/
-            
+            /* val base64Images = ImageController.multipleconvertImagesToBase64(this, imageUris)
+             println(base64Images)*/
+
             /*thread {
                 val jsonData = createJsonData(
                     action,
@@ -368,7 +368,7 @@ class HostViewActivity : AppCompatActivity() {
             }
         }
     }
-    
+
     private fun createJsonData(
         action: String,
         idPropertyRegister: String,
@@ -394,8 +394,8 @@ class HostViewActivity : AppCompatActivity() {
         json.put("rules", rules)
         json.put("price", price)
 
-       /* val imagenesJSONArray = JSONArray(base64Image)
-        json.put("image", imagenesJSONArray)*/
+        /* val imagenesJSONArray = JSONArray(base64Image)
+         json.put("image", imagenesJSONArray)*/
 
         return json.toString()
     }
@@ -407,9 +407,9 @@ class HostViewActivity : AppCompatActivity() {
             val bufferedWriter  = PrintWriter(outputStream, true)
 
             bufferedWriter .println(jsonData)
-            //outputStream.close()
-            //bufferedWriter .close()
-            //socket.close()
+            outputStream.close()
+            bufferedWriter .close()
+            socket.close()
             println("Se cerro la conexion - envio")
         } catch (e: Exception) {
             e.printStackTrace()
@@ -421,7 +421,7 @@ class HostViewActivity : AppCompatActivity() {
     private fun loadSavedBackground() {
         val savedBackground =
             sharedPreferences.getInt("background_resource", R.drawable.redbackground)
-            mainLayout.setBackgroundResource(savedBackground)
+        mainLayout.setBackgroundResource(savedBackground)
 
     }
 
