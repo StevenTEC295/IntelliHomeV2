@@ -89,7 +89,7 @@
                         tools:layout_editor_absoluteX="112dp"
                         tools:layout_editor_absoluteY="0dp" />
 
-                    <ImageView
+                    <ImageButton
                         android:id="@+id/internal_search_button"
                         android:layout_width="20dp"
                         android:layout_height="24dp"
@@ -218,6 +218,13 @@
             android:text="Personas seleccionadas: 1"
             android:layout_marginTop="8dp"
             android:textColor="@color/black"/>
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"  >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"    >
         <CheckBox
             android:id="@+id/amenidad_cocina"
             android:layout_width="wrap_content"
@@ -388,7 +395,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"/>
         <CheckBox
-            android:id="@+id/amenidad_cafetera"
+            android:id="@+id/amenidad_cafeteria"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -478,7 +485,7 @@
             android:textStyle="bold"/>
 
         <CheckBox
-            android:id="@+id/amenidad_entretenimiento"
+            android:id="@+id/amenidad_Entretenimiento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -516,7 +523,8 @@
             android:text="@string/aceptan_mascotas"
             android:textColor="@color/black"
             android:textStyle="bold"/>
-
+    </LinearLayout>
+</ScrollView>
         <!-- Botón para Aplicar Filtros -->
         <Button
             android:id="@+id/applyFiltersButton"
