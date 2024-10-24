@@ -68,8 +68,8 @@ class Server:
                         self.login(data, client_socket)
                     elif data["action"] == "arduino":
                         self.arduino(data, client_socket)  
-                    elif data["action"] == "rq_housing":
-                        self.rq_housing(data, client_socket)
+                    elif data["action"] == "rq_house":
+                        self.rq_housing(client_socket)
                     elif data["action"] == "sv_house":
                         self.sv_house(data, client_socket)
                     
@@ -80,9 +80,8 @@ class Server:
         client_socket.close()
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
 
-    def rq_housing(self, data, sender_socket):
-        pass
-
+    def rq_housing(self, sender_socket):
+        self.iterarDirectorio(sender_socket)  # Leer y desencriptar el archivo
     def sv_house(self, data, sender_socket):
         data_str = str(data)
         nonce, ciphertext, tag = self.encrypt_message(data_str)
@@ -91,10 +90,9 @@ class Server:
         if encrypted_message:
             print("Registro Casa Exitoso")
             self.create_encrypted_message(data["idPropertyRegister"],encrypted_message)
-            self.iterarDirectorio(sender_socket)  # Leer y desencriptar el archivo
-
+            
     def login(self, data, sender_socket):
-        self.travelFile(sender_socket, data)
+        self.eval_login(sender_socket, data)
 
     def arduino(self, data, sender_socket):
         print("Comando recibido")
@@ -120,6 +118,7 @@ class Server:
     def create_encrypted_message(self, namefile,encrypted_message):
         with open(f".//registroCasas//{namefile}.txt", "w") as f:  # Guardar mensajes cifrados
             f.write(base64.b64encode(encrypted_message).decode() + "\n")
+            f.close()
 
     def encrypt_message(self, message):
         key = b'32_byte_secret_key_for_demo_use_only_'[:32]  # Clave fija de 32 bytes
@@ -178,7 +177,8 @@ class Server:
             data = self.returnHouse(filename)
 
             all_data.append(data)
-        client_socket.send(str(all_data).encode("utf-8"))
+        clean_data = str(all_data).encode().decode('unicode_escape')
+        client_socket.send(clean_data.encode("utf-8"))
 
     def returnHouse(self,namefile):
         with open(f"{namefile}", "r") as file:
@@ -188,9 +188,12 @@ class Server:
                     # Desencriptar el mensaje
                     plaintext = self.decrypt_message(nonce, ciphertext, tag)
                     registro = json.dumps(plaintext)  # Convertir el texto desencriptado en un diccionario
+                    print(registro)
                     return registro
                 except Exception as e:
                     print(f"Error al desencriptar el mensaje: {e}")
+        
+
         # Si recorremos todo el archivo y no encontramos coincidencias
     def close_server(self):
         for client in self.clients:
