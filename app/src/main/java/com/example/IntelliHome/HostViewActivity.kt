@@ -206,7 +206,7 @@ class HostViewActivity : AppCompatActivity() {
             val cantofPeople = cantofPeople.text.toString()
             val reglas = reglas.text.toString()
             val precio = precio.text.toString()
-            val action = "ventana_host_view"
+            val action = "sv_house"
 
             //SE CREA UN ID UNICO PARA CADA PROPIEDAD
             val idPropertyRegister = UUID.randomUUID().toString()

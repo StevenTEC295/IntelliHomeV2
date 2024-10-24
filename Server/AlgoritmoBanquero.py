@@ -3,7 +3,7 @@ class AlgoritmoBanquero:
         self.day = 0
         self.month = 0
         self.IVA = 0
-        self.commission = 0
+        self.comission = 0
         self.total = 0
         self.maxLimit = 0.10
         self.mediaArmonica = 0
@@ -35,7 +35,7 @@ class AlgoritmoBanquero:
 
     def calculateMediaArmonica(self):
 
-        if self.IVA + self.commision > 0:
+        if self.IVA + self.comission > 0:
             self.mediaArmonica = 2 / (1/self.IVA + 1/self.comission)
         else:
             self.mediaArmonica = 0

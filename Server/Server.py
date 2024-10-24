@@ -8,6 +8,7 @@ import base64
 import json
 import time
 import ArduinoConnection as arduino
+import AlgoritmoBanquero
 import os
 class Server:
     def __init__(self, host='0.0.0.0', port=8080):
@@ -72,6 +73,8 @@ class Server:
                         self.rq_housing(client_socket)
                     elif data["action"] == "sv_house":
                         self.sv_house(data, client_socket)
+                    elif data["action"] == "a_Banquero":
+                        self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
                     
             except Exception as e:
                 print(f"Surgió un Error: {e}")
@@ -80,6 +83,10 @@ class Server:
         client_socket.close()
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
 
+
+    def sendABanquero(self,socket, day, month, IVA, comission, total):
+        aBanquero = AlgoritmoBanquero.AlgoritmoBanquero()
+        socket.send(str(aBanquero.calculateNewQuantity(day, month, IVA, comission, total)).encode('utf-8')   )
     def rq_housing(self, sender_socket):
         self.iterarDirectorio(sender_socket)  # Leer y desencriptar el archivo
     def sv_house(self, data, sender_socket):

@@ -21,6 +21,7 @@ def cliente_socket():
         # Enviar datos
         #json = {"action": "sv_house","idPropertyRegister":"54545454", "location":"jdfsdjfds", "typeofHouse":"Rústica", "availabitily": "no se","cantofPeople":"5","amenidades":["algo","algo","algo"],"rules":"nada", "price":"5000"}
         json = {"action": "rq_house"}
+        #json = {"action":"a_Banquero", "day": 15, "month": 9, "IVA": 1.5, "comission": 200, "total": 2000}
         
         mensaje = js.dumps(json)  # Convertir el diccionario a cadena JSON
         cliente.sendall(mensaje.encode('utf-8'))  # Enviar mensaje codificado en utf-8
