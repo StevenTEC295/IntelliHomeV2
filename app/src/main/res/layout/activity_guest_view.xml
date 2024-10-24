@@ -570,5 +570,81 @@
             android:onClick="closeMenu"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/info_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@android:color/white"
+        android:elevation="10dp"
+        android:padding="16dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:visibility="gone">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleViewListadeCasa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/INFO_container"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
+            />
+
+        <!-- Desglose -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_breakdown_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Desglose"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/tv_iva"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IVA:"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/tv_page_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ganancia página:"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/tv_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total:"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+        <!-- Botón de Alquilar -->
+        <Button
+            android:id="@+id/btn_rent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Alquilar"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:backgroundTint="@color/rojo_de_la_app"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+
 
 </FrameLayout>

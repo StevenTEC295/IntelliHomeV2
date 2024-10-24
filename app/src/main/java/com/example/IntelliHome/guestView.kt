@@ -40,6 +40,7 @@ class guestView : AppCompatActivity() {
     private lateinit var peopleValue: TextView
     private lateinit var petsAllowed: CheckBox
     private lateinit var filterDialog: View
+    private lateinit var info_casa: View
     private lateinit var backgroundDim: View
     private lateinit var hamburgerMenu: View
     private lateinit var recycler: RecyclerView
@@ -86,6 +87,7 @@ class guestView : AppCompatActivity() {
         priceValue = findViewById(R.id.priceValue)
         peopleValue = findViewById(R.id.peopleValue)
         filterDialog = findViewById(R.id.filter_dialog)
+        info_casa = findViewById(R.id.info_container)
         backgroundDim = findViewById(R.id.backgroundDim)
         hamburgerMenu = findViewById(R.id.hamburger_menu)
         val applyFiltersButton: Button = findViewById(R.id.applyFiltersButton)
