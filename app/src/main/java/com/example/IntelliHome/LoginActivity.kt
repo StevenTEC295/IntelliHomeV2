@@ -59,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
 
                 )
                 sendDataToServer("192.168.0.119",8080,jsonData)
-                val intent = Intent(this, HomePage::class.java)
+                val intent = Intent(this, CambioUser::class.java)
                 startActivity(intent)
             }
         }
@@ -99,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
 
 
                 if (serverResponse == "1") {
-                    val intent = Intent(this, HomePage::class.java)
+                    val intent = Intent(this, CambioUser::class.java)
                     startActivity(intent)
                 } else {
                     runOnUiThread {
