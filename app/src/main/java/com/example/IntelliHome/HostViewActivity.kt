@@ -262,7 +262,7 @@ class HostViewActivity : AppCompatActivity() {
             println(base64Image)*/
 
             //Multiples imagenes en base 64
-           /* val base64Images = ImageController.multipleconvertImagesToBase64(this, imageUris)
+            /*val base64Images = ImageController.multipleconvertImagesToBase64(this, imageUris)
             println(base64Images)*/
             
             /*thread {
@@ -379,7 +379,7 @@ class HostViewActivity : AppCompatActivity() {
         amenidades: List<String>,
         rules: String,
         price: String
-        //base64Image: List<String>
+       /* base64Image: List<String>*/
     ): String {
         val json = JSONObject()
         json.put("action", action)
@@ -419,7 +419,7 @@ class HostViewActivity : AppCompatActivity() {
 
 
     private fun loadSavedBackground() {
-        val savedBackground =
+            val savedBackground =
             sharedPreferences.getInt("background_resource", R.drawable.redbackground)
             mainLayout.setBackgroundResource(savedBackground)
 
