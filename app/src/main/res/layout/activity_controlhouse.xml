@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/redbackground"
+    android:padding="16dp">
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="15dp"
+        android:src="@drawable/logo" />
+
+    <ImageView
+        android:id="@+id/menuIco"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/logo"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-23dp"
+        android:src="@drawable/menu_hamb" />
+
+    <ImageView
+        android:id="@+id/userIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/icono_perfil" />
+
+    <!-- Título de la aplicación -->
+    <TextView
+        android:id="@+id/titul"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:text="Control casa domótica"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp" />
+    <TextView
+        android:id="@+id/subtitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titul"
+        android:text="Presiona el área en donde desea encender la luz"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp" />
+
+    <!-- Imagen del plano de la casa -->
+    <ImageView
+        android:id="@+id/imagenCasa"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_below="@id/subtitulo"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/imagen_plano" />
+
+
+    <View
+        android:id="@+id/areaSala"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignTop="@id/imagenCasa"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="325dp"
+        android:background="@android:color/transparent"
+        android:clickable="true" />
+
+    <View
+        android:id="@+id/Cuarto1"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignTop="@id/imagenCasa"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:clickable="true" />
+
+    <View
+        android:id="@+id/Cuarto2"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignTop="@id/imagenCasa"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="167dp"
+        android:background="@android:color/transparent"
+        android:clickable="true" />
+
+    <View
+        android:id="@+id/Bath1"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@id/imagenCasa"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="81dp"
+        android:background="@android:color/transparent"
+        android:clickable="true" />
+
+    <RelativeLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="400dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white">
+
+        <!-- Icono de casa -->
+        <ImageView
+            android:id="@+id/homeIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_home" />
+
+        <!-- Icono de búsqueda -->
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_search" />
+
+        <!-- Icono de historial-->
+        <ImageView
+            android:id="@+id/menuIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_historial" />
+    </RelativeLayout>
+</RelativeLayout>
