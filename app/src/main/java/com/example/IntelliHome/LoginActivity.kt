@@ -35,6 +35,7 @@ import com.example.IntelliHome.Constants
 import com.example.IntelliHome.SquarePasswordTransformationMethod
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.util.Scanner
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -78,12 +79,11 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        val action = "login"
         btnIngresar.setOnClickListener{
             val passwordtext = password.text.toString()
             thread {
                 val jsonData = createJsonData(
-                    action,
+                    Constants.LOGIN,
                     usuario.text.toString(),
                     passwordtext
 
@@ -119,7 +119,9 @@ class LoginActivity : AppCompatActivity() {
             // Manda los datos al server
             printWriter.println(jsonData)
             // Aquí debería tener la respuesta del backend
-            val serverResponse = inputStream.readLine()
+
+            /*val serverResponse = inputStream.readLine()
+
             if (serverResponse != null) {
                 if (serverResponse == "1") {
                     val intent = Intent(this, CambioUser::class.java)
@@ -131,7 +133,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             } else {
                 println("No se recibió respuesta del servidor")
-            }
+            }*/
 
             // Cierra la conexion
             printWriter.close()
@@ -147,6 +149,8 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
     private fun createJsonData(
         action:String,

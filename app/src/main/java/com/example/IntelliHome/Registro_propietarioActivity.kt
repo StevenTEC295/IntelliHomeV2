@@ -254,7 +254,6 @@ class Registro_propietarioActivity : AppCompatActivity() {
 
         registerButton.setOnClickListener {
             // Obtener los datos de entrada
-            val action = "registro_propeitario"
             val firstName = firstNameInput.text.toString()
             val email = emailInput.text.toString()
             val lastName = lastNameInput.text.toString()
@@ -338,7 +337,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
 
             thread {
                 val jsonData = createJsonData(
-                    action,
+                    Constants.REGISTRO,
                     firstName,
                     lastName,
                     email,

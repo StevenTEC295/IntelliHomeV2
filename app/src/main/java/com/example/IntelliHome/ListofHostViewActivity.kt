@@ -6,14 +6,22 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.intellihome.HomePage
 import com.example.intellihome.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.PrintWriter
+import java.net.Socket
+import java.util.Scanner
 
 class ListofHostViewActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -22,7 +30,13 @@ class ListofHostViewActivity : AppCompatActivity() {
     private lateinit var adapter: CustomAdapter
     private lateinit var home: ImageView
     private lateinit var addProperty: ImageView
+    private var out: PrintWriter? = null
+    private var socket: Socket? = null
+    private var inputmsg: Scanner? = null
+    private var inputReader: BufferedReader? = null // Cambiado de Scanner a BufferedReader
 
+    private lateinit var lupa: ImageView
+    private val myDataSet = mutableListOf<Pair<String, Int>>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listof_host_view)
@@ -34,7 +48,12 @@ class ListofHostViewActivity : AppCompatActivity() {
         recycler = findViewById(R.id.recycleViewListadeCasas)
         home = findViewById(R.id.home)
         addProperty = findViewById(R.id.addProperty)
+        lupa = findViewById(R.id.lupa)
+        myDataSet.add(Pair("Información Casa 1", R.drawable.image_casas_template))
+        myDataSet.add(Pair("Información Casa 4", R.drawable.image_casas_template))
 
+        // Configura el RecyclerView
+        setupRecyclerView(recycler, myDataSet)
         addProperty.setOnClickListener {
             navegarAlFormulariopropiedad()
         }
@@ -42,17 +61,37 @@ class ListofHostViewActivity : AppCompatActivity() {
         home.setOnClickListener {
             navegarAlHome()
         }
-        val myDataSet = listOf(
-            Pair("Información Casa 1", R.drawable.image_casas_template),
-            Pair("Información Casa 4", R.drawable.image_casas_template)
-            // Agrega más casas según sea necesario
-        )
+        lupa.setOnClickListener {
+            val jsonData = createJsonData(Constants.RQHOUSE)
+            sendMessage(jsonData)
+        }
 
-        setupRecyclerView(recycler, myDataSet)
+        Thread {
+            try {
+                socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
+                out = PrintWriter(socket!!.getOutputStream(), true)
+                inputmsg = Scanner(socket!!.getInputStream())  //Es casi lo mismo que el buffer los dos funcionan
+                inputReader = BufferedReader(InputStreamReader(socket!!.getInputStream())) // Inicializa BufferedReader
 
+                Thread {
+                    while (true) {
+                        val message = inputReader!!.readLine()
+                        if (message!=null) {
+                            //val message = inputmsg!!.nextLine()
+                            runOnUiThread { // actualiza el la gui en un hilo
+                                myDataSet.add(Pair(message, R.drawable.image_casas_template)) // Agrega el nuevo mensaje
+                                adapter.notifyItemInserted(myDataSet.size - 1) // Notifica al adaptador que se ha insertado un nuevo elemento
+                            }
 
+                        }
+                    }
+                }.start()
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
         loadSavedBackground()
-
     }
 
 
@@ -63,25 +102,29 @@ class ListofHostViewActivity : AppCompatActivity() {
 
     }
 
-    /*private fun setupRecyclerView() {
-        // Crear un conjunto de datos
-        val myDataSet = listOf(
-            Pair("Información Casa 1", R.drawable.image_casas_template),
-            Pair("Información Casa 2", R.drawable.image_casas_template)
-            // Agrega más casas según sea necesario
-        )
 
-        // Inicializar el adaptador
-        adapter = CustomAdapter(myDataSet)
 
-        // Establecer el adaptador en el RecyclerView
-        recycler.adapter = adapter
-        // Establecer un LayoutManager para el RecyclerView
-        recycler.layoutManager = LinearLayoutManager(this)
-    }*/
+    private fun sendMessage(message: String) {
+        Thread {
+            try {
+                out?.println(message)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+    }
+
+    private fun createJsonData(
+        action: String
+    ): String {
+        val json = JSONObject()
+        json.put("action", action)
+        return json.toString()
+    }
+
     private fun setupRecyclerView(recyclerView: RecyclerView, dataSet: List<Pair<String, Int>>) {
         // Inicializar el adaptador con el conjunto de datos proporcionado
-        val adapter = CustomAdapter(dataSet)
+        adapter = CustomAdapter(dataSet) // Asigna a la variable de clase
 
         // Establecer el adaptador en el RecyclerView
         recyclerView.adapter = adapter
@@ -90,16 +133,28 @@ class ListofHostViewActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     }
 
-
     private fun navegarAlFormulariopropiedad() {
         val intent = Intent(this, HostViewActivity::class.java)
         startActivity(intent)
+        onDestroy()
         finish()
+
     }
 
     private fun navegarAlHome() {
         val intent = Intent(this, HomePage::class.java)
         startActivity(intent)
         finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            if (out != null) out!!.close()
+            if (inputmsg != null) inputmsg!!.close()
+            if (socket != null) socket!!.close()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
     }
 }

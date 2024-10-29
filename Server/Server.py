@@ -86,7 +86,7 @@ class Server:
 
     def sendABanquero(self,socket, day, month, IVA, comission, total):
         aBanquero = AlgoritmoBanquero.AlgoritmoBanquero()
-        socket.send(str(aBanquero.calculateNewQuantity(day, month, IVA, comission, total)).encode('utf-8')   )
+        socket.send(str(aBanquero.calculateNewQuantity(day, month, IVA, comission, total)).encode('utf-8'))
     def rq_housing(self, sender_socket):
         self.iterarDirectorio(sender_socket)  # Leer y desencriptar el archivo
     def sv_house(self, data, sender_socket):
@@ -164,7 +164,7 @@ class Server:
                     # Comparamos los datos recibidos (username, email o password) con los del registro
                     if (registro["username"] == data["usuario"] or registro['email'] == data["usuario"] or 
                         registro["phone"].split(" ")[1] == data["usuario"] and registro["password"] == data["password"]):
-                        client_socket.send("1\n".encode('utf-8'))
+                        client_socket.send("1".encode('utf-8'))
                         print("Login exitoso")
                         return  # Salimos si el login fue exitoso
                         

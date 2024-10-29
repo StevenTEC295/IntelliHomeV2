@@ -258,7 +258,6 @@ class RegistroActivity : AppCompatActivity() {
 
         registerButton.setOnClickListener {
             // Obtener los datos de entrada
-            val action = "registro"
             val firstName = firstNameInput.text.toString()
             val email  = emailInput.text.toString()
             val lastName  = lastNameInput.text.toString()
@@ -333,7 +332,7 @@ class RegistroActivity : AppCompatActivity() {
 
             thread {
                 val jsonData = createJsonData(
-                    action,
+                    Constants.REGISTRO,
                     firstName,
                     lastName ,
                     email ,
@@ -355,7 +354,6 @@ class RegistroActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
-
             }
         }
         button_tomar_foto.setOnClickListener {
