@@ -298,7 +298,7 @@ class HostViewActivity : AppCompatActivity() {
                     precio
                     //base64Images
                 )
-                sendDataToServer("192.168.0.207", 8080, jsonData)
+                sendDataToServer("192.168.144.1", 8080, jsonData)
 
                 // Regresar al hilo principal para iniciar la nueva actividad
                 withContext(Dispatchers.Main) {

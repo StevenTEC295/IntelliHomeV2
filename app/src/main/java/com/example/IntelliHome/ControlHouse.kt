@@ -78,7 +78,7 @@ class ControlHouse : AppCompatActivity() {
         thread {
             try {
                 // Conectar al servidor de sockets
-                val socket = Socket("192.168.0.207", 8080)  // Cambia la IP y puerto a los de tu servidor
+                val socket = Socket("192.168.144.129", 8080)  // Cambia la IP y puerto a los de tu servidor
                 val outputStream: OutputStream = socket.getOutputStream()
                 val writer = PrintWriter(outputStream, true)
 

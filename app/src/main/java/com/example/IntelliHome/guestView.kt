@@ -148,7 +148,7 @@ class guestView : AppCompatActivity() {
     private suspend fun requestHouses() {
         try {
             // Conectar al servidor
-            val socket = Socket("IP_DEL_SERVIDOR", 8080) // Reemplaza IP_DEL_SERVIDOR con la dirección IP de tu servidor
+            val socket = Socket("192.168.144.1", 8080) // Reemplaza IP_DEL_SERVIDOR con la dirección IP de tu servidor
             val out = PrintWriter(socket.getOutputStream(), true)
             val input = BufferedReader(InputStreamReader(socket.getInputStream()))
 
