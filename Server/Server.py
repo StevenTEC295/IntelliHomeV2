@@ -184,7 +184,7 @@ class Server:
             print(filename)
             data = self.returnHouse(filename)
 
-            all_data.append(data)
+            all_data.append(data.encode().decode('unicode_escape'))
         print(all_data)
         clean_data = str(all_data).encode().decode('unicode_escape')
         print(clean_data)
@@ -198,9 +198,9 @@ class Server:
                 try:
                     # Desencriptar el mensaje
                     plaintext = self.decrypt_message(nonce, ciphertext, tag)
-                    registro = json.dumps(plaintext)  # Convertir el texto desencriptado en un diccionario
-                    print(registro)
-                    return registro
+                    """registro = json.dumps(plaintext)  # Convertir el texto desencriptado en un diccionario
+                    print(registro)"""
+                    return plaintext
                 except Exception as e:
                     print(f"Error al desencriptar el mensaje: {e}")
         
