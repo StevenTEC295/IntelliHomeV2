@@ -50,35 +50,36 @@ class Server:
             self.chat_display.config(state='disabled')
             threading.Thread(target=self.handle_client, args=(client_socket,)).start() # Para que sea en hilo separado
     def handle_client(self, client_socket):
-        while True:  # Siempre estar atento a recibir mensajes de cualquier cliente
-            try:
-                
-                message = client_socket.recv(1024).decode("utf-8")  # recibe los mensajes
-                
-                print(message)
-                if message:  # Si no hay mensaje
-                    #Convierte el texto en formato json
-                    data = json.loads(message)
-                    print(data["action"])
+    
+        try:
+            
+            message = client_socket.recv(4096).decode("utf-8")  # recibe los mensajes
+            
+            print(type(message))
+            if message:  # Si no hay mensaje
+                #Convierte el texto en formato json
+                data = json.loads(message)
+                #data = dict(message)
+                print(data["action"])
+        
             
                 
-                    
-                    if data["action"] == "registro":
-                        self.register(message, client_socket)  # mandar mensaje a todo mundo 
-                    elif data["action"] == "login":
-                        self.login(data, client_socket)
-                    elif data["action"] == "arduino":
-                        self.arduino(data, client_socket)  
-                    elif data["action"] == "rq_house":
-                        self.rq_housing(client_socket)
-                    elif data["action"] == "sv_house":
-                        self.sv_house(data, client_socket)
-                    elif data["action"] == "a_Banquero":
-                        self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
-                    
-            except Exception as e:
-                print(f"Surgió un Error: {e}")
-                break  # Salir del bucle en caso de error
+                if data["action"] == "registro":
+                    self.register(message, client_socket)  # mandar mensaje a todo mundo 
+                elif data["action"] == "login":
+                    self.login(data, client_socket)
+                elif data["action"] == "arduino":
+                    self.arduino(data, client_socket)  
+                elif data["action"] == "rq_house":
+                    self.rq_housing(client_socket)
+                elif data["action"] == "sv_house":
+                    self.sv_house(data, client_socket)
+                elif data["action"] == "a_Banquero":
+                    self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
+                
+        except Exception as e:
+            print(f"Surgió un Error: {e}")
+            
 
         client_socket.close()
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
@@ -184,9 +185,12 @@ class Server:
             data = self.returnHouse(filename)
 
             all_data.append(data)
+        print(all_data)
         clean_data = str(all_data).encode().decode('unicode_escape')
-        client_socket.send(clean_data.encode("utf-8"))
-
+        print(clean_data)
+        #client_socket.sendall(clean_data.encode("utf-8"))
+        #msj = "Hola"
+        client_socket.sendall((clean_data+"\n").encode("utf-8"))
     def returnHouse(self,namefile):
         with open(f"{namefile}", "r") as file:
             for line in file:
