@@ -16,6 +16,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -30,13 +32,16 @@ class ListofHostViewActivity : AppCompatActivity() {
     private lateinit var adapter: CustomAdapter
     private lateinit var home: ImageView
     private lateinit var addProperty: ImageView
+
     private var out: PrintWriter? = null
     private var socket: Socket? = null
     private var inputmsg: Scanner? = null
     private var inputReader: BufferedReader? = null // Cambiado de Scanner a BufferedReader
 
+    private var isMessageSent = false
     private lateinit var lupa: ImageView
     private val myDataSet = mutableListOf<Pair<String, Int>>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listof_host_view)
@@ -62,8 +67,7 @@ class ListofHostViewActivity : AppCompatActivity() {
             navegarAlHome()
         }
         lupa.setOnClickListener {
-            val jsonData = createJsonData(Constants.RQHOUSE)
-            sendMessage(jsonData)
+
         }
 
         Thread {
@@ -71,15 +75,29 @@ class ListofHostViewActivity : AppCompatActivity() {
                 socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
                 out = PrintWriter(socket!!.getOutputStream(), true)
                 inputmsg = Scanner(socket!!.getInputStream())  //Es casi lo mismo que el buffer los dos funcionan
+
                 inputReader = BufferedReader(InputStreamReader(socket!!.getInputStream())) // Inicializa BufferedReader
+
+                if (!isMessageSent) {
+                    val jsonData = createJsonData(Constants.RQHOUSE)
+                    sendMessage(jsonData)
+                    isMessageSent = true // Marcar el mensaje como enviado
+                }
 
                 Thread {
                     while (true) {
                         val message = inputReader!!.readLine()
                         if (message!=null) {
                             //val message = inputmsg!!.nextLine()
+                            //val properties = parseProperties(message)
+
+                            val parser = PropertyParser()
+                            val properties = parser.parseProperties(message)
+
                             runOnUiThread { // actualiza el la gui en un hilo
-                                myDataSet.add(Pair(message, R.drawable.image_casas_template)) // Agrega el nuevo mensaje
+                                for (property in properties) {
+                                    myDataSet.add(Pair("Casa en ${property.idPropertyRegister}", R.drawable.image_casas_template))
+                                }
                                 adapter.notifyItemInserted(myDataSet.size - 1) // Notifica al adaptador que se ha insertado un nuevo elemento
                             }
 
@@ -101,8 +119,17 @@ class ListofHostViewActivity : AppCompatActivity() {
         mainLayout.setBackgroundResource(savedBackground)
 
     }
-
-
+    data class Property(
+        val action: String,
+        val idPropertyRegister: String,
+        val location: String,
+        val typeofHouse: String,
+        val availability: String,
+        val cantofPeople: Int,
+        val amenities: List<String>,
+        val rules: String,
+        val price: Int
+    )
 
     private fun sendMessage(message: String) {
         Thread {
