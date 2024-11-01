@@ -184,9 +184,9 @@ class Server:
             print(filename)
             data = self.returnHouse(filename)
 
-            all_data.append(data.encode().decode('unicode_escape'))
+            all_data.append(data.encode().decode('utf-8'))
         #print(all_data)
-        clean_data = str(all_data).encode().decode('unicode_escape')
+        clean_data = str(all_data).encode().decode('utf-8')
         print(clean_data)
         #client_socket.sendall(clean_data.encode("utf-8"))
         #msj = "Hola"

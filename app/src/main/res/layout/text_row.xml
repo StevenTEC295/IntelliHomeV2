@@ -6,15 +6,15 @@
     xmlns:andriod="http://schemas.android.com/tools">
 
     <RelativeLayout
-        android:id="@+id/container_image_foto"
-        android:layout_width="350dp"
-        android:layout_height="300dp"
+        android:id="@+id/container_image_foto_guest"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="@color/white"
         andriod:ignore="MissingConstraints">
 
         <ImageView
-            android:id="@+id/imageProperty"
+            android:id="@+id/imageProperty_guest"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_alignParentStart="true"
@@ -23,7 +23,7 @@
             andriod:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/info_de_la_casa"
+            android:id="@+id/info_de_la_casa_guest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="200dp"

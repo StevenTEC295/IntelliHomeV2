@@ -1,5 +1,6 @@
 package com.example.IntelliHome
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -96,7 +97,7 @@ class ListofHostViewActivity : AppCompatActivity() {
 
                             runOnUiThread { // actualiza el la gui en un hilo
                                 for (property in properties) {
-                                    myDataSet.add(Pair("Casa en ${property.idPropertyRegister}", R.drawable.image_casas_template))
+                                    myDataSet.add(Pair("Casa en ${property.location}", R.drawable.image_casas_template))
                                 }
                                 adapter.notifyItemInserted(myDataSet.size - 1) // Notifica al adaptador que se ha insertado un nuevo elemento
                             }
@@ -113,10 +114,11 @@ class ListofHostViewActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     private fun loadSavedBackground() {
         val savedBackground =
             sharedPreferences.getInt("background_resource", R.drawable.redbackground)
-        mainLayout.setBackgroundResource(savedBackground)
+            mainLayout.setBackgroundResource(savedBackground)
 
     }
     data class Property(

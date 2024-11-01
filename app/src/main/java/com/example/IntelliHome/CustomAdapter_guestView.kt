@@ -13,8 +13,8 @@ class CustomAdapter_guestView(private val dataSet: List<Pair<String, Int>>) : //
 
     // Define el ViewHolder
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView = view.findViewById(R.id.info_de_la_casa)
-        val imageView: ImageView = view.findViewById(R.id.imageProperty) // Agrega la ImageView
+        val textView: TextView = view.findViewById(R.id.info_de_la_casa_guest)
+        val imageView: ImageView = view.findViewById(R.id.imageProperty_guest) // Agrega la ImageView
 
         init {
             // Define el click listener si es necesario

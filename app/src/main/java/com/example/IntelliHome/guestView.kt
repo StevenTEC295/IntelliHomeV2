@@ -1,17 +1,23 @@
 package com.example.intellihome // Cambia esto al nombre de tu paquete
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.IntelliHome.Constants
+import com.example.IntelliHome.CustomAdapter
 import com.example.IntelliHome.CustomAdapter_guestView
+import com.example.IntelliHome.PropertyParser
 import com.example.intellihome.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,19 +29,11 @@ import java.io.PrintWriter
 import java.net.Socket
 import org.json.JSONArray
 import org.json.JSONObject
-
-data class House(
-    val name: String,
-    val price: Int,
-    val location: String,
-    val size: Int,
-    val amenities: List<String>,
-    val available: Boolean,
-    val guestCount: Int
-)
+import java.util.Scanner
 
 class guestView : AppCompatActivity() {
-
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var mainLayout: RelativeLayout
     private lateinit var priceSeekBar: SeekBar
     private lateinit var peopleSeekBar: SeekBar
     private lateinit var priceValue: TextView
@@ -45,44 +43,30 @@ class guestView : AppCompatActivity() {
     private lateinit var info_casa: View
     private lateinit var backgroundDim: View
     private lateinit var hamburgerMenu: View
+
+    private val myDataSet = mutableListOf<Pair<String, Int>>()
+    private lateinit var adapter: CustomAdapter_guestView
     private lateinit var recycler: RecyclerView
 
-    private lateinit var checkBoxCocina: CheckBox
-    private lateinit var checkBoxAC: CheckBox
-    private lateinit var checkBoxCalefaccion: CheckBox
-    private lateinit var amenidadWifi: CheckBox
-    private lateinit var tvO: CheckBox
-    private lateinit var amenidadLavadora: CheckBox
-    private lateinit var amenidadPiscina: CheckBox
-    private lateinit var amenidadJardin: CheckBox
-    private lateinit var amenidadBarbacoa: CheckBox
-    private lateinit var amenidadTerraza: CheckBox
-    private lateinit var amenidadGym: CheckBox
-    private lateinit var amenidadGaraje: CheckBox
-    private lateinit var amenidadSeguridad: CheckBox
-    private lateinit var amenidadHabitaciones: CheckBox
-    private lateinit var amenidadMuebles: CheckBox
-    private lateinit var amenidadMicro: CheckBox
-    private lateinit var amenidadLavajillas: CheckBox
-    private lateinit var amenidadCafetera: CheckBox
-    private lateinit var amenidadRopa: CheckBox
-    private lateinit var amenidadComunes: CheckBox
-    private lateinit var amenidadCamas: CheckBox
-    private lateinit var amenidadLimpieza: CheckBox
-    private lateinit var amenidadTransportePublico: CheckBox
-    private lateinit var amenidadCercania: CheckBox
-    private lateinit var amenidadRadiacion: CheckBox
-    private lateinit var amenidadEscritorio: CheckBox
-    private lateinit var amenidadEntretenimiento: CheckBox
-    private lateinit var amenidadChimenea: CheckBox
-    private lateinit var amenidadInternetAlta: CheckBox
-
-    private lateinit var housesData: List<House> // Para almacenar los datos de las casas
+    private var out: PrintWriter? = null
+    private var socket: Socket? = null
+    private var inputmsg: Scanner? = null
+    private var inputReader: BufferedReader? = null // Cambiado de Scanner a BufferedReader
+    private var isMessageSent = false
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_guest_view)
+        sharedPreferences = getSharedPreferences("IntelliHomePrefs", Context.MODE_PRIVATE)
+        mainLayout = findViewById(R.id.main)
+
+        recycler = findViewById(R.id.recycleViewListadeCasas_guest)
+
+        myDataSet.add(Pair("Información Casa 1", R.drawable.image_casas_template))
+        // Configura el RecyclerView
+        setupRecyclerView(recycler, myDataSet)
+
 
         // Inicialización de elementos
         priceSeekBar = findViewById(R.id.priceSeekBar)
@@ -94,12 +78,11 @@ class guestView : AppCompatActivity() {
         backgroundDim = findViewById(R.id.backgroundDim)
         hamburgerMenu = findViewById(R.id.hamburger_menu)
         val applyFiltersButton: Button = findViewById(R.id.applyFiltersButton)
-        recycler = findViewById(R.id.recycleViewListadeCasas)
 
 
         val button = findViewById<Button>(R.id.boton)
 
-        button.setOnClickListener{
+        button.setOnClickListener {
             val intent = Intent(this, ControlHouse::class.java)
             startActivity(intent)
         }
@@ -116,7 +99,8 @@ class guestView : AppCompatActivity() {
         // Listener para el SeekBar de personas
         peopleSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                peopleValue.text = "Personas seleccionadas: ${progress + 1}" // +1 porque empieza en 0
+                peopleValue.text =
+                    "Personas seleccionadas: ${progress + 1}" // +1 porque empieza en 0
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -139,73 +123,69 @@ class guestView : AppCompatActivity() {
         findViewById<View>(R.id.menu_button).setOnClickListener { toggleHamburgerMenu() }
         backgroundDim.setOnClickListener { closeHamburgerMenu() }
 
-        // Solicitar casas al iniciar la actividad
-        CoroutineScope(Dispatchers.IO).launch {
-            requestHouses()
-        }
+        Thread {
+            try {
+                socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
+                out = PrintWriter(socket!!.getOutputStream(), true)
+                inputmsg =
+                    Scanner(socket!!.getInputStream())  //Es casi lo mismo que el buffer los dos funcionan
+
+                inputReader =
+                    BufferedReader(InputStreamReader(socket!!.getInputStream())) // Inicializa BufferedReader
+
+                if (!isMessageSent) {
+                    val jsonData = createJsonData(Constants.RQHOUSE)
+                    sendMessage(jsonData)
+                    isMessageSent = true // Marcar el mensaje como enviado
+                }
+
+                Thread {
+                    while (true) {
+                        val message = inputReader!!.readLine()
+                        if (message != null) {
+                            //val message = inputmsg!!.nextLine()
+                            //val properties = parseProperties(message)
+
+                            val parser = PropertyParser()
+                            val properties = parser.parseProperties(message)
+
+                            runOnUiThread { // actualiza el la gui en un hilo
+                                for (property in properties) {
+
+                                    val info = "${getString(R.string.casa)} ${property.typeofHouse}\n"+
+                                            "${getString(R.string.ubicacion)} ${property.location}\n"+
+                                            "${getString(R.string.disponilidad_casa)} ${property.availability}\n"+
+                                            "${getString(R.string.cantpersonas)} ${property.cantofPeople}\n\n"+
+                                            "${getString(R.string.amenidades_lista)} ${property.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n"+
+                                            "${getString(R.string.reglas_guess)} ${property.rules}\n"+
+                                            "${getString(R.string.precio_sin_algoritmo)} ${property.price}\$\n"
+
+
+                                    myDataSet.add(Pair(info, R.drawable.image_casas_template))
+                                }
+                                adapter.notifyItemInserted(myDataSet.size - 1) // Notifica al adaptador que se ha insertado un nuevo elemento
+                            }
+
+                        }
+                    }
+                }.start()
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+        loadSavedBackground()
+
     }
 
-    private suspend fun requestHouses() {
-        try {
-            // Conectar al servidor
-            val socket = Socket("IP_DEL_SERVIDOR", 8080) // Reemplaza IP_DEL_SERVIDOR con la dirección IP de tu servidor
-            val out = PrintWriter(socket.getOutputStream(), true)
-            val input = BufferedReader(InputStreamReader(socket.getInputStream()))
+    private fun setupRecyclerView(recyclerView: RecyclerView, dataSet: List<Pair<String, Int>>) {
+        // Inicializar el adaptador con el conjunto de datos proporcionado
+        adapter = CustomAdapter_guestView(dataSet) // Asigna a la variable de clase
 
-            // Enviar solicitud al servidor
-            val requestJson = JSONObject().apply {
-                put("action", "rq_house")
-            }.toString()
-            out.println(requestJson)
-
-            // Recibir respuesta
-            val response = StringBuilder()
-            var line: String?
-            while (input.readLine().also { line = it } != null) {
-                response.append(line)
-            }
-
-            // Procesar la respuesta
-            housesData = parseHouseData(response.toString())
-            withContext(Dispatchers.Main) {
-                setupRecyclerView(recycler, housesData) // Muestra los datos en el RecyclerView
-            }
-
-            // Cerrar la conexión
-            socket.close()
-        } catch (e: Exception) {
-            e.printStackTrace() // Manejar errores de conexión
-        }
-    }
-
-    private fun parseHouseData(data: String): List<House> {
-        val housesList = mutableListOf<House>()
-        val jsonArray = JSONObject(data).getJSONArray("houses") // Asegúrate que la respuesta JSON tiene este formato
-        for (i in 0 until jsonArray.length()) {
-            val house = jsonArray.getJSONObject(i)
-            val name = house.getString("nombre")
-            val price = house.getInt("precio")
-            val location = house.getString("ubicacion")
-            val size = house.getInt("tamano")
-            val amenities = mutableListOf<String>()
-            val amenitiesArray = house.getJSONArray("amenidades")
-            for (j in 0 until amenitiesArray.length()) {
-                amenities.add(amenitiesArray.getString(j))
-            }
-            val available = house.getBoolean("disponible")
-            val guestCount = house.getInt("cantidad_personas")
-
-            // Agregar cada casa a la lista
-            housesList.add(House(name, price, location, size, amenities, available, guestCount))
-        }
-        return housesList
-    }
-
-    private fun setupRecyclerView(recyclerView: RecyclerView, houses: List<House>) {
-        val dataSet = houses.map { Pair(it.name, it.price) } // Convertimos la lista de House a Pair
-        val adapter = CustomAdapter_guestView(dataSet)
-
+        // Establecer el adaptador en el RecyclerView
         recyclerView.adapter = adapter
+
+        // Establecer un LayoutManager para el RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     }
 
@@ -232,5 +212,54 @@ class guestView : AppCompatActivity() {
     private fun closeHamburgerMenu() {
         hamburgerMenu.visibility = View.GONE
         backgroundDim.visibility = View.GONE
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    private fun loadSavedBackground() {
+        val savedBackground =
+            sharedPreferences.getInt("background_resource", R.drawable.redbackground)
+        mainLayout.setBackgroundResource(savedBackground)
+
+    }
+
+    data class Property(
+        val action: String,
+        val idPropertyRegister: String,
+        val location: String,
+        val typeofHouse: String,
+        val availability: String,
+        val cantofPeople: Int,
+        val amenities: List<String>,
+        val rules: String,
+        val price: Int
+    )
+
+    private fun sendMessage(message: String) {
+        Thread {
+            try {
+                out?.println(message)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+    }
+
+    private fun createJsonData(
+        action: String
+    ): String {
+        val json = JSONObject()
+        json.put("action", action)
+        return json.toString()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            if (out != null) out!!.close()
+            if (inputmsg != null) inputmsg!!.close()
+            if (socket != null) socket!!.close()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
     }
 }
