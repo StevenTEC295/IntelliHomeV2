@@ -125,6 +125,7 @@
     <string name="reglas_guess">Reglas:</string>
     <string name="precio_sin_algoritmo">Precio base:</string>
 
+    <string name="filterreset">Filtro reset</string>
 
 
 </resources>

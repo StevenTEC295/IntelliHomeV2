@@ -8,26 +8,21 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.IntelliHome.Constants
-import com.example.IntelliHome.CustomAdapter
 import com.example.IntelliHome.CustomAdapter_guestView
 import com.example.IntelliHome.PropertyParser
-import com.example.intellihome.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
-import org.json.JSONArray
 import org.json.JSONObject
 import java.util.Scanner
 
@@ -43,9 +38,9 @@ class guestView : AppCompatActivity() {
     private lateinit var info_casa: View
     private lateinit var backgroundDim: View
     private lateinit var hamburgerMenu: View
-
+    private lateinit var upadatebtn: Button
     private val myDataSet = mutableListOf<Pair<String, Int>>()
-    private lateinit var adapter: CustomAdapter_guestView
+    private lateinit var recycleadapter: CustomAdapter_guestView
     private lateinit var recycler: RecyclerView
 
     private var out: PrintWriter? = null
@@ -53,6 +48,7 @@ class guestView : AppCompatActivity() {
     private var inputmsg: Scanner? = null
     private var inputReader: BufferedReader? = null // Cambiado de Scanner a BufferedReader
     private var isMessageSent = false
+    private lateinit var house_image: ImageView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,8 +59,8 @@ class guestView : AppCompatActivity() {
 
         recycler = findViewById(R.id.recycleViewListadeCasas_guest)
 
-        myDataSet.add(Pair("Información Casa 1", R.drawable.image_casas_template))
-        // Configura el RecyclerView
+
+
         setupRecyclerView(recycler, myDataSet)
 
 
@@ -77,6 +73,7 @@ class guestView : AppCompatActivity() {
         info_casa = findViewById(R.id.info_container)
         backgroundDim = findViewById(R.id.backgroundDim)
         hamburgerMenu = findViewById(R.id.hamburger_menu)
+        house_image = findViewById(R.id.homeIcon)
         val applyFiltersButton: Button = findViewById(R.id.applyFiltersButton)
 
 
@@ -113,8 +110,41 @@ class guestView : AppCompatActivity() {
         // Manejo del botón de aplicar filtros
         applyFiltersButton.setOnClickListener {
             // Aquí puedes manejar los filtros aplicados
+            val maxPrice = priceSeekBar.progress
+            val maxPeople = peopleSeekBar.progress + 1
+            /*val isPetsAllowed = petsAllowed.isChecked*/
+            //Primero hago un clear de de la Data
+            eliminar()
+            val infoFiltrar= GlobalVariables.globalInfo
+
+            val parserFiltro = PropertyParser()
+            val propertiesFiltro = parserFiltro.parseProperties(infoFiltrar)
+
+            //Verifico que no hay un reset de la barra
+            if(maxPrice==0 && maxPeople==1){
+                Toast.makeText(this, getString(R.string.filterreset), Toast.LENGTH_SHORT).show()
+                filterNotMatched()
+            }else{
+                for (propertyFilter in propertiesFiltro){
+                    if (propertyFilter.price in 1..maxPrice && propertyFilter.cantofPeople in 1..maxPeople ){
+
+                        val info = "${getString(R.string.casa)} ${propertyFilter.typeofHouse}\n" +
+                                "${getString(R.string.ubicacion)} ${propertyFilter.location}\n" +
+                                "${getString(R.string.disponilidad_casa)} ${propertyFilter.availability}\n" +
+                                "${getString(R.string.cantpersonas)} ${propertyFilter.cantofPeople}\n\n" +
+                                "${getString(R.string.amenidades_lista)} ${propertyFilter.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n" +
+                                "${getString(R.string.reglas_guess)} ${propertyFilter.rules}\n" +
+                                "${getString(R.string.precio_sin_algoritmo)} ${propertyFilter.price}\$"
+
+                        myDataSet.add(Pair(info, R.drawable.image_casas_template))
+                    }
+                }
+            }
+
+            recycleadapter.notifyDataSetChanged()
             hideFilterDialog()
         }
+
 
         // Manejo del fondo oscuro
         backgroundDim.setOnClickListener { hideFilterDialog() }
@@ -143,12 +173,9 @@ class guestView : AppCompatActivity() {
                     while (true) {
                         val message = inputReader!!.readLine()
                         if (message != null) {
-                            //val message = inputmsg!!.nextLine()
-                            //val properties = parseProperties(message)
-
                             val parser = PropertyParser()
                             val properties = parser.parseProperties(message)
-
+                            GlobalVariables.globalInfo = message
                             runOnUiThread { // actualiza el la gui en un hilo
                                 for (property in properties) {
 
@@ -163,7 +190,7 @@ class guestView : AppCompatActivity() {
 
                                     myDataSet.add(Pair(info, R.drawable.image_casas_template))
                                 }
-                                adapter.notifyItemInserted(myDataSet.size - 1) // Notifica al adaptador que se ha insertado un nuevo elemento
+                                recycleadapter.notifyItemInserted(myDataSet.size - 1) // Notifica al adaptador que se ha insertado un nuevo elemento
                             }
 
                         }
@@ -178,12 +205,35 @@ class guestView : AppCompatActivity() {
 
     }
 
+    private fun filterNotMatched() {
+        val infoFiltrar= GlobalVariables.globalInfo
+        val parserFiltro = PropertyParser()
+        val propertiesFiltro = parserFiltro.parseProperties(infoFiltrar)
+
+        for (propertyFilter in propertiesFiltro){
+                val info = "${getString(R.string.casa)} ${propertyFilter.typeofHouse}\n" +
+                        "${getString(R.string.ubicacion)} ${propertyFilter.location}\n" +
+                        "${getString(R.string.disponilidad_casa)} ${propertyFilter.availability}\n" +
+                        "${getString(R.string.cantpersonas)} ${propertyFilter.cantofPeople}\n\n" +
+                        "${getString(R.string.amenidades_lista)} ${propertyFilter.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n" +
+                        "${getString(R.string.reglas_guess)} ${propertyFilter.rules}\n" +
+                        "${getString(R.string.precio_sin_algoritmo)} ${propertyFilter.price}\$"
+
+                myDataSet.add(Pair(info, R.drawable.image_casas_template))
+        }
+    }
+
+    private fun eliminar() {
+        myDataSet.clear()
+        recycleadapter.notifyDataSetChanged()
+    }
+
     private fun setupRecyclerView(recyclerView: RecyclerView, dataSet: List<Pair<String, Int>>) {
         // Inicializar el adaptador con el conjunto de datos proporcionado
-        adapter = CustomAdapter_guestView(dataSet) // Asigna a la variable de clase
+        recycleadapter = CustomAdapter_guestView(dataSet) // Asigna a la variable de clase
 
         // Establecer el adaptador en el RecyclerView
-        recyclerView.adapter = adapter
+        recyclerView.adapter = recycleadapter
 
         // Establecer un LayoutManager para el RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
@@ -208,6 +258,11 @@ class guestView : AppCompatActivity() {
             closeHamburgerMenu()
         }
     }
+
+    object GlobalVariables {
+        var globalInfo: String = ""
+    }
+
 
     private fun closeHamburgerMenu() {
         hamburgerMenu.visibility = View.GONE

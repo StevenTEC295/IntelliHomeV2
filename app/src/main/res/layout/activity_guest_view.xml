@@ -168,14 +168,14 @@
 
     </ScrollView>
     <!-- BOTON DE ABAJO -->
-    <!--<RelativeLayout
+    <RelativeLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="bottom"
         android:background="@android:color/white">
 
-        &lt;!&ndash; Icono de casa &ndash;&gt;
+        <!-- Icono de casa -->
         <ImageView
             android:id="@+id/homeIcon"
             android:layout_width="wrap_content"
@@ -184,7 +184,7 @@
             android:layout_centerVertical="true"
             android:src="@drawable/home" />
 
-        &lt;!&ndash; Icono de búsqueda &ndash;&gt;
+        <!-- Icono de búsqueda -->
         <ImageView
             android:id="@+id/searchIcon"
             android:layout_width="50dp"
@@ -199,7 +199,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/h_de_historial" />
-    </RelativeLayout>-->
+    </RelativeLayout>
 
 
 
