@@ -3,15 +3,19 @@
 #define LED_CUARTO2 6
 #define LED_BATH1 10
 #define LED_SALA 12
+#define SENSOR_PIN 13
 //Declaracion de variables
 String ServerMessage;
-
+// Estaods ddel sensor flame 
+bool flameSensor;
+bool fire;
 void setup() {
   Serial.begin(9600);// Iniciar puerto serial a 9600 baud
   pinMode(LED_CUARTO1, OUTPUT); // Definir el pin del cuarto 1 como salida
   pinMode(LED_CUARTO2, OUTPUT); // Definir el pin del cuarto 2 como salida
   pinMode(LED_BATH1, OUTPUT);   // Definir el pin del baño como salida
   pinMode(LED_SALA, OUTPUT);    // Definir el pin de la sala como salida
+  pinMode(SENSOR_PIN, INPUT); // Definir el pin del sensor del flame
 }
 
 void loop() {
@@ -50,4 +54,16 @@ void loop() {
       digitalWrite(LED_SALA, LOW);   // Apaga el LED de la sala
     } 
   } 
+  // Lectura del pin del sensor flame
+  flameSensor = digitalRead(SENSOR_PIN);
+  // Comportamiento con base al valor del sensor flame 
+  if (flameSensor && !fire){
+    Serial.write("Llama detectada!\n");
+    fire = true; 
+  }
+  if (!flameSensor && fire){
+    Serial.write("Llama apagada!\n");
+    fire = false;
+  }
+  delay(200);
 }

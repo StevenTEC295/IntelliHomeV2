@@ -207,5 +207,14 @@ class Server:
             client.close()
         self.server_socket.close()
         self.root.destroy()
+        
+    def read_arduino_msg(self):# Recibe el mensaje del flame, enviado desde el Arduino
+        while True:
+            ino_message = self.arduino.read_until(b"\n").decode('utf-8')
+            self.broadcast1(ino_message, self.server_socket)
+        
+   
+            
+            
 if __name__ == "__main__":
     Server()
