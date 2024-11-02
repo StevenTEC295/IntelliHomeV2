@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/redbackground">
+    tools:context=".guestView">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -227,6 +227,13 @@
                 android:orientation="vertical">
 
                 <!-- Rango de Precio -->
+                <CheckBox
+                    android:id="@+id/resetfilters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Resetear el filtro"
+                    android:textColor="@color/black"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -434,7 +441,7 @@
                     android:textColor="@color/black"
                     />
                 <CheckBox
-                    android:id="@+id/amenidad_cafeteria"
+                    android:id="@+id/amenidad_cafetera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
@@ -524,7 +531,7 @@
                     />
 
                 <CheckBox
-                    android:id="@+id/amenidad_Entretenimiento"
+                    android:id="@+id/amenidad_entretenimiento"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
@@ -550,16 +557,6 @@
                     android:layout_marginStart="3dp"
                     android:layout_marginTop="3sp"
                     android:text="@string/acceso_a_internet_de_alta_velocidad"
-                    android:textColor="@color/black"
-                    />
-
-                <CheckBox
-                    android:id="@+id/amenidad_mascotas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginTop="3sp"
-                    android:text="@string/aceptan_mascotas"
                     android:textColor="@color/black"
                     />
                 <!-- Botón para Aplicar Filtros -->

@@ -95,9 +95,17 @@ class ListofHostViewActivity : AppCompatActivity() {
                             val parser = PropertyParser()
                             val properties = parser.parseProperties(message)
 
+
                             runOnUiThread { // actualiza el la gui en un hilo
                                 for (property in properties) {
-                                    myDataSet.add(Pair("Casa en ${property.location}", R.drawable.image_casas_template))
+                                    val info = "${getString(R.string.casa)} ${property.typeofHouse}\n"+
+                                            "${getString(R.string.ubicacion)} ${property.location}\n"+
+                                            "${getString(R.string.disponilidad_casa)} ${property.availability}\n"+
+                                            "${getString(R.string.cantpersonas)} ${property.cantofPeople}\n\n"+
+                                            "${getString(R.string.amenidades_lista)} ${property.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n"+
+                                            "${getString(R.string.reglas_guess)} ${property.rules}\n"+
+                                            "${getString(R.string.precio_sin_algoritmo)} ${property.price}\$\n"
+                                    myDataSet.add(Pair(info, R.drawable.image_casas_template))
                                 }
                                 adapter.notifyItemInserted(myDataSet.size - 1) // Notifica al adaptador que se ha insertado un nuevo elemento
                             }

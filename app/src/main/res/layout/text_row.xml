@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="@color/white"
-        andriod:ignore="MissingConstraints">
+        andriod:ignore="MissingConstraints"
+        android:animationCache="false">
 
         <ImageView
             android:id="@+id/imageProperty_guest"

@@ -33,7 +33,6 @@ class guestView : AppCompatActivity() {
     private lateinit var peopleSeekBar: SeekBar
     private lateinit var priceValue: TextView
     private lateinit var peopleValue: TextView
-    private lateinit var petsAllowed: CheckBox
     private lateinit var filterDialog: View
     private lateinit var info_casa: View
     private lateinit var backgroundDim: View
@@ -50,6 +49,44 @@ class guestView : AppCompatActivity() {
     private var isMessageSent = false
     private lateinit var house_image: ImageView
 
+    //Checkboxes
+    private lateinit var petsAllowed: CheckBox
+    private lateinit var checkBoxCocina: CheckBox
+    private lateinit var checkBoxAC: CheckBox
+    private lateinit var checkBoxCalefaccion: CheckBox
+    private lateinit var amenidadWifi: CheckBox
+    private lateinit var tvO: CheckBox
+    private lateinit var amenidadLavadora: CheckBox
+    private lateinit var amenidadPiscina: CheckBox
+    private lateinit var amenidadJardin: CheckBox
+    private lateinit var amenidadBarbacoa: CheckBox
+    private lateinit var amenidadTerraza: CheckBox
+    private lateinit var amenidadGym: CheckBox
+    private lateinit var amenidadGaraje: CheckBox
+    private lateinit var amenidadSeguridad: CheckBox
+    private lateinit var amenidadHabitaciones: CheckBox
+    private lateinit var amenidadMuebles: CheckBox
+    private lateinit var amenidadMicro: CheckBox
+    private lateinit var amenidadLavajillas: CheckBox
+    private lateinit var amenidadCafetera: CheckBox
+    private lateinit var amenidadRopa: CheckBox
+    private lateinit var amenidadComunes: CheckBox
+    private lateinit var amenidadCamas: CheckBox
+    private lateinit var amenidadLimpieza: CheckBox
+    private lateinit var amenidadTransportePublico: CheckBox
+    private lateinit var amenidadCercania: CheckBox
+    private lateinit var amenidadRadiacion: CheckBox
+    private lateinit var amenidadEscritorio: CheckBox
+    private lateinit var amenidadEntretenimiento: CheckBox
+    private lateinit var amenidadChimenea: CheckBox
+    private lateinit var amenidadInternetAlta: CheckBox
+    private lateinit var resetearfiltro: CheckBox
+
+
+
+
+
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +100,7 @@ class guestView : AppCompatActivity() {
 
         setupRecyclerView(recycler, myDataSet)
 
+        recycler.itemAnimator = null
 
         // Inicialización de elementos
         priceSeekBar = findViewById(R.id.priceSeekBar)
@@ -74,6 +112,39 @@ class guestView : AppCompatActivity() {
         backgroundDim = findViewById(R.id.backgroundDim)
         hamburgerMenu = findViewById(R.id.hamburger_menu)
         house_image = findViewById(R.id.homeIcon)
+
+        petsAllowed = findViewById(R.id.petsAllowed)
+        checkBoxCocina = findViewById(R.id.amenidad_cocina)
+        checkBoxAC = findViewById(R.id.amenidad_AC)
+        checkBoxCalefaccion = findViewById(R.id.amenidad_calefaccion)
+        amenidadWifi = findViewById(R.id.amenidad_wifi)
+        tvO = findViewById(R.id.tv_o)
+        amenidadLavadora = findViewById(R.id.amenidad_lavadora)
+        amenidadPiscina = findViewById(R.id.amenidad_piscina)
+        amenidadJardin = findViewById(R.id.amenidad_jardin)
+        amenidadBarbacoa = findViewById(R.id.amenidad_barbacoa)
+        amenidadTerraza = findViewById(R.id.amenidad_terraza)
+        amenidadGym = findViewById(R.id.amenidad_gym)
+        amenidadGaraje = findViewById(R.id.amenidad_garaje)
+        amenidadSeguridad = findViewById(R.id.amenidad_seguridad)
+        amenidadHabitaciones = findViewById(R.id.amenidad_habitaciones)
+        amenidadMuebles = findViewById(R.id.amenidad_muebles)
+        amenidadMicro = findViewById(R.id.amenidad_micro)
+        amenidadLavajillas = findViewById(R.id.amenidad_lavajillas)
+        amenidadCafetera = findViewById(R.id.amenidad_cafetera)
+        amenidadRopa = findViewById(R.id.amenidad_ropa)
+        amenidadComunes = findViewById(R.id.amenidad_comunes)
+        amenidadCamas = findViewById(R.id.amenidad_camas)
+        amenidadLimpieza = findViewById(R.id.amenidad_limpieza)
+        amenidadTransportePublico = findViewById(R.id.amenidad_transportePublico)
+        amenidadCercania = findViewById(R.id.amenidad_cercania)
+        amenidadRadiacion = findViewById(R.id.amenidad_radiacion)
+        amenidadEscritorio = findViewById(R.id.amenidad_escritorio)
+        amenidadEntretenimiento = findViewById(R.id.amenidad_entretenimiento)
+        amenidadChimenea = findViewById(R.id.amenidad_chimenea)
+        amenidadInternetAlta = findViewById(R.id.amenidad_internetalta)
+        resetearfiltro = findViewById(R.id.resetfilters)
+
         val applyFiltersButton: Button = findViewById(R.id.applyFiltersButton)
 
 
@@ -114,8 +185,8 @@ class guestView : AppCompatActivity() {
             val maxPeople = peopleSeekBar.progress + 1
             /*val isPetsAllowed = petsAllowed.isChecked*/
             //Primero hago un clear de de la Data
-            eliminar()
-            val infoFiltrar= GlobalVariables.globalInfo
+            //eliminar()
+            /*val infoFiltrar= GlobalVariables.globalInfo
 
             val parserFiltro = PropertyParser()
             val propertiesFiltro = parserFiltro.parseProperties(infoFiltrar)
@@ -139,9 +210,15 @@ class guestView : AppCompatActivity() {
                         myDataSet.add(Pair(info, R.drawable.image_casas_template))
                     }
                 }
+            }*/
+
+            if (resetearfiltro.isChecked) {
+                Toast.makeText(this, getString(R.string.filterreset), Toast.LENGTH_SHORT).show()
+                displayAllProperties()  // Display all properties if no filter is set
+            } else {
+                applyFilters(maxPrice, maxPeople)
             }
 
-            recycleadapter.notifyDataSetChanged()
             hideFilterDialog()
         }
 
@@ -178,7 +255,7 @@ class guestView : AppCompatActivity() {
                             GlobalVariables.globalInfo = message
                             runOnUiThread { // actualiza el la gui en un hilo
                                 for (property in properties) {
-
+                                    //println(property.amenities)
                                     val info = "${getString(R.string.casa)} ${property.typeofHouse}\n"+
                                             "${getString(R.string.ubicacion)} ${property.location}\n"+
                                             "${getString(R.string.disponilidad_casa)} ${property.availability}\n"+
@@ -222,6 +299,129 @@ class guestView : AppCompatActivity() {
                 myDataSet.add(Pair(info, R.drawable.image_casas_template))
         }
     }
+
+    private fun displayAllProperties() {
+        myDataSet.clear()
+        val properties = PropertyParser().parseProperties(GlobalVariables.globalInfo)
+        for (property in properties) {
+            val info = "${getString(R.string.casa)} ${property.typeofHouse}\n" +
+                    "${getString(R.string.ubicacion)} ${property.location}\n" +
+                    "${getString(R.string.disponilidad_casa)} ${property.availability}\n" +
+                    "${getString(R.string.cantpersonas)} ${property.cantofPeople}\n\n" +
+                    "${getString(R.string.amenidades_lista)} ${property.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n" +
+                    "${getString(R.string.reglas_guess)} ${property.rules}\n" +
+                    "${getString(R.string.precio_sin_algoritmo)} ${property.price}\$"
+            myDataSet.add(Pair(info, R.drawable.image_casas_template))
+        }
+
+        recycleadapter.notifyDataSetChanged()
+    }
+
+
+    private fun applyFilters(maxPrice: Int, maxPeople: Int) {
+        val infoFiltrar = GlobalVariables.globalInfo
+        val parserFiltro = PropertyParser()
+        val propertiesFiltro = parserFiltro.parseProperties(infoFiltrar)
+
+        val isPetsAllowedChecked = petsAllowed.isChecked
+        val isKitchenChecked = checkBoxCocina.isChecked
+        val isACChecked = checkBoxAC.isChecked
+        val isHeatingChecked = checkBoxCalefaccion.isChecked
+        val isWifiChecked = amenidadWifi.isChecked
+        val isTVChecked = tvO.isChecked
+        val isWasherChecked = amenidadLavadora.isChecked
+        val isPoolChecked = amenidadPiscina.isChecked
+        val isGardenChecked = amenidadJardin.isChecked
+        val isBBQChecked = amenidadBarbacoa.isChecked
+        val isTerraceChecked = amenidadTerraza.isChecked
+        val isGymChecked = amenidadGym.isChecked
+        val isGarageChecked = amenidadGaraje.isChecked
+        val isSecurityChecked = amenidadSeguridad.isChecked
+        val isBedroomsChecked = amenidadHabitaciones.isChecked
+        val isFurnishedChecked = amenidadMuebles.isChecked
+        val isMicrowaveChecked = amenidadMicro.isChecked
+        val isDishwasherChecked = amenidadLavajillas.isChecked
+        val isCoffeeMachineChecked = amenidadCafetera.isChecked
+        val isClothingStorageChecked = amenidadRopa.isChecked
+        val isCommonAreasChecked = amenidadComunes.isChecked
+        val isBedsChecked = amenidadCamas.isChecked
+        val isCleaningServiceChecked = amenidadLimpieza.isChecked
+        val isPublicTransportChecked = amenidadTransportePublico.isChecked
+        val isProximityChecked = amenidadCercania.isChecked
+        val isLowRadiationChecked = amenidadRadiacion.isChecked
+        val isDeskChecked = amenidadEscritorio.isChecked
+        val isEntertainmentChecked = amenidadEntretenimiento.isChecked
+        val isFireplaceChecked = amenidadChimenea.isChecked
+        val isHighSpeedInternetChecked = amenidadInternetAlta.isChecked
+
+        myDataSet.clear()
+
+        for (property in propertiesFiltro) {
+            val matchesPrice = property.price <= maxPrice
+            val matchesPeople = property.cantofPeople <= maxPeople
+            val matchesPetsAllowed = !isPetsAllowedChecked || property.amenities.contains(getString(R.string.aceptan_mascotas))
+
+            // Additional filters for each amenity checkbox
+            val matchesKitchen = !isKitchenChecked || property.amenities.contains(getString(R.string.cocina_equipada))
+            val matchesAC = !isACChecked || property.amenities.contains(getString(R.string.Aire_acondicionado))
+            val matchesHeating = !isHeatingChecked || property.amenities.contains(getString(R.string.CalefacciOn))
+            val matchesWifi = !isWifiChecked || property.amenities.contains(getString(R.string.wifi))
+            val matchesTV = !isTVChecked || property.amenities.contains(getString(R.string.tv_o_cable))
+            val matchesWasher = !isWasherChecked || property.amenities.contains(getString(R.string.Lavadora_y_secadora))
+            val matchesPool = !isPoolChecked || property.amenities.contains(getString(R.string.Piscina))
+            val matchesGarden = !isGardenChecked || property.amenities.contains(getString(R.string.Jardín_o_patio))
+            val matchesBBQ = !isBBQChecked || property.amenities.contains(getString(R.string.Barbacoa_o_parrilla))
+            val matchesTerrace = !isTerraceChecked || property.amenities.contains(getString(R.string.Terraza_o_balcón))
+            val matchesGym = !isGymChecked || property.amenities.contains(getString(R.string.Gimnasio_en_casa))
+            val matchesGarage = !isGarageChecked || property.amenities.contains(getString(R.string.Garaje))
+            val matchesSecurity = !isSecurityChecked || property.amenities.contains(getString(R.string.Sistema_de_seguridad))
+            val matchesBedrooms = !isBedroomsChecked || property.amenities.contains(getString(R.string.habitaciones_con_bano_en_suite))
+            val matchesFurnished = !isFurnishedChecked || property.amenities.contains(getString(R.string.muebles_de_exterior))
+            val matchesMicrowave = !isMicrowaveChecked || property.amenities.contains(getString(R.string.microondas))
+            val matchesDishwasher = !isDishwasherChecked || property.amenities.contains(getString(R.string.lavavajillas))
+            val matchesCoffeeMachine = !isCoffeeMachineChecked || property.amenities.contains(getString(R.string.cafetera))
+            val matchesClothingStorage = !isClothingStorageChecked || property.amenities.contains(getString(R.string.ropa_de_cama_y_toallas_incluidas))
+            val matchesCommonAreas = !isCommonAreasChecked || property.amenities.contains(getString(R.string.acceso_a_areas_comunes))
+            val matchesBeds = !isBedsChecked || property.amenities.contains(getString(R.string.camas_adicionales_o_sofa_cama))
+            val matchesCleaningService = !isCleaningServiceChecked || property.amenities.contains(getString(R.string.servicios_de_limpieza_opcionales))
+            val matchesPublicTransport = !isPublicTransportChecked || property.amenities.contains(getString(R.string.acceso_a_transporte_publico_cercano))
+            val matchesProximity = !isProximityChecked || property.amenities.contains(getString(R.string.cercania_a_tiendas_y_restaurantes))
+            val matchesLowRadiation = !isLowRadiationChecked || property.amenities.contains(getString(R.string.sistema_de_calefaccion_por_suelo_radiante))
+            val matchesDesk = !isDeskChecked || property.amenities.contains(getString(R.string.escritorio_o_area_de_trabajo))
+            val matchesEntertainment = !isEntertainmentChecked || property.amenities.contains(getString(R.string.sistemas_de_entretenimiento))
+            val matchesFireplace = !isFireplaceChecked || property.amenities.contains(getString(R.string.chimenea))
+            val matchesHighSpeedInternet = !isHighSpeedInternetChecked || property.amenities.contains(getString(R.string.acceso_a_internet_de_alta_velocidad))
+
+            // Combine all conditions
+            if (matchesPrice && matchesPeople && matchesPetsAllowed &&
+                matchesKitchen && matchesAC && matchesHeating && matchesWifi && matchesTV &&
+                matchesWasher && matchesPool && matchesGarden && matchesBBQ && matchesTerrace &&
+                matchesGym && matchesGarage && matchesSecurity && matchesBedrooms && matchesFurnished &&
+                matchesMicrowave && matchesDishwasher && matchesCoffeeMachine && matchesClothingStorage &&
+                matchesCommonAreas && matchesBeds && matchesCleaningService && matchesPublicTransport &&
+                matchesProximity && matchesLowRadiation && matchesDesk && matchesEntertainment &&
+                matchesFireplace && matchesHighSpeedInternet
+            ) {
+                val info = "${getString(R.string.casa)} ${property.typeofHouse}\n" +
+                        "${getString(R.string.ubicacion)} ${property.location}\n" +
+                        "${getString(R.string.disponilidad_casa)} ${property.availability}\n" +
+                        "${getString(R.string.cantpersonas)} ${property.cantofPeople}\n\n" +
+                        "${getString(R.string.amenidades_lista)} ${property.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n" +
+                        "${getString(R.string.reglas_guess)} ${property.rules}\n" +
+                        "${getString(R.string.precio_sin_algoritmo)} ${property.price}\$"
+                myDataSet.add(Pair(info, R.drawable.image_casas_template))
+            }
+        }
+
+        recycleadapter.notifyDataSetChanged()
+
+        if (myDataSet.isEmpty()) {
+            Toast.makeText(this, "No resultados en los filtros", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
 
     private fun eliminar() {
         myDataSet.clear()
