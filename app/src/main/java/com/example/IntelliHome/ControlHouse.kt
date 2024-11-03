@@ -3,24 +3,50 @@ package com.example.intellihome
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.IntelliHome.Constants
 import com.example.intellihome.R
 import org.json.JSONObject
 import java.io.OutputStream
 import java.io.PrintWriter
 import java.net.Socket
 import kotlin.concurrent.thread
-
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricPrompt.PromptInfo
+import androidx.core.content.ContextCompat
 class ControlHouse : AppCompatActivity() {
 
     private var isSalaActive = false
     private var isCuarto1Active = false
     private var isCuarto2Active = false
     private var isBath1Active = false
-
+    private lateinit var btnAbrir: Button
+    private lateinit var biometricPrompt: BiometricPrompt
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private var isOpen = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_controlhouse)
+        btnAbrir = findViewById(R.id.btnAbrirCasa)
+
+        setupBiometricPrompt()
+        /*val biometricManager = BiometricManager.from(this)
+        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                biometricPrompt.authenticate(promptInfo)  // Autenticación al inicio
+            }
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE,
+            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE,
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                // Manejar el caso donde no haya soporte biométrico
+                // Podrías deshabilitar funciones o mostrar un mensaje
+            }
+        }*/
+
+
 
         val areaSala: View = findViewById(R.id.areaSala)
         areaSala.setOnClickListener {
@@ -49,7 +75,49 @@ class ControlHouse : AppCompatActivity() {
             toggleBackground(it, isBath1Active)
             sendCommand("Baño", isBath1Active)
         }
+
+
+        btnAbrir.setOnClickListener {
+            biometricPrompt.authenticate(promptInfo)
+        }
+
     }
+
+    private fun setupBiometricPrompt() {
+        val executor = ContextCompat.getMainExecutor(this)
+        biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+                // Autenticación exitosa, habilita la interacción con la interfaz
+                //Cambiar el texto del buton
+                if (isOpen){
+                    btnAbrir.text = "Cerrado"
+                    btnAbrir.setBackgroundColor(ContextCompat.getColor(this@ControlHouse, R.color.rojo_de_la_app))
+                    sendCommand("Puerta", isOpen)
+                }else{
+                    btnAbrir.text = "Abierto"
+                    btnAbrir.setBackgroundColor(ContextCompat.getColor(this@ControlHouse, R.color.green))
+                    sendCommand("Puerta", isOpen)
+                }
+                isOpen = !isOpen
+
+            }
+
+            override fun onAuthenticationFailed() {
+                super.onAuthenticationFailed()
+                // Manejo de fallo en autenticación
+                Toast.makeText(this@ControlHouse, "Error en la huella", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Autenticación requerida")
+            .setSubtitle("Por favor, usa tu huella para abrir la casa")
+            .setNegativeButtonText("Cancelar")
+            .build()
+    }
+
+
     // Cambia el fondo del botón dependiendo de su estado
     private fun toggleBackground(view: View, isActive: Boolean) {
         if (isActive) {
@@ -66,6 +134,7 @@ class ControlHouse : AppCompatActivity() {
             "Cuarto1" -> if (isActive) "C1_1" else "C1_0"
             "Cuarto2" -> if (isActive) "C2_1" else "C2_0"
             "Baño" -> if (isActive) "B1_1" else "B1_0"
+            "Puerta" -> if (isActive) "SERVO_0" else "SERVO_1"
             else -> return
         }
 
@@ -78,7 +147,7 @@ class ControlHouse : AppCompatActivity() {
         thread {
             try {
                 // Conectar al servidor de sockets
-                val socket = Socket("192.168.0.207", 8080)  // Cambia la IP y puerto a los de tu servidor
+                val socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)  // Cambia la IP y puerto a los de tu servidor
                 val outputStream: OutputStream = socket.getOutputStream()
                 val writer = PrintWriter(outputStream, true)
 

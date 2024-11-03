@@ -79,6 +79,15 @@
         android:background="@android:color/transparent"
         android:clickable="true" />
 
+    <Button
+        android:id="@+id/btnAbrirCasa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/areaSala"
+        android:layout_marginTop="610dp"
+        android:layout_marginEnd="-15dp"
+        android:text="Abrir"/>
+
     <View
         android:id="@+id/Cuarto1"
         android:layout_width="75dp"
