@@ -48,6 +48,8 @@ class guestView : AppCompatActivity() {
     private var inputReader: BufferedReader? = null // Cambiado de Scanner a BufferedReader
     private var isMessageSent = false
     private lateinit var house_image: ImageView
+    private lateinit var btncasaalquilada: Button
+    private lateinit var btnDisponibilidad: Button
 
     //Checkboxes
     private lateinit var petsAllowed: CheckBox
@@ -84,9 +86,6 @@ class guestView : AppCompatActivity() {
 
 
 
-
-
-
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +95,11 @@ class guestView : AppCompatActivity() {
 
         recycler = findViewById(R.id.recycleViewListadeCasas_guest)
 
-
+        val savedValue = loadPreference("selectedHouse")
+        savedValue?.let {
+            // Haz algo con el valor cargado, como actualizar la UI o establecer configuraciones
+            println("Valor guardado: $it")
+        }
 
         setupRecyclerView(recycler, myDataSet)
 
@@ -112,6 +115,8 @@ class guestView : AppCompatActivity() {
         backgroundDim = findViewById(R.id.backgroundDim)
         hamburgerMenu = findViewById(R.id.hamburger_menu)
         house_image = findViewById(R.id.homeIcon)
+        btncasaalquilada = findViewById(R.id.btnViewHouse)
+        btnDisponibilidad = findViewById(R.id.btnDisponibilidad)
 
         petsAllowed = findViewById(R.id.petsAllowed)
         checkBoxCocina = findViewById(R.id.amenidad_cocina)
@@ -183,35 +188,6 @@ class guestView : AppCompatActivity() {
             // Aquí puedes manejar los filtros aplicados
             val maxPrice = priceSeekBar.progress
             val maxPeople = peopleSeekBar.progress + 1
-            /*val isPetsAllowed = petsAllowed.isChecked*/
-            //Primero hago un clear de de la Data
-            //eliminar()
-            /*val infoFiltrar= GlobalVariables.globalInfo
-
-            val parserFiltro = PropertyParser()
-            val propertiesFiltro = parserFiltro.parseProperties(infoFiltrar)
-
-            //Verifico que no hay un reset de la barra
-            if(maxPrice==0 && maxPeople==1){
-                Toast.makeText(this, getString(R.string.filterreset), Toast.LENGTH_SHORT).show()
-                filterNotMatched()
-            }else{
-                for (propertyFilter in propertiesFiltro){
-                    if (propertyFilter.price in 1..maxPrice && propertyFilter.cantofPeople in 1..maxPeople ){
-
-                        val info = "${getString(R.string.casa)} ${propertyFilter.typeofHouse}\n" +
-                                "${getString(R.string.ubicacion)} ${propertyFilter.location}\n" +
-                                "${getString(R.string.disponilidad_casa)} ${propertyFilter.availability}\n" +
-                                "${getString(R.string.cantpersonas)} ${propertyFilter.cantofPeople}\n\n" +
-                                "${getString(R.string.amenidades_lista)} ${propertyFilter.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n" +
-                                "${getString(R.string.reglas_guess)} ${propertyFilter.rules}\n" +
-                                "${getString(R.string.precio_sin_algoritmo)} ${propertyFilter.price}\$"
-
-                        myDataSet.add(Pair(info, R.drawable.image_casas_template))
-                    }
-                }
-            }*/
-
             if (resetearfiltro.isChecked) {
                 Toast.makeText(this, getString(R.string.filterreset), Toast.LENGTH_SHORT).show()
                 displayAllProperties()  // Display all properties if no filter is set
@@ -222,6 +198,21 @@ class guestView : AppCompatActivity() {
             hideFilterDialog()
         }
 
+
+        btncasaalquilada.setOnClickListener {
+            //Elimino la data luego actualizo el recycle view
+            deleteData()
+            val savedValue = loadPreference("selectedHouse")
+            if (savedValue != null) {
+                myDataSet.add(Pair(savedValue, R.drawable.image_casas_template))
+            }
+            recycleadapter.notifyDataSetChanged()
+
+        }
+
+        btnDisponibilidad.setOnClickListener {
+            displayAllProperties()
+        }
 
         // Manejo del fondo oscuro
         backgroundDim.setOnClickListener { hideFilterDialog() }
@@ -255,7 +246,6 @@ class guestView : AppCompatActivity() {
                             GlobalVariables.globalInfo = message
                             runOnUiThread { // actualiza el la gui en un hilo
                                 for (property in properties) {
-                                    //println(property.amenities)
                                     val info = "${getString(R.string.casa)} ${property.typeofHouse}\n"+
                                             "${getString(R.string.ubicacion)} ${property.location}\n"+
                                             "${getString(R.string.disponilidad_casa)} ${property.availability}\n"+
@@ -282,23 +272,6 @@ class guestView : AppCompatActivity() {
 
     }
 
-    private fun filterNotMatched() {
-        val infoFiltrar= GlobalVariables.globalInfo
-        val parserFiltro = PropertyParser()
-        val propertiesFiltro = parserFiltro.parseProperties(infoFiltrar)
-
-        for (propertyFilter in propertiesFiltro){
-                val info = "${getString(R.string.casa)} ${propertyFilter.typeofHouse}\n" +
-                        "${getString(R.string.ubicacion)} ${propertyFilter.location}\n" +
-                        "${getString(R.string.disponilidad_casa)} ${propertyFilter.availability}\n" +
-                        "${getString(R.string.cantpersonas)} ${propertyFilter.cantofPeople}\n\n" +
-                        "${getString(R.string.amenidades_lista)} ${propertyFilter.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n" +
-                        "${getString(R.string.reglas_guess)} ${propertyFilter.rules}\n" +
-                        "${getString(R.string.precio_sin_algoritmo)} ${propertyFilter.price}\$"
-
-                myDataSet.add(Pair(info, R.drawable.image_casas_template))
-        }
-    }
 
     private fun displayAllProperties() {
         myDataSet.clear()
@@ -420,25 +393,35 @@ class guestView : AppCompatActivity() {
         }
     }
 
+    private fun savePreference(key: String, value: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString(key, value)  // Aquí puedes usar putInt, putBoolean, etc., según el tipo de dato
+        editor.apply()  // Usa commit() si necesitas una escritura sincrónica
+    }
 
-
-
-    private fun eliminar() {
-        myDataSet.clear()
-        recycleadapter.notifyDataSetChanged()
+    // Método para cargar el valor desde SharedPreferences
+    private fun loadPreference(key: String): String? {
+        return sharedPreferences.getString(key, null)
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView, dataSet: List<Pair<String, Int>>) {
-        // Inicializar el adaptador con el conjunto de datos proporcionado
-        recycleadapter = CustomAdapter_guestView(dataSet) // Asigna a la variable de clase
+        recycleadapter = CustomAdapter_guestView(dataSet, object : CustomAdapter_guestView.OnItemClickListener {
+            override fun onItemClick(info: Pair<String, Int>) {
+                // Handle item click here, for example:
+                savePreference("selectedHouse", info.first)
+                Toast.makeText(this@guestView, "Se alquilo la casa con exito", Toast.LENGTH_SHORT).show()
 
-        // Establecer el adaptador en el RecyclerView
+                println(info.first)
+            }
+        })
         recyclerView.adapter = recycleadapter
-
-        // Establecer un LayoutManager para el RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     }
-
+    
+    private fun deleteData() {
+        myDataSet.clear()
+        recycleadapter.notifyDataSetChanged()
+    }
 
     private fun showFilterDialog() {
         filterDialog.visibility = View.VISIBLE

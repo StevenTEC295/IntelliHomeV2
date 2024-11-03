@@ -109,10 +109,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/top_bar"
-
                 android:layout_marginTop="35dp"
                 android:layout_centerHorizontal="true"
-                android:text="Control de la Casa Alquilada" />
+                android:text="Control de la Casa Alquilada"
+                android:backgroundTint="@color/rojo_de_la_app"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+            <Button
+                android:id="@+id/btnViewHouse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_bar"
+
+                android:layout_marginTop="100dp"
+                android:layout_marginStart="220dp"
+                android:text="Ver Casa Alquilada"
+                android:backgroundTint="@color/rojo_de_la_app"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnDisponibilidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_bar"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="100dp"
+                android:text="Disponibilidad"
+                android:backgroundTint="@color/rojo_de_la_app"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycleViewListadeCasas_guest"
@@ -120,8 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/top_bar"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="100dp"
-                />
+                android:layout_marginTop="200dp"/>
 
             <ImageView
                 android:id="@+id/rectanguloblanco"

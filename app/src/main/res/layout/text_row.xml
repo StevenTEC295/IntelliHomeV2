@@ -32,6 +32,16 @@
             android:text="aqui debe ir la info"
             android:textColor="@color/black"
             android:textStyle="bold" />
+        <Button
+            android:id="@+id/btnRentHouse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alquila Casa"
+            android:layout_below="@+id/info_de_la_casa_guest"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="@color/rojo_de_la_app"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
