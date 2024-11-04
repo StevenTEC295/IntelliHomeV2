@@ -13,7 +13,10 @@ class ArduinoConnection:
 
     def receive(self):
         return self.arduino.readline().decode()
+    
+    def read(self):
+        return self.arduino.read().decode()
         
     def close(self):
         self.arduino.close()
-        
+    
