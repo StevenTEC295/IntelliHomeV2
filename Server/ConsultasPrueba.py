@@ -28,7 +28,7 @@ def cliente_socket():
         print(f"Mensaje enviado: {mensaje}")
 
         # Recibir respuesta del servidor
-        respuesta = cliente.recv(1024)  # Recibir hasta 1024 bytes de respuesta
+        respuesta = cliente.recv(4096)  # Recibir hasta 1024 bytes de respuesta
         print(f"Respuesta del servidor: {respuesta.decode('utf-8')}")
 
     except Exception as e:

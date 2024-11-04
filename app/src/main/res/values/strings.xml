@@ -51,9 +51,6 @@
     <string name="no">No</string>
 
 
-
-
-
     <string-array name="house_types">
         <item>Rústica</item>
         <item>Moderna</item>
@@ -119,6 +116,16 @@
     <string name="porfavor_selccione_10_imgs">Por favor seleccione entre 1 y 10 imágenes</string>
     <string name="siguiente_imagen">Siguiente Imagen</string>
     <string name="Lista_de_casa">Lista de casas</string>
+
+    <string name="ubicacion">Ubicación:</string>
+    <string name="casa">Casa: </string>
+    <string name="disponilidad_casa">Disponiblidad de la casa:</string>
+    <string name="cantpersonas">Cantidad de personas admitidas:</string>
+    <string name="amenidades_lista">Amenidades:</string>
+    <string name="reglas_guess">Reglas:</string>
+    <string name="precio_sin_algoritmo">Precio base:</string>
+
+    <string name="filterreset">Filtro reset</string>
 
 
 </resources>

@@ -34,6 +34,8 @@ import android.content.SharedPreferences
 import android.widget.RelativeLayout
 import android.content.Context
 import android.view.View
+import com.example.IntelliHome.Constants
+import com.example.IntelliHome.DataSender
 import com.example.IntelliHome.SquarePasswordTransformationMethod
 
 //El huesped
@@ -41,18 +43,10 @@ import com.example.IntelliHome.SquarePasswordTransformationMethod
 class RegistroActivity : AppCompatActivity() {
     private lateinit var selectDate: TextInputEditText
     private lateinit var imageView: ImageView
-    private lateinit var btnUploadPhoto: Button
     private lateinit var imageUrl: Uri
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var mainLayout: RelativeLayout
-
-
-    /*private lateinit var socket: Socket
-    private lateinit var out_cliente: PrintWriter
-    private lateinit var input_server: Scanner
-    private lateinit var outputStream: OutputStream*/
-
 
     //Variables del registro
     private lateinit var firstNameInput: TextInputEditText
@@ -264,7 +258,6 @@ class RegistroActivity : AppCompatActivity() {
 
         registerButton.setOnClickListener {
             // Obtener los datos de entrada
-            val action = "registro"
             val firstName = firstNameInput.text.toString()
             val email  = emailInput.text.toString()
             val lastName  = lastNameInput.text.toString()
@@ -339,7 +332,7 @@ class RegistroActivity : AppCompatActivity() {
 
             thread {
                 val jsonData = createJsonData(
-                    action,
+                    Constants.REGISTRO,
                     firstName,
                     lastName ,
                     email ,
@@ -355,11 +348,12 @@ class RegistroActivity : AppCompatActivity() {
                     addressInput,
                     phoneInput
                 )
-                sendDataToServer("192.168.0.119", 8080,jsonData)
+                val sender = DataSender(Constants.SERVER_IP, Constants.SERVER_PORT)
+                sender.sendDataToServer(jsonData)
+
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
-
             }
         }
         button_tomar_foto.setOnClickListener {
@@ -502,24 +496,6 @@ class RegistroActivity : AppCompatActivity() {
         return json.toString()
     }
 
-    private fun sendDataToServer(serverIp: String, serverPort: Int,jsonData: String) {
-        try {
-            val socket = Socket(serverIp, serverPort)
-            val outputStream: OutputStream = socket.getOutputStream()
-            val printWriter = PrintWriter(outputStream, true)
-
-            printWriter.println(jsonData)
-            outputStream.close()
-            printWriter.close()
-            socket.close()
-            println("Se cerro la conexion - envio")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("Error al enviar los datos - envio")
-        }
-    }
-  
-   
     private fun confirmPassword(password: String): Boolean {
         val patron = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}$")
         return patron.matches(password)
@@ -535,7 +511,4 @@ class RegistroActivity : AppCompatActivity() {
         finish()
 
     }
-
-
-
 }

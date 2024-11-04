@@ -31,12 +31,17 @@ import kotlin.concurrent.thread
 import android.content.SharedPreferences
 import android.widget.RelativeLayout
 import android.content.Context
+import com.example.IntelliHome.Constants
+import com.example.IntelliHome.SquarePasswordTransformationMethod
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import java.util.Scanner
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var mainLayout: RelativeLayout
-    private lateinit var password: TextInputEditText
+    private var changeStatePasswordConfirm=0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -48,24 +53,49 @@ class LoginActivity : AppCompatActivity() {
         val about = findViewById<ImageButton>(R.id.button_help)
         val btnIngresar = findViewById<TextView>(R.id.button_login)
         val usuario = findViewById<EditText>(R.id.editTextEmail)
-        password = findViewById(R.id.contrasena)
-        val action = "login"
+
+        val password: TextInputEditText = findViewById(R.id.contrasena)
+        val layoutPassword: TextInputLayout = findViewById(R.id.PasswordLayout)
+
+        password.transformationMethod = SquarePasswordTransformationMethod()
+
+        layoutPassword.setEndIconOnClickListener {
+            // Verificar si el ícono está activado (contraseña visible)
+            if (changeStatePasswordConfirm==0) {
+                // Si el ícono está activado, muestra el texto sin transformación
+                password.transformationMethod = null
+                changeStatePasswordConfirm=1
+            } else {
+                // Si el ícono está desactivado, vuelve a aplicar la transformación de cuadrados
+                password.transformationMethod = SquarePasswordTransformationMethod()
+                changeStatePasswordConfirm=0
+            }
+        }
+
+        password.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                // Reaplica el método de transformación para asegurarte de que se mantenga
+                password.transformationMethod = SquarePasswordTransformationMethod()
+            }
+        }
+
         btnIngresar.setOnClickListener{
+            val passwordtext = password.text.toString()
             thread {
                 val jsonData = createJsonData(
-                    action,
+                    Constants.LOGIN,
                     usuario.text.toString(),
-                    password.text.toString()
+                    passwordtext
 
                 )
-                sendDataToServer("192.168.0.12",8080,jsonData)
+
+                sendDataToServer(Constants.SERVER_IP,Constants.SERVER_PORT,jsonData)
+
                 val intent = Intent(this, CambioUser::class.java)
                 startActivity(intent)
             }
         }
         btn1.setOnClickListener {
-            //val socket =  SocketConnection();
-            //socket.startConnection();
             navegar()
         }
         about.setOnClickListener{
@@ -81,8 +111,6 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-
-
     private fun sendDataToServer(serverIp: String, serverPort: Int, jsonData: String) {
         try {
             val socket = Socket(serverIp, serverPort)
@@ -92,12 +120,11 @@ class LoginActivity : AppCompatActivity() {
 
             // Manda los datos al server
             printWriter.println(jsonData)
-
             // Aquí debería tener la respuesta del backend
-            val serverResponse = inputStream.readLine()
+
+            /*val serverResponse = inputStream.readLine()
+
             if (serverResponse != null) {
-
-
                 if (serverResponse == "1") {
                     val intent = Intent(this, CambioUser::class.java)
                     startActivity(intent)
@@ -108,9 +135,9 @@ class LoginActivity : AppCompatActivity() {
                 }
             } else {
                 println("No se recibió respuesta del servidor")
-            }
+            }*/
 
-            // Cierra todo aquí al final
+            // Cierra la conexion
             printWriter.close()
             inputStream.close()
             socket.close()
@@ -124,6 +151,9 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
+
+
     private fun createJsonData(
         action:String,
         username:String,

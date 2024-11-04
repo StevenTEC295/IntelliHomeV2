@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="beige_arena">#A09575</color>
     <color name="rojo_de_la_app">#FFFF0E4B</color>
+    <color name="green">#4CAF50</color>
 </resources>

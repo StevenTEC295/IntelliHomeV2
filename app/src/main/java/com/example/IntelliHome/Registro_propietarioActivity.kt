@@ -30,26 +30,20 @@ import android.content.SharedPreferences
 import android.widget.RelativeLayout
 import android.content.Context
 import android.view.View
+import com.example.IntelliHome.Constants
+import com.example.IntelliHome.DataSender
 import com.example.IntelliHome.SquarePasswordTransformationMethod
 import com.google.android.material.textfield.TextInputLayout
 
 class Registro_propietarioActivity : AppCompatActivity() {
     private lateinit var selectDate: TextInputEditText
     private lateinit var imageView: ImageView
-    private lateinit var button_subir_foto: Button
     private lateinit var imageUrl: Uri
     private lateinit var registerButton: Button
     private val obsceneWords = ObsceneWords.words //Palabras que me cancelaran en un futuro
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var mainLayout: RelativeLayout
-
-
-    /*private lateinit var socket: Socket
-    private lateinit var out_cliente: PrintWriter
-    private lateinit var input_server: Scanner
-    private lateinit var outputStream: OutputStream*/
-
 
     private lateinit var lastNameInput: TextInputEditText
     private lateinit var emailInput: TextInputEditText
@@ -209,7 +203,6 @@ class Registro_propietarioActivity : AppCompatActivity() {
         etvalidunitl = findViewById(R.id.etvalidunitl)
         etcvc = findViewById(R.id.etcvc)
         addressInput = findViewById(R.id.Direccion)
-
         exitbuton = findViewById(R.id.back_to_login)
 
         accountNumberInput = findViewById(R.id.etacountNumber)
@@ -240,11 +233,6 @@ class Registro_propietarioActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
-
-
-
-
-
         etcvc.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -266,7 +254,6 @@ class Registro_propietarioActivity : AppCompatActivity() {
 
         registerButton.setOnClickListener {
             // Obtener los datos de entrada
-            val action = "registro"
             val firstName = firstNameInput.text.toString()
             val email = emailInput.text.toString()
             val lastName = lastNameInput.text.toString()
@@ -350,7 +337,7 @@ class Registro_propietarioActivity : AppCompatActivity() {
 
             thread {
                 val jsonData = createJsonData(
-                    action,
+                    Constants.REGISTRO,
                     firstName,
                     lastName,
                     email,
@@ -363,21 +350,15 @@ class Registro_propietarioActivity : AppCompatActivity() {
                     addressInput,
                     phoneInput
                 )
-                sendDataToServer("192.168.0.119", 8080, jsonData)
+                val sender = DataSender(Constants.SERVER_IP, Constants.SERVER_PORT)
+                sender.sendDataToServer(jsonData)
+
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }
 
         }
-
-        /*thread {
-            socket = Socket("192.168.0.196", 8080)
-            outputStream = socket.getOutputStream()
-            out_cliente = PrintWriter(outputStream, true)
-            input_server = Scanner(socket.getInputStream())
-
-        }*/
         selectDate.setOnClickListener {
             showDatePickerDialog()
         }
@@ -390,16 +371,6 @@ class Registro_propietarioActivity : AppCompatActivity() {
         }
 
         loadSavedBackground()
-
-        /*loadSavedBackground()
-
-
-    }
-    private fun loadSavedBackground() {
-        val savedBackground = sharedPreferences.getInt("background_resource", R.drawable.redbackground)
-        mainLayout.setBackgroundResource(savedBackground)
-        mainLayout.invalidate()*/
-
 
     }
 
@@ -496,24 +467,6 @@ class Registro_propietarioActivity : AppCompatActivity() {
         return json.toString()
     }
 
-
-    private fun sendDataToServer(serverIp: String, serverPort: Int, jsonData: String) {
-        try {
-            val socket = Socket(serverIp, serverPort)
-            val outputStream: OutputStream = socket.getOutputStream()
-            val printWriter = PrintWriter(outputStream, true)
-
-            printWriter.println(jsonData)
-            outputStream.close()
-            printWriter.close()
-            socket.close()
-            println("Se cerro la conexion - envio")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("Error al enviar los datos - envio")
-        }
-    }
-
     private fun confirmPassword(password: String): Boolean {
         val patron = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}$")
         return patron.matches(password)
@@ -525,7 +478,6 @@ class Registro_propietarioActivity : AppCompatActivity() {
     }
 
     private fun backToLogin() {
-
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
