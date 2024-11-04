@@ -1,14 +1,25 @@
 #include <Servo.h>
+#include <DHT.h>
+#include <DHT_U.h>
 
 #define LED_CUARTO1 5
 #define LED_CUARTO2 6
 #define LED_BATH1 10
 #define LED_SALA 12
 #define SENSOR_PIN 13
-
+#define DHT_TYPE DHT11
 // Definición del pin del servo
 const int SERVO_PIN = 9;
 int servoPos = 0; // Posición inicial del servo
+const int ballSwitchPin = 2;      // Pin para el sensor de movimiento
+int switchState = 0;              // Estado actual del sensor de movimiento
+int lastSwitchState = 0;          // Último estado del sensor de movimiento
+
+int dhtPin = 3;                   // Pin para el sensor DHT11 (cambiado de 2 a 3)
+DHT dht(dhtPin, DHT_TYPE);         // Crear instancia del DHT
+int humidity;                     // Variable para almacenar la humedad
+
+
 
 // Declaración de variables
 String ServerMessage;
@@ -24,10 +35,12 @@ void setup() {
   pinMode(LED_BATH1, OUTPUT);
   pinMode(LED_SALA, OUTPUT);
   pinMode(SENSOR_PIN, INPUT);
+  pinMode(ballSwitchPin, INPUT);
 
   // Configuración del servo
   myServo.attach(SERVO_PIN); // Conecta el servo al pin definido
   myServo.write(servoPos); // Mueve el servo a la posición inicial
+  dht.begin();
 }
 
 void loop() {
@@ -79,6 +92,28 @@ void loop() {
     Serial.write("Llama apagada!\n");
     fire = false;
   }
+    switchState = digitalRead(ballSwitchPin);
+
+    // Detectar cambio de estado en el Ball Switch (de LOW a HIGH)
+    if (switchState == HIGH && lastSwitchState == LOW) {
+        Serial.println("¡Movimiento detectado!");  // Mensaje al detectar movimiento
+    }
+    // Actualizar el último estado
+    lastSwitchState = switchState;
+
+    // --- Lectura del DHT11 ---
+    humidity = dht.readHumidity();       // Leer la humedad
+
+
+    // Comprobar si la lectura es válida
+    if (isnan(humidity)) {
+        Serial.println("Error al leer del sensor DHT11");
+    } else {
+        // Reportar solo cuando la humedad es igual o mayor a 80%
+        if (humidity >= 80) {
+            Serial.print("Humedad: ");
+            Serial.print(humidity);
+
   delay(200);
 }
 

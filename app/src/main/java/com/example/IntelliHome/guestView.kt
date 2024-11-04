@@ -25,14 +25,16 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 data class House(
-    val name: String,
-    val price: Int,
+    val idPropertyRegister: String,
+    val price: String,
     val location: String,
-    val size: Int,
+    val typeofHouse: String,
     val amenities: List<String>,
-    val available: Boolean,
-    val guestCount: Int
+    val availability: Boolean,
+    val cantofPeople: String,
+    val rules: String
 )
+
 
 class guestView : AppCompatActivity() {
 
@@ -180,34 +182,45 @@ class guestView : AppCompatActivity() {
 
     private fun parseHouseData(data: String): List<House> {
         val housesList = mutableListOf<House>()
-        val jsonArray = JSONObject(data).getJSONArray("houses") // Asegúrate que la respuesta JSON tiene este formato
+        val jsonArray = JSONObject(data).getJSONArray("houses")
+
         for (i in 0 until jsonArray.length()) {
             val house = jsonArray.getJSONObject(i)
-            val name = house.getString("nombre")
-            val price = house.getInt("precio")
-            val location = house.getString("ubicacion")
-            val size = house.getInt("tamano")
-            val amenities = mutableListOf<String>()
-            val amenitiesArray = house.getJSONArray("amenidades")
-            for (j in 0 until amenitiesArray.length()) {
-                amenities.add(amenitiesArray.getString(j))
-            }
-            val available = house.getBoolean("disponible")
-            val guestCount = house.getInt("cantidad_personas")
 
-            // Agregar cada casa a la lista
-            housesList.add(House(name, price, location, size, amenities, available, guestCount))
+            val idPropertyRegister = house.getString("idPropertyRegister")
+            val price = house.getString("precio")
+            val location = house.getString("ubicacion")
+            val typeofHouse = house.getString("tipoCasa")
+
+            val amenitiesArray = house.getJSONArray("amenidades")
+            val amenities = List(amenitiesArray.length()) { j -> amenitiesArray.getString(j) }
+
+            val availability = house.getBoolean("disponible")
+            val cantofPeople = house.getString("cantidadPersonas")
+            val rules = house.getString("reglas")
+
+            // Crear y agregar casa a la lista
+            housesList.add(
+                House(
+                    idPropertyRegister, price, location, typeofHouse,
+                    amenities, availability, cantofPeople, rules
+                )
+            )
         }
         return housesList
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView, houses: List<House>) {
-        val dataSet = houses.map { Pair(it.name, it.price) } // Convertimos la lista de House a Pair
-        val adapter = CustomAdapter_guestView(dataSet)
+        // Convertimos cada House a un Pair con id y precio (asumiendo que precio es un Int)
+        val dataSet = houses.map { house ->
+            Pair(house.idPropertyRegister, house.price.toInt())
+        }
 
+        val adapter = CustomAdapter_guestView(dataSet)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     }
+
 
 
     private fun showFilterDialog() {
