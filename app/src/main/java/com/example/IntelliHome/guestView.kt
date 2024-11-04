@@ -24,7 +24,10 @@ import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 import org.json.JSONObject
+
 import java.util.Scanner
+
+
 
 class guestView : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -393,6 +396,7 @@ class guestView : AppCompatActivity() {
         }
     }
 
+
     private fun savePreference(key: String, value: String) {
         val editor = sharedPreferences.edit()
         editor.putString(key, value)  // Aquí puedes usar putInt, putBoolean, etc., según el tipo de dato
@@ -415,6 +419,7 @@ class guestView : AppCompatActivity() {
             }
         })
         recyclerView.adapter = recycleadapter
+
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     }
     
@@ -422,6 +427,7 @@ class guestView : AppCompatActivity() {
         myDataSet.clear()
         recycleadapter.notifyDataSetChanged()
     }
+
 
     private fun showFilterDialog() {
         filterDialog.visibility = View.VISIBLE
