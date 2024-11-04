@@ -8,7 +8,7 @@
     <RelativeLayout
             android:id="@+id/container_image_foto"
             android:layout_width="350dp"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@color/white"
             andriod:ignore="MissingConstraints">

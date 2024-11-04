@@ -206,7 +206,6 @@ class HostViewActivity : AppCompatActivity() {
             val cantofPeople = cantofPeople.text.toString()
             val reglas = reglas.text.toString()
             val precio = precio.text.toString()
-            val action = "sv_house"
 
             //SE CREA UN ID UNICO PARA CADA PROPIEDAD
             val idPropertyRegister = UUID.randomUUID().toString()
@@ -254,40 +253,10 @@ class HostViewActivity : AppCompatActivity() {
                 return@setOnClickListener // Salir del evento si hay campos vacíos
             }
 
-            //Una sola imagen a base64
-            /*var base64Image = ""
-            imageUri?.let {
-                base64Image = ImageController.convertImageToBase64(this, it)
-            }
-            println(base64Image)*/
-
-            //Multiples imagenes en base 64
-            /* val base64Images = ImageController.multipleconvertImagesToBase64(this, imageUris)
-             println(base64Images)*/
-
-            /*thread {
-                val jsonData = createJsonData(
-                    action,
-                    ubicacion,
-                    autoComplete,
-                    disponibilidad,
-                    cantofPeople,
-                    lista,
-                    reglas,
-                    precio,
-                    base64Image
-                )
-                sendDataToServer("192.168.0.119", 8080,jsonData)
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-
-            }*/
             //MEJORA PARA NO USAR THREADS SINO FUNCIONES DE KOTLIN COMO CoroutineScope
-
             CoroutineScope(Dispatchers.IO).launch {
                 val jsonData = createJsonData(
-                    action,
+                    Constants.SVHOUSE,
                     idPropertyRegister,
                     ubicacion,
                     autoComplete,
@@ -298,11 +267,13 @@ class HostViewActivity : AppCompatActivity() {
                     precio
                     //base64Images
                 )
-                sendDataToServer("192.168.0.207", 8080, jsonData)
+
+                val sender = DataSender(Constants.SERVER_IP, Constants.SERVER_PORT)
+                sender.sendDataToServer(jsonData)
 
                 // Regresar al hilo principal para iniciar la nueva actividad
                 withContext(Dispatchers.Main) {
-                    val intent = Intent(this@HostViewActivity, HomePage::class.java)
+                    val intent = Intent(this@HostViewActivity, ListofHostViewActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -321,16 +292,6 @@ class HostViewActivity : AppCompatActivity() {
         }
     }
 
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when{
-            requestCode == CODE && resultCode == Activity.RESULT_OK -> {
-                imageUri = data!!.data
-                imageProperty.setImageURI(imageUri)
-
-            }
-        }
-    }*/
     private var currentIndex = 0
 
     private fun cycleImage() {
@@ -398,23 +359,6 @@ class HostViewActivity : AppCompatActivity() {
          json.put("image", imagenesJSONArray)*/
 
         return json.toString()
-    }
-
-    private fun sendDataToServer(serverIp: String, serverPort: Int,jsonData: String) {
-        try {
-            val socket = Socket(serverIp, serverPort)
-            val outputStream: OutputStream = socket.getOutputStream()
-            val bufferedWriter  = PrintWriter(outputStream, true)
-
-            bufferedWriter .println(jsonData)
-            outputStream.close()
-            bufferedWriter .close()
-            socket.close()
-            println("Se cerro la conexion - envio")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("Error al enviar los datos - envio")
-        }
     }
 
 

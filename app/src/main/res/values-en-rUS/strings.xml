@@ -125,4 +125,21 @@
     <string name="idiomas">Languages</string>
 
 
+    <string name="casa">House: </string>
+    <string name="ubicacion">Location:</string>
+    <string name="disponilidad_casa">House availability:</string>
+    <string name="cantpersonas">Number of people admitted:</string>
+    <string name="amenidades_lista">Amenities:</string>
+    <string name="reglas_guess">Rules:</string>
+    <string name="precio_sin_algoritmo">Base price:</string>
+    <string name="filterreset">Filtro reseatado</string>
+
+
+
+
+
+
+
+
+
 </resources>

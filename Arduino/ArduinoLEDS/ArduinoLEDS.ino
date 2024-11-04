@@ -1,53 +1,120 @@
-//controlador del leds 
+#include <Servo.h>
+#include <DHT.h>
+#include <DHT_U.h>
+
 #define LED_CUARTO1 5
 #define LED_CUARTO2 6
 #define LED_BATH1 10
 #define LED_SALA 12
-//Declaracion de variables
+#define SENSOR_PIN 13
+#define DHT_TYPE DHT11
+// Definición del pin del servo
+const int SERVO_PIN = 9;
+int servoPos = 0; // Posición inicial del servo
+const int ballSwitchPin = 2;      // Pin para el sensor de movimiento
+int switchState = 0;              // Estado actual del sensor de movimiento
+int lastSwitchState = 0;          // Último estado del sensor de movimiento
+
+int dhtPin = 3;                   // Pin para el sensor DHT11 (cambiado de 2 a 3)
+DHT dht(dhtPin, DHT_TYPE);         // Crear instancia del DHT
+int humidity;                     // Variable para almacenar la humedad
+
+
+
+// Declaración de variables
 String ServerMessage;
+bool flameSensor;
+bool fire;
+
+Servo myServo; // Crea un objeto Servo para controlar el servo motor
 
 void setup() {
-  Serial.begin(9600);// Iniciar puerto serial a 9600 baud
-  pinMode(LED_CUARTO1, OUTPUT); // Definir el pin del cuarto 1 como salida
-  pinMode(LED_CUARTO2, OUTPUT); // Definir el pin del cuarto 2 como salida
-  pinMode(LED_BATH1, OUTPUT);   // Definir el pin del baño como salida
-  pinMode(LED_SALA, OUTPUT);    // Definir el pin de la sala como salida
+  Serial.begin(9600); // Iniciar puerto serial a 9600 baud
+  pinMode(LED_CUARTO1, OUTPUT);
+  pinMode(LED_CUARTO2, OUTPUT);
+  pinMode(LED_BATH1, OUTPUT);
+  pinMode(LED_SALA, OUTPUT);
+  pinMode(SENSOR_PIN, INPUT);
+  pinMode(ballSwitchPin, INPUT);
+
+  // Configuración del servo
+  myServo.attach(SERVO_PIN); // Conecta el servo al pin definido
+  myServo.write(servoPos); // Mueve el servo a la posición inicial
+  dht.begin();
 }
 
 void loop() {
   if (Serial.available()) { // Verificar si hay datos disponibles en el puerto serial
-  ServerMessage = Serial.readStringUntil('\n');
-  
-   //leer strings del puerto serial hasta encontrar el caracter de nueva linea
-  // Se usan claves como:
-  //Baño: On = B1_1 Off = B1_0
-  //Cuarto1 : On = C1_1 Off = C1_0
-  //Cuarto2 : On = C2_1 Off = C2_0
-  //Sala: On = S1_1 Off = S1_0
-  // LED del baño
-  if (ServerMessage == "B1_1"){
-    digitalWrite(LED_BATH1, HIGH);  // Enciende el led del baño
-  }else if(ServerMessage == "B1_0"){
-    digitalWrite(LED_BATH1, LOW);  // Apaga el led del baño
-  }
-  //LED del cuarto 1
-  else if (ServerMessage == "C1_1") {
+    ServerMessage = Serial.readStringUntil('\n'); // Leer el mensaje completo del servidor
+
+    // Control de LEDs
+    if (ServerMessage == "B1_1") {
+      digitalWrite(LED_BATH1, HIGH);  // Enciende el LED del baño
+    } else if (ServerMessage == "B1_0") {
+      digitalWrite(LED_BATH1, LOW);   // Apaga el LED del baño
+    }
+    else if (ServerMessage == "C1_1") {
       digitalWrite(LED_CUARTO1, HIGH);  // Enciende el LED del cuarto 1
     } else if (ServerMessage == "C1_0") {
       digitalWrite(LED_CUARTO1, LOW);   // Apaga el LED del cuarto 1
     }
-
-  //LED del cuarto 2
-  else if (ServerMessage == "C2_1") {
+    else if (ServerMessage == "C2_1") {
       digitalWrite(LED_CUARTO2, HIGH);  // Enciende el LED del cuarto 2
     } else if (ServerMessage == "C2_0") {
       digitalWrite(LED_CUARTO2, LOW);   // Apaga el LED del cuarto 2
     }
-  //LED de la sala
-  else if (ServerMessage == "S1_1") {
+    else if (ServerMessage == "S1_1") {
       digitalWrite(LED_SALA, HIGH);  // Enciende el LED de la sala
     } else if (ServerMessage == "S1_0") {
       digitalWrite(LED_SALA, LOW);   // Apaga el LED de la sala
-    } 
-  } 
+    }
+
+    // Control del servo motor (abrir y cerrar puerta)
+    else if (ServerMessage == "SERVO_1") {
+      servoPos = 180; // Posición para abrir la puerta
+      myServo.write(servoPos);
+      delay(1000); // Espera un segundo para permitir que el servo se mueva
+    } else if (ServerMessage == "SERVO_0") {
+      servoPos = 0; // Posición para cerrar la puerta
+      myServo.write(servoPos);
+      delay(1000); // Espera un segundo para permitir que el servo se mueva
+    }
+  }
+
+  // Lectura del pin del sensor flame
+  flameSensor = digitalRead(SENSOR_PIN);
+  // Comportamiento con base al valor del sensor flame
+  if (flameSensor && !fire) {
+    Serial.write("Llama detectada!\n");
+    fire = true;
+  }
+  if (!flameSensor && fire) {
+    Serial.write("Llama apagada!\n");
+    fire = false;
+  }
+    switchState = digitalRead(ballSwitchPin);
+
+    // Detectar cambio de estado en el Ball Switch (de LOW a HIGH)
+    if (switchState == HIGH && lastSwitchState == LOW) {
+        Serial.println("¡Movimiento detectado!");  // Mensaje al detectar movimiento
+    }
+    // Actualizar el último estado
+    lastSwitchState = switchState;
+
+    // --- Lectura del DHT11 ---
+    humidity = dht.readHumidity();       // Leer la humedad
+
+
+    // Comprobar si la lectura es válida
+    if (isnan(humidity)) {
+        Serial.println("Error al leer del sensor DHT11");
+    } else {
+        // Reportar solo cuando la humedad es igual o mayor a 80%
+        if (humidity >= 80) {
+            Serial.print("Humedad: ");
+            Serial.print(humidity);
+
+  delay(200);
 }
+
+
