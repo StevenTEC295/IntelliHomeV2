@@ -18,71 +18,57 @@ import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
 import androidx.core.content.ContextCompat
 class ControlHouse : AppCompatActivity() {
-
-    private var isSalaActive = false
-    private var isCuarto1Active = false
-    private var isCuarto2Active = false
-    private var isBath1Active = false
     private lateinit var btnAbrir: Button
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
     private var isOpen = false
+    private val roomStates = mutableMapOf(
+        "Sala" to false,
+        "Cuarto1" to false,
+        "Cuarto2" to false,
+        "Baño" to false,
+        "Puerta" to false
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_controlhouse)
         btnAbrir = findViewById(R.id.btnAbrirCasa)
 
         setupBiometricPrompt()
-        /*val biometricManager = BiometricManager.from(this)
-        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
-            BiometricManager.BIOMETRIC_SUCCESS -> {
-                biometricPrompt.authenticate(promptInfo)  // Autenticación al inicio
-            }
-            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE,
-            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE,
-            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                // Manejar el caso donde no haya soporte biométrico
-                // Podrías deshabilitar funciones o mostrar un mensaje
-            }
-        }*/
-
-
 
         val areaSala: View = findViewById(R.id.areaSala)
         areaSala.setOnClickListener {
-            isSalaActive = !isSalaActive
-            toggleBackground(it, isSalaActive)
-            sendCommand("Sala", isSalaActive)
+            roomStates["Sala"] = !roomStates["Sala"]!!
+            toggleBackground(it, roomStates["Sala"]!!)
+            sendCommands(roomStates)
         }
 
         val Cuarto1: View = findViewById(R.id.Cuarto1)
         Cuarto1.setOnClickListener {
-            isCuarto1Active = !isCuarto1Active
-            toggleBackground(it, isCuarto1Active)
-            sendCommand("Cuarto1", isCuarto1Active)
+            roomStates["Cuarto1"] = !roomStates["Cuarto1"]!!
+            toggleBackground(it, roomStates["Cuarto1"]!!)
+            sendCommands(roomStates)
         }
 
         val Cuarto2: View = findViewById(R.id.Cuarto2)
         Cuarto2.setOnClickListener {
-            isCuarto2Active = !isCuarto2Active
-            toggleBackground(it, isCuarto2Active)
-            sendCommand("Cuarto2", isCuarto2Active)
+            roomStates["Cuarto2"] = !roomStates["Cuarto2"]!!
+            toggleBackground(it, roomStates["Cuarto2"]!!)
+            sendCommands(roomStates)
         }
 
         val Bath1: View = findViewById(R.id.Bath1)
         Bath1.setOnClickListener {
-            isBath1Active = !isBath1Active
-            toggleBackground(it, isBath1Active)
-            sendCommand("Baño", isBath1Active)
+            roomStates["Baño"] = !roomStates["Baño"]!!
+            toggleBackground(it, roomStates["Baño"]!!)
+            sendCommands(roomStates)
+
         }
-
-
         btnAbrir.setOnClickListener {
             biometricPrompt.authenticate(promptInfo)
         }
 
     }
-
     private fun setupBiometricPrompt() {
         val executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
@@ -93,11 +79,13 @@ class ControlHouse : AppCompatActivity() {
                 if (isOpen){
                     btnAbrir.text = "Cerrado"
                     btnAbrir.setBackgroundColor(ContextCompat.getColor(this@ControlHouse, R.color.rojo_de_la_app))
-                    sendCommand("Puerta", isOpen)
+                    roomStates["Puerta"] = !roomStates["Puerta"]!!
+                    sendCommands(roomStates)
                 }else{
                     btnAbrir.text = "Abierto"
                     btnAbrir.setBackgroundColor(ContextCompat.getColor(this@ControlHouse, R.color.green))
-                    sendCommand("Puerta", isOpen)
+                    roomStates["Puerta"] = !roomStates["Puerta"]!!
+                    sendCommands(roomStates)
                 }
                 isOpen = !isOpen
 
@@ -126,21 +114,22 @@ class ControlHouse : AppCompatActivity() {
             view.setBackgroundColor(Color.TRANSPARENT)  // Resetear a transparente
         }
     }
-
+    
     // Envía el comando al servidor usando un socket
-    private fun sendCommand(room: String, isActive: Boolean) {
-        val command = when (room) {
-            "Sala" -> if (isActive) "S1_1" else "S1_0"
-            "Cuarto1" -> if (isActive) "C1_1" else "C1_0"
-            "Cuarto2" -> if (isActive) "C2_1" else "C2_0"
-            "Baño" -> if (isActive) "B1_1" else "B1_0"
-            "Puerta" -> if (isActive) "SERVO_0" else "SERVO_1"
-            else -> return
+    private fun sendCommands(states: Map<String, Boolean>) {
+        // Crear el JSON que se enviará al servidor
+        val commands = mutableMapOf<String, String>().apply {
+            put("Sala", if (states["Sala"] == true) "S1_1" else "S1_0")
+            put("Cuarto1", if (states["Cuarto1"] == true) "C1_1" else "C1_0")
+            put("Cuarto2", if (states["Cuarto2"] == true) "C2_1" else "C2_0")
+            put("Baño", if (states["Baño"] == true) "B1_1" else "B1_0")
+            put("Puerta", if (states["Puerta"] == true) "SERVO_1" else "SERVO_0")
         }
-
+        val values: Collection<String> = commands.values
+        val comd = values.joinToString(",")
         val json = JSONObject().apply {
             put("action", "arduino")
-            put("command", command)
+            put("commands", comd)  // Enviar todos los comandos
         }
 
         // Hacer el envío en un hilo separado
@@ -152,7 +141,7 @@ class ControlHouse : AppCompatActivity() {
                 val writer = PrintWriter(outputStream, true)
 
                 // Enviar el mensaje en formato JSON
-                writer.println(json.toString())
+                writer.println(json.toString())  // Enviando el JSON que incluye todos los comandos
 
                 // Cerrar el socket
                 //writer.close()
@@ -162,4 +151,7 @@ class ControlHouse : AppCompatActivity() {
             }
         }
     }
+
+
+
 }

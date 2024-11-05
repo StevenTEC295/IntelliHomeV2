@@ -88,9 +88,7 @@ class LoginActivity : AppCompatActivity() {
                     passwordtext
 
                 )
-
                 sendDataToServer(Constants.SERVER_IP,Constants.SERVER_PORT,jsonData)
-
                 val intent = Intent(this, CambioUser::class.java)
                 startActivity(intent)
             }
@@ -122,7 +120,7 @@ class LoginActivity : AppCompatActivity() {
             printWriter.println(jsonData)
             // Aquí debería tener la respuesta del backend
 
-            /*val serverResponse = inputStream.readLine()
+            val serverResponse = inputStream.readLine()
 
             if (serverResponse != null) {
                 if (serverResponse == "1") {
