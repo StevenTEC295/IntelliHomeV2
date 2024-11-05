@@ -8,23 +8,22 @@
 #define LED_SALA 12
 #define SENSOR_PIN 13
 #define DHT_TYPE DHT11
+
 // Definición del pin del servo
 const int SERVO_PIN = 9;
 int servoPos = 0; // Posición inicial del servo
-const int ballSwitchPin = 2;      // Pin para el sensor de movimiento
-int switchState = 0;              // Estado actual del sensor de movimiento
-int lastSwitchState = 0;          // Último estado del sensor de movimiento
+const int ballSwitchPin = 2; // Pin para el sensor de movimiento
 
-int dhtPin = 3;                   // Pin para el sensor DHT11 (cambiado de 2 a 3)
-DHT dht(dhtPin, DHT_TYPE);         // Crear instancia del DHT
-int humidity;                     // Variable para almacenar la humedad
-
-
+int switchState = 0; // Estado actual del sensor de movimiento
+int lastSwitchState = 0; // Último estado del sensor de movimiento
+int dhtPin = 3; // Pin para el sensor DHT11
+DHT dht(dhtPin, DHT_TYPE); // Crear instancia del DHT
+int humidity; // Variable para almacenar la humedad
 
 // Declaración de variables
 String ServerMessage;
 bool flameSensor;
-bool fire;
+bool fireDetected = false; // Indica si hay llama detectada
 
 Servo myServo; // Crea un objeto Servo para controlar el servo motor
 
@@ -44,77 +43,102 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available()) { // Verificar si hay datos disponibles en el puerto serial
+  // Verificar si hay datos disponibles en el puerto serial
+  if (Serial.available()) { 
     ServerMessage = Serial.readStringUntil('\n'); // Leer el mensaje completo del servidor
 
-    // Control de LEDs
-    if (ServerMessage == "B1_1") {
-      digitalWrite(LED_BATH1, HIGH);  // Enciende el LED del baño
-    } else if (ServerMessage == "B1_0") {
-      digitalWrite(LED_BATH1, LOW);   // Apaga el LED del baño
-    }
-    else if (ServerMessage == "C1_1") {
-      digitalWrite(LED_CUARTO1, HIGH);  // Enciende el LED del cuarto 1
-    } else if (ServerMessage == "C1_0") {
-      digitalWrite(LED_CUARTO1, LOW);   // Apaga el LED del cuarto 1
-    }
-    else if (ServerMessage == "C2_1") {
-      digitalWrite(LED_CUARTO2, HIGH);  // Enciende el LED del cuarto 2
-    } else if (ServerMessage == "C2_0") {
-      digitalWrite(LED_CUARTO2, LOW);   // Apaga el LED del cuarto 2
-    }
-    else if (ServerMessage == "S1_1") {
-      digitalWrite(LED_SALA, HIGH);  // Enciende el LED de la sala
-    } else if (ServerMessage == "S1_0") {
-      digitalWrite(LED_SALA, LOW);   // Apaga el LED de la sala
-    }
-
-    // Control del servo motor (abrir y cerrar puerta)
-    else if (ServerMessage == "SERVO_1") {
-      servoPos = 180; // Posición para abrir la puerta
-      myServo.write(servoPos);
-      delay(1000); // Espera un segundo para permitir que el servo se mueva
-    } else if (ServerMessage == "SERVO_0") {
-      servoPos = 0; // Posición para cerrar la puerta
-      myServo.write(servoPos);
-      delay(1000); // Espera un segundo para permitir que el servo se mueva
+    // Separar los datos de la cadena
+    char *token = strtok(const_cast<char *>(ServerMessage.c_str()), ",");
+    while (token != NULL) {
+      // Control de LEDs y Servo
+      if (strcmp(token, "B1_1") == 0) {
+        digitalWrite(LED_BATH1, HIGH); // Enciende el LED del baño
+      } else if (strcmp(token, "B1_0") == 0) {
+        digitalWrite(LED_BATH1, LOW); // Apaga el LED del baño
+      } else if (strcmp(token, "C1_1") == 0) {
+        digitalWrite(LED_CUARTO1, HIGH); // Enciende el LED del cuarto 1
+      } else if (strcmp(token, "C1_0") == 0) {
+        digitalWrite(LED_CUARTO1, LOW); // Apaga el LED del cuarto 1
+      } else if (strcmp(token, "C2_1") == 0) {
+        digitalWrite(LED_CUARTO2, HIGH); // Enciende el LED del cuarto 2
+      } else if (strcmp(token, "C2_0") == 0) {
+        digitalWrite(LED_CUARTO2, LOW); // Apaga el LED del cuarto 2
+      } else if (strcmp(token, "S1_1") == 0) {
+        digitalWrite(LED_SALA, HIGH); // Enciende el LED de la sala
+      } else if (strcmp(token, "S1_0") == 0) {
+        digitalWrite(LED_SALA, LOW); // Apaga el LED de la sala
+      } else if (strcmp(token, "SERVO_1") == 0) {
+        servoPos = 180; // Posición para abrir la puerta
+        myServo.write(servoPos);
+        delay(1000); // Espera un segundo para permitir que el servo se mueva
+      } else if (strcmp(token, "SERVO_0") == 0) {
+        servoPos = 0; // Posición para cerrar la puerta
+        myServo.write(servoPos);
+        delay(1000); // Espera un segundo para permitir que el servo se mueva
+      }
+      // Obtener el siguiente token
+      token = strtok(NULL, ",");
     }
   }
 
-  // Lectura del pin del sensor flame
-  flameSensor = digitalRead(SENSOR_PIN);
-  // Comportamiento con base al valor del sensor flame
-  if (flameSensor && !fire) {
-    Serial.write("Llama detectada!\n");
-    fire = true;
-  }
-  if (!flameSensor && fire) {
-    Serial.write("Llama apagada!\n");
-    fire = false;
-  }
-    switchState = digitalRead(ballSwitchPin);
+  // --- Lectura de los sensores ---
+  bool updated = false; // Bandera para enviar el mensaje solo si algún sensor cambia
 
-    // Detectar cambio de estado en el Ball Switch (de LOW a HIGH)
-    if (switchState == HIGH && lastSwitchState == LOW) {
-        Serial.println("¡Movimiento detectado!");  // Mensaje al detectar movimiento
-    }
-    // Actualizar el último estado
-    lastSwitchState = switchState;
+  // Lectura del sensor de llama
+  bool currentFlameState = digitalRead(SENSOR_PIN);
+  if (currentFlameState != fireDetected) {
+    fireDetected = currentFlameState;
+    updated = true; // Marca que hubo un cambio
 
-    // --- Lectura del DHT11 ---
-    humidity = dht.readHumidity();       // Leer la humedad
-
-
-    // Comprobar si la lectura es válida
-    if (isnan(humidity)) {
-        Serial.println("Error al leer del sensor DHT11");
+    // Mensaje de alerta de fuego
+    if (fireDetected) {
+      Serial.println("Alerta fuego!");
     } else {
-        // Reportar solo cuando la humedad es igual o mayor a 80%
-        if (humidity >= 80) {
-            Serial.print("Humedad: ");
-            Serial.print(humidity);
+      Serial.println("Fuego apagado");
+    }
+  }
+
+  // Lectura del sensor de movimiento
+  switchState = digitalRead(ballSwitchPin);
+  if (switchState != lastSwitchState) {
+    lastSwitchState = switchState;
+    updated = true; // Marca que hubo un cambio
+
+    // Mensaje de alerta de sismo/movimiento
+    if (switchState == HIGH) {
+      Serial.println("Alerta sismo!");
+    } else {
+      Serial.println("Movimiento detenido");
+    }
+  }
+
+  // Lectura del sensor de humedad
+  humidity = dht.readHumidity();
+  bool highHumidity = !isnan(humidity) && humidity >= 80;
+  
+  // Si la humedad pasa el umbral y no estaba activado antes
+  static bool humidityAlert = false;
+  if (highHumidity != humidityAlert) {
+    humidityAlert = highHumidity;
+    updated = true; // Marca que hubo un cambio
+
+    // Mensaje de alerta de humedad
+    if (humidityAlert) {
+      Serial.println("Alerta humedad!");
+    } else {
+      Serial.println("Humedad normal");
+    }
+  }
+
+  // Si hay algún cambio, construir y enviar el mensaje
+  if (updated) {
+    String sensorStatus = String(humidityAlert ? "1" : "0") + "," +
+                          String(fireDetected ? "1" : "0") + "," +
+                          String(switchState ? "1" : "0");
+
+    // Enviar el mensaje al servidor
+    Serial.println(sensorStatus);
+  }
 
   delay(200);
 }
-
-
