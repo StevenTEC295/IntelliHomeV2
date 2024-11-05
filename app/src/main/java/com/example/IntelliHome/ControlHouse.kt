@@ -114,7 +114,7 @@ class ControlHouse : AppCompatActivity() {
             view.setBackgroundColor(Color.TRANSPARENT)  // Resetear a transparente
         }
     }
-
+    
     // Envía el comando al servidor usando un socket
     private fun sendCommands(states: Map<String, Boolean>) {
         // Crear el JSON que se enviará al servidor

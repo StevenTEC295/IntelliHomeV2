@@ -133,7 +133,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             } else {
                 println("No se recibió respuesta del servidor")
-            }
+            }*/
 
             // Cierra la conexion
             printWriter.close()
