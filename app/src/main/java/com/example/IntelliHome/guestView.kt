@@ -250,7 +250,6 @@ class guestView : AppCompatActivity() {
 
                             runOnUiThread { // actualiza el la gui en un hilo
                                 for (property in properties) {
-                                    println(property.price)
                                     val precioadouble = property.price.toDouble()
                                     val mediaArmonicaAjustada = calcularNuevaCantidad(dia,mes,15.00,3.00,precioadouble)
                                     val preciototal = precioadouble + mediaArmonicaAjustada
@@ -427,8 +426,10 @@ class guestView : AppCompatActivity() {
                 // Handle item click here, for example:
                 savePreference("selectedHouse", info.first)
                 Toast.makeText(this@guestView, "Se alquilo la casa con exito", Toast.LENGTH_SHORT).show()
-
-                println(info.first)
+                val msg = info.first.replace("\n", "")
+                val jsoncasa = sendMessagenotifi(Constants.NOTIFICASA,info.first)
+                sendMessage(jsoncasa)
+                println(jsoncasa)
             }
         })
         recyclerView.adapter = recycleadapter
@@ -493,6 +494,18 @@ class guestView : AppCompatActivity() {
         json.put("action", action)
         return json.toString()
     }
+
+    private fun sendMessagenotifi(
+        action: String,
+        message: String
+    ): String {
+        val json = JSONObject()
+        json.put("action", action)
+        json.put("message",message)
+        return json.toString()
+    }
+
+
 
     private fun calcularNuevaCantidad(dia: Int, mes: Int, porcentajeImpuesto: Double, comision: Double, montoTotal: Double): Double {
         // Paso 1: Calcular el límite máximo

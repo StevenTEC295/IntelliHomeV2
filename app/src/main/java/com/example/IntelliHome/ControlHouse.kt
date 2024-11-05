@@ -17,11 +17,22 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
 import androidx.core.content.ContextCompat
+import com.example.IntelliHome.PropertyParser
+import com.example.intellihome.guestView.GlobalVariables
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.util.Scanner
+
 class ControlHouse : AppCompatActivity() {
     private lateinit var btnAbrir: Button
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
     private var isOpen = false
+    private var out: PrintWriter? = null
+    private var socket: Socket? = null
+    private var inputmsg: Scanner? = null
+    private var inputReader: BufferedReader? = null // Cambiado de Scanner a BufferedReader
+    private var isMessageSent = false
     private val roomStates = mutableMapOf(
         "Sala" to false,
         "Cuarto1" to false,
@@ -68,6 +79,31 @@ class ControlHouse : AppCompatActivity() {
             biometricPrompt.authenticate(promptInfo)
         }
 
+
+        Thread {
+            try {
+                socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
+                out = PrintWriter(socket!!.getOutputStream(), true)
+                inputmsg =
+                    Scanner(socket!!.getInputStream())  //Es casi lo mismo que el buffer los dos funcionan
+
+                inputReader =
+                    BufferedReader(InputStreamReader(socket!!.getInputStream())) // Inicializa BufferedReader
+                //Escuhar activamente para recibir las alertas 
+                Thread {
+                    while (true) {
+                        val message = inputReader!!.readLine()
+                        if (message != null) {
+                            println(message)
+
+                        }
+                    }
+                }.start()
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
     }
     private fun setupBiometricPrompt() {
         val executor = ContextCompat.getMainExecutor(this)
@@ -103,6 +139,7 @@ class ControlHouse : AppCompatActivity() {
             .setSubtitle("Por favor, usa tu huella para abrir la casa")
             .setNegativeButtonText("Cancelar")
             .build()
+
     }
 
 
@@ -128,12 +165,13 @@ class ControlHouse : AppCompatActivity() {
         val values: Collection<String> = commands.values
         val comd = values.joinToString(",")
         val json = JSONObject().apply {
-            put("action", "arduino")
+            put("action", Constants.ARDUINO)
             put("commands", comd)  // Enviar todos los comandos
         }
 
         // Hacer el envío en un hilo separado
-        thread {
+        sendMessage(json.toString())
+        /*thread {
             try {
                 // Conectar al servidor de sockets
                 val socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)  // Cambia la IP y puerto a los de tu servidor
@@ -149,9 +187,29 @@ class ControlHouse : AppCompatActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+        }*/
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            if (out != null) out!!.close()
+            if (inputmsg != null) inputmsg!!.close()
+            if (socket != null) socket!!.close()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
         }
     }
 
+    private fun sendMessage(message: String) {
+        Thread {
+            try {
+                out?.println(message)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+    }
 
 
 }
