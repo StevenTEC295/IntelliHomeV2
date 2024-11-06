@@ -40,7 +40,6 @@ void setup() {
 
   // Configuración del servo
   myServo.attach(SERVO_PIN); // Conecta el servo al pin definido
-  myServo.write(servoPos); // Mueve el servo a la posición inicial
   dht.begin();
 }
 
@@ -53,6 +52,8 @@ void loop() {
 
       // Separar los datos de la cadena
       char *token = strtok(const_cast<char *>(ServerMessage.c_str()), ",");
+      bool moveServo = false; // Variable para decidir si el servo se mueve
+
       while (token != NULL) {
         // Control de LEDs y Servo
         if (strcmp(token, "B1_1") == 0) {
@@ -72,22 +73,27 @@ void loop() {
         } else if (strcmp(token, "S1_0") == 0) {
           digitalWrite(LED_SALA, LOW); // Apaga el LED de la sala
         } else if (strcmp(token, "SERVO_1") == 0) {
-          // Mover el servo de 90 a 180 grados
-          for (int pos = 90; pos <= 180; pos++) {
-            myServo.write(pos); // Mover el servo a 'pos'
-            delay(15);          // Pausa para permitir el movimiento suave
+          if (moveServo) { // Mueve el servo si el booleano es true
+            for (int pos = 90; pos <= 180; pos++) {
+              myServo.write(pos);
+              delay(15);
+            }
+            delay(1000);
+            servoPos = 180;
           }
-          delay(1000); // Pausa de 1 segundo en 180 grados
-          servoPos = 180; // Actualizar la posición actual
         } else if (strcmp(token, "SERVO_0") == 0) {
-          // Mover el servo de regreso de 180 a 90 grados
-          for (int pos = 180; pos >= 90; pos--) {
-            myServo.write(pos); // Mover el servo a 'pos'
-            delay(15);          // Pausa para permitir el movimiento suave
+          if (moveServo) { // Mueve el servo si el booleano es true
+            for (int pos = 180; pos >= 90; pos--) {
+              myServo.write(pos);
+              delay(15);
+            }
+            delay(1000);
+            servoPos = 90;
           }
-          delay(1000); // Pausa de 1 segundo en 90 grados
-          servoPos = 90; // Actualizar la posición actual
+        } else if (strcmp(token, "true") == 0) {
+          moveServo = true; // Cambia la variable si recibe "true"
         }
+
         // Obtener el siguiente token
         token = strtok(NULL, ",");
       }
@@ -122,5 +128,4 @@ void loop() {
 
     delay(500); // Pequeña espera para evitar saturar la comunicación serial
   }
-
 }

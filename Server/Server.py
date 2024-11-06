@@ -116,7 +116,8 @@ class Server:
 
     def arduino(self, data, sender_socket):
         print("Comando recibido")
-        self.arduino_connection.send(data["command"])
+        print(data)
+        self.arduino_connection.send(data["commands"])
         #response = arduino_connection.receive()
         response = "Comando enviado"
         sender_socket.send(response.encode('utf-8'))
