@@ -102,7 +102,7 @@ class Server:
         from twilio.rest import Client
 
         account_sid = 'AC2e431a4f1421fb0b09fffc18a1315c5e'
-        auth_token = 'd9f684d976f356b81c346ec3f1c3d40e'
+        auth_token = 'AuthToken'
         client = Client(account_sid, auth_token)
 
         message = client.messages.create(
