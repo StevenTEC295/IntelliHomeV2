@@ -1,4 +1,4 @@
-package com.example.intellihome // Cambia esto al nombre de tu paquete
+package com.example.intellihome 
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.SeekBar
@@ -24,6 +26,7 @@ import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 import org.json.JSONObject
+import java.text.Normalizer
 import java.time.LocalDate
 import java.util.Scanner
 
@@ -84,6 +87,9 @@ class guestView : AppCompatActivity() {
     private lateinit var amenidadChimenea: CheckBox
     private lateinit var amenidadInternetAlta: CheckBox
     private lateinit var resetearfiltro: CheckBox
+    private lateinit var btnsearch: ImageButton
+    private lateinit var searchField: EditText
+
     private val  fechaActual = LocalDate.now()
     private val dia = fechaActual.dayOfMonth
     private val mes = fechaActual.monthValue
@@ -120,6 +126,9 @@ class guestView : AppCompatActivity() {
         house_image = findViewById(R.id.homeIcon)
         btncasaalquilada = findViewById(R.id.btnViewHouse)
         btnDisponibilidad = findViewById(R.id.btnDisponibilidad)
+        btnsearch = findViewById(R.id.internal_search_button)
+        searchField = findViewById(R.id.search_field)
+
 
         petsAllowed = findViewById(R.id.petsAllowed)
         checkBoxCocina = findViewById(R.id.amenidad_cocina)
@@ -152,7 +161,6 @@ class guestView : AppCompatActivity() {
         amenidadChimenea = findViewById(R.id.amenidad_chimenea)
         amenidadInternetAlta = findViewById(R.id.amenidad_internetalta)
         resetearfiltro = findViewById(R.id.resetfilters)
-
         val applyFiltersButton: Button = findViewById(R.id.applyFiltersButton)
 
 
@@ -199,6 +207,35 @@ class guestView : AppCompatActivity() {
             }
 
             hideFilterDialog()
+        }
+
+        btnsearch.setOnClickListener {
+            val infoabuscar = normalize(searchField.text.toString())
+            val infoFiltrar = GlobalVariables.globalInfo
+            val parserFiltro = PropertyParser()
+            val propertiesFiltro = parserFiltro.parseProperties(infoFiltrar)
+            deleteData()
+            for (property in propertiesFiltro){
+                if (infoabuscar == normalize(property.location)){
+                    val precioadouble = property.price.toDouble()
+                    val mediaArmonicaAjustada = calcularNuevaCantidad(dia,mes,15.00,3.00,precioadouble)
+                    val preciototal = precioadouble + mediaArmonicaAjustada
+                    val info = "${getString(R.string.casa)} ${property.typeofHouse}\n" +
+                            "${getString(R.string.ubicacion)} ${property.location}\n" +
+                            "${getString(R.string.disponilidad_casa)} ${property.availability}\n" +
+                            "${getString(R.string.cantpersonas)} ${property.cantofPeople}\n\n" +
+                            "${getString(R.string.amenidades_lista)} ${property.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n" +
+                            "${getString(R.string.reglas_guess)} ${property.rules}\n" +
+                            "${getString(R.string.precio_sin_algoritmo)} ${property.price}\$\n"+
+                            "${getString(R.string.precio_ajustado)} ${preciototal}\$\n"
+                    myDataSet.add(Pair(info, R.drawable.image_casas_template))
+                }
+            }
+            recycleadapter.notifyDataSetChanged()
+            if (myDataSet.isEmpty()) {
+                Toast.makeText(this, "No resultados en la búsqueda", Toast.LENGTH_SHORT).show()
+            }
+            println(infoabuscar)
         }
 
 
@@ -250,7 +287,6 @@ class guestView : AppCompatActivity() {
 
                             runOnUiThread { // actualiza el la gui en un hilo
                                 for (property in properties) {
-                                    println(property.price)
                                     val precioadouble = property.price.toDouble()
                                     val mediaArmonicaAjustada = calcularNuevaCantidad(dia,mes,15.00,3.00,precioadouble)
                                     val preciototal = precioadouble + mediaArmonicaAjustada
@@ -427,8 +463,10 @@ class guestView : AppCompatActivity() {
                 // Handle item click here, for example:
                 savePreference("selectedHouse", info.first)
                 Toast.makeText(this@guestView, "Se alquilo la casa con exito", Toast.LENGTH_SHORT).show()
-
-                println(info.first)
+                val msg = info.first.replace("\n", "")
+                val jsoncasa = sendMessagenotifi(Constants.NOTIFICASA,info.first)
+                sendMessage(jsoncasa)
+                println(jsoncasa)
             }
         })
         recyclerView.adapter = recycleadapter
@@ -463,6 +501,11 @@ class guestView : AppCompatActivity() {
         var globalInfo: String = ""
     }
 
+    private fun normalize(text: String): String {
+        return Normalizer.normalize(text, Normalizer.Form.NFD)
+            .replace("\\p{M}".toRegex(), "") // Remove diacritical marks
+            .lowercase() // Convert to lowercase
+    }
 
     private fun closeHamburgerMenu() {
         hamburgerMenu.visibility = View.GONE
@@ -493,6 +536,18 @@ class guestView : AppCompatActivity() {
         json.put("action", action)
         return json.toString()
     }
+
+    private fun sendMessagenotifi(
+        action: String,
+        message: String
+    ): String {
+        val json = JSONObject()
+        json.put("action", action)
+        json.put("message",message)
+        return json.toString()
+    }
+
+
 
     private fun calcularNuevaCantidad(dia: Int, mes: Int, porcentajeImpuesto: Double, comision: Double, montoTotal: Double): Double {
         // Paso 1: Calcular el límite máximo

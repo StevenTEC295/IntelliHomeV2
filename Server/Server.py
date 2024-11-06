@@ -88,6 +88,8 @@ class Server:
                     client_socket.send(self.flameDetection.encode('utf-8'))
                 elif data["action"] == "a_Banquero":
                     self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
+                elif data["action"] == "noti_casa_alquilada":
+                    self.sendNotification();
                 
         except Exception as e:
             print(f"Surgió un Error: {e}")
@@ -96,7 +98,21 @@ class Server:
         client_socket.close()
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
 
+    def sendNotification(self):
+        from twilio.rest import Client
 
+        account_sid = 'AC2e431a4f1421fb0b09fffc18a1315c5e'
+        auth_token = 'AuthToken'
+        client = Client(account_sid, auth_token)
+
+        message = client.messages.create(
+        from_='whatsapp:+14155238886',
+        content_sid='HXb5b62575e6e4ff6129ad7c8efe1f983e',
+        body='Casa alquilada',
+        to='whatsapp:+50688194763'
+        )
+
+        print(message.sid)
     def sendABanquero(self,socket, day, month, IVA, comission, total):
         aBanquero = AlgoritmoBanquero.AlgoritmoBanquero()
         socket.send(str(aBanquero.calculateNewQuantity(day, month, IVA, comission, total)).encode('utf-8')   )
