@@ -19,8 +19,9 @@ class Server:
         self.arduino_connection = arduino.ArduinoConnection(port="COM5")
 
 
-        self.flameDetection = ""
+        self.flameDetection = 0
         self.humidity = 0
+        self.sismo = 0
 
         # Configuración de la interfaz gráfica 
         self.root = tk.Tk()
@@ -224,7 +225,11 @@ class Server:
         
     def read_arduino_msg(self):# Recibe el mensaje del flame, enviado desde el Arduino
         while True:
-            self.flameDetection=self.arduino_connection.read()
+            line = self.arduino_connection.read()
+            line = line.split(",")
+            self.humidity = line[0]
+            self.flameDetection = line[1]
+            self.sismo = line[2]
             
         
    
