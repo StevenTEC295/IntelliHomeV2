@@ -38,7 +38,8 @@ class ControlHouse : AppCompatActivity() {
         "Cuarto1" to false,
         "Cuarto2" to false,
         "Baño" to false,
-        "Puerta" to false
+        "Puerta" to false,
+        "isOpen" to false
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +90,7 @@ class ControlHouse : AppCompatActivity() {
 
                 inputReader =
                     BufferedReader(InputStreamReader(socket!!.getInputStream())) // Inicializa BufferedReader
-                //Escuhar activamente para recibir las alertas 
+                //Escuhar activamente para recibir las alertas
                 Thread {
                     while (true) {
                         val message = inputReader!!.readLine()
@@ -116,13 +117,16 @@ class ControlHouse : AppCompatActivity() {
                     btnAbrir.text = "Cerrado"
                     btnAbrir.setBackgroundColor(ContextCompat.getColor(this@ControlHouse, R.color.rojo_de_la_app))
                     roomStates["Puerta"] = !roomStates["Puerta"]!!
+                    roomStates["isOpen"] = !roomStates["isOpen"]!!
                     sendCommands(roomStates)
                 }else{
                     btnAbrir.text = "Abierto"
                     btnAbrir.setBackgroundColor(ContextCompat.getColor(this@ControlHouse, R.color.green))
                     roomStates["Puerta"] = !roomStates["Puerta"]!!
+                    roomStates["isOpen"] = !roomStates["isOpen"]!!
                     sendCommands(roomStates)
                 }
+
                 isOpen = !isOpen
 
             }
@@ -151,7 +155,7 @@ class ControlHouse : AppCompatActivity() {
             view.setBackgroundColor(Color.TRANSPARENT)  // Resetear a transparente
         }
     }
-    
+
     // Envía el comando al servidor usando un socket
     private fun sendCommands(states: Map<String, Boolean>) {
         // Crear el JSON que se enviará al servidor
@@ -161,6 +165,7 @@ class ControlHouse : AppCompatActivity() {
             put("Cuarto2", if (states["Cuarto2"] == true) "C2_1" else "C2_0")
             put("Baño", if (states["Baño"] == true) "B1_1" else "B1_0")
             put("Puerta", if (states["Puerta"] == true) "SERVO_1" else "SERVO_0")
+            put("isOpen", if (states["isOpen"] == true) "true" else "false")
         }
         val values: Collection<String> = commands.values
         val comd = values.joinToString(",")
