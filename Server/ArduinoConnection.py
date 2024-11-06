@@ -12,10 +12,11 @@ class ArduinoConnection:
         self.arduino.write(data.encode())
 
     def receive(self):
-        return self.arduino.readline().decode()
+        print( self.arduino.readline().decode())
     
     def read(self):
-        return self.arduino.readline.decode().strip()
+        return str(self.arduino.readline().decode('utf-8').strip())
+        
         
     def close(self):
         self.arduino.close()

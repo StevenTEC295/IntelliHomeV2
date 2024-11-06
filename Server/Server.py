@@ -16,7 +16,7 @@ class Server:
         self.server_socket.bind((host, port))
         self.server_socket.listen(5)
         self.clients = []
-        self.arduino_connection = arduino.ArduinoConnection(port="COM5")
+        self.arduino_connection = arduino.ArduinoConnection(port="COM6")
 
 
         self.flameDetection = 0
@@ -227,6 +227,7 @@ class Server:
         while True:
             line = self.arduino_connection.read()
             line = line.split(",")
+            print(line)
             self.humidity = line[0]
             self.flameDetection = line[1]
             self.sismo = line[2]
