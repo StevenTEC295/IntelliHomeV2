@@ -24,10 +24,8 @@ import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 import org.json.JSONObject
-
+import java.time.LocalDate
 import java.util.Scanner
-
-
 
 class guestView : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -86,7 +84,9 @@ class guestView : AppCompatActivity() {
     private lateinit var amenidadChimenea: CheckBox
     private lateinit var amenidadInternetAlta: CheckBox
     private lateinit var resetearfiltro: CheckBox
-
+    private val  fechaActual = LocalDate.now()
+    private val dia = fechaActual.dayOfMonth
+    private val mes = fechaActual.monthValue
 
 
     @SuppressLint("MissingInflatedId")
@@ -247,15 +247,21 @@ class guestView : AppCompatActivity() {
                             val parser = PropertyParser()
                             val properties = parser.parseProperties(message)
                             GlobalVariables.globalInfo = message
+
                             runOnUiThread { // actualiza el la gui en un hilo
                                 for (property in properties) {
+                                    println(property.price)
+                                    val precioadouble = property.price.toDouble()
+                                    val mediaArmonicaAjustada = calcularNuevaCantidad(dia,mes,15.00,3.00,precioadouble)
+                                    val preciototal = precioadouble + mediaArmonicaAjustada
                                     val info = "${getString(R.string.casa)} ${property.typeofHouse}\n"+
                                             "${getString(R.string.ubicacion)} ${property.location}\n"+
                                             "${getString(R.string.disponilidad_casa)} ${property.availability}\n"+
                                             "${getString(R.string.cantpersonas)} ${property.cantofPeople}\n\n"+
                                             "${getString(R.string.amenidades_lista)} ${property.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n"+
                                             "${getString(R.string.reglas_guess)} ${property.rules}\n"+
-                                            "${getString(R.string.precio_sin_algoritmo)} ${property.price}\$\n"
+                                            "${getString(R.string.precio_sin_algoritmo)} ${property.price}\$\n"+
+                                            "${getString(R.string.precio_ajustado)} ${preciototal}\$\n"
 
 
                                     myDataSet.add(Pair(info, R.drawable.image_casas_template))
@@ -280,13 +286,17 @@ class guestView : AppCompatActivity() {
         myDataSet.clear()
         val properties = PropertyParser().parseProperties(GlobalVariables.globalInfo)
         for (property in properties) {
+            val precioadouble = property.price.toDouble()
+            val mediaArmonicaAjustada = calcularNuevaCantidad(dia,mes,15.00,3.00,precioadouble)
+            val preciototal = precioadouble + mediaArmonicaAjustada
             val info = "${getString(R.string.casa)} ${property.typeofHouse}\n" +
                     "${getString(R.string.ubicacion)} ${property.location}\n" +
                     "${getString(R.string.disponilidad_casa)} ${property.availability}\n" +
                     "${getString(R.string.cantpersonas)} ${property.cantofPeople}\n\n" +
                     "${getString(R.string.amenidades_lista)} ${property.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n" +
                     "${getString(R.string.reglas_guess)} ${property.rules}\n" +
-                    "${getString(R.string.precio_sin_algoritmo)} ${property.price}\$"
+                    "${getString(R.string.precio_sin_algoritmo)} ${property.price}\$\n"+
+                    "${getString(R.string.precio_ajustado)} ${preciototal}\$\n"
             myDataSet.add(Pair(info, R.drawable.image_casas_template))
         }
 
@@ -378,13 +388,17 @@ class guestView : AppCompatActivity() {
                 matchesProximity && matchesLowRadiation && matchesDesk && matchesEntertainment &&
                 matchesFireplace && matchesHighSpeedInternet
             ) {
+                val precioadouble = property.price.toDouble()
+                val mediaArmonicaAjustada = calcularNuevaCantidad(dia,mes,15.00,3.00,precioadouble)
+                val preciototal = precioadouble + mediaArmonicaAjustada
                 val info = "${getString(R.string.casa)} ${property.typeofHouse}\n" +
                         "${getString(R.string.ubicacion)} ${property.location}\n" +
                         "${getString(R.string.disponilidad_casa)} ${property.availability}\n" +
                         "${getString(R.string.cantpersonas)} ${property.cantofPeople}\n\n" +
                         "${getString(R.string.amenidades_lista)} ${property.amenities.filter { it.isNotBlank() }.joinToString(", ")}\n\n" +
                         "${getString(R.string.reglas_guess)} ${property.rules}\n" +
-                        "${getString(R.string.precio_sin_algoritmo)} ${property.price}\$"
+                        "${getString(R.string.precio_sin_algoritmo)} ${property.price}\$\n"+
+                        "${getString(R.string.precio_ajustado)} ${preciototal}\$\n"
                 myDataSet.add(Pair(info, R.drawable.image_casas_template))
             }
         }
@@ -395,7 +409,6 @@ class guestView : AppCompatActivity() {
             Toast.makeText(this, "No resultados en los filtros", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun savePreference(key: String, value: String) {
         val editor = sharedPreferences.edit()
@@ -419,7 +432,6 @@ class guestView : AppCompatActivity() {
             }
         })
         recyclerView.adapter = recycleadapter
-
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     }
     
@@ -427,7 +439,6 @@ class guestView : AppCompatActivity() {
         myDataSet.clear()
         recycleadapter.notifyDataSetChanged()
     }
-
 
     private fun showFilterDialog() {
         filterDialog.visibility = View.VISIBLE
@@ -465,19 +476,6 @@ class guestView : AppCompatActivity() {
         mainLayout.setBackgroundResource(savedBackground)
 
     }
-
-    data class Property(
-        val action: String,
-        val idPropertyRegister: String,
-        val location: String,
-        val typeofHouse: String,
-        val availability: String,
-        val cantofPeople: Int,
-        val amenities: List<String>,
-        val rules: String,
-        val price: Int
-    )
-
     private fun sendMessage(message: String) {
         Thread {
             try {
@@ -494,6 +492,35 @@ class guestView : AppCompatActivity() {
         val json = JSONObject()
         json.put("action", action)
         return json.toString()
+    }
+
+    private fun calcularNuevaCantidad(dia: Int, mes: Int, porcentajeImpuesto: Double, comision: Double, montoTotal: Double): Double {
+        // Paso 1: Calcular el límite máximo
+        val limiteMaximo = 0.10 * montoTotal
+        //println("limiteMaximo:$limiteMaximo")
+        // Paso 2: Calcular la media armónica
+        val mediaArmonica = if ((porcentajeImpuesto + comision) > 0) {
+            2 / ((1 / porcentajeImpuesto) + (1 / comision))
+        } else {
+            0.0
+        }
+        //println("mediaArmonica:$mediaArmonica")
+
+        // Paso 3: Calcular el factor de ajuste
+        val factorAjuste = (dia + mes) / 100.00
+
+        //println("factorAjuste:$factorAjuste")
+        // Paso 4: Ajustar la media armónica
+        var mediaArmonicaAjustada = mediaArmonica * factorAjuste
+
+        //println("mediaArmonicaAjustada:$mediaArmonicaAjustada")
+        // Paso 5: Asegurarse de que no exceda el límite
+        if (mediaArmonicaAjustada > limiteMaximo) {
+            mediaArmonicaAjustada = limiteMaximo
+        }
+        //println("mediaArmonicaAjustadaantesdelretunr:$mediaArmonicaAjustada")
+        // Retornar el resultado
+        return mediaArmonicaAjustada
     }
 
     override fun onDestroy() {

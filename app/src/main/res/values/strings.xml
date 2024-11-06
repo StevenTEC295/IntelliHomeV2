@@ -126,6 +126,8 @@
     <string name="precio_sin_algoritmo">Precio base:</string>
 
     <string name="filterreset">Filtro reset</string>
+    <string name="precio_ajustado">Precio con ajuste</string>
+
 
 
 </resources>

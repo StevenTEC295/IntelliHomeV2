@@ -16,6 +16,12 @@ class Server:
         self.server_socket.bind((host, port))
         self.server_socket.listen(5)
         self.clients = []
+        self.arduino_connection = arduino.ArduinoConnection(port="COM5")
+
+
+        self.flameDetection = 0
+        self.humidity = 0
+        self.sismo = 0
 
         # Configuración de la interfaz gráfica 
         self.root = tk.Tk()
@@ -36,6 +42,10 @@ class Server:
         # Hilo para manejar el servidor con el fin de que sea en hilos separados
         self.thread = threading.Thread(target=self.accept_connections)
         self.thread.start()
+
+        # Hilo para leer los mensajes del Arduino
+        self.threadArduino = threading.Thread(target=self.read_arduino_msg)
+        self.threadArduino.start()
 
         self.root.protocol("WM_DELETE_WINDOW", self.close_server)
         self.root.mainloop()
@@ -74,6 +84,8 @@ class Server:
                     self.rq_housing(client_socket)
                 elif data["action"] == "sv_house":
                     self.sv_house(data, client_socket)
+                elif data["action"] == "rq_flame":
+                    client_socket.send(self.flameDetection.encode('utf-8'))
                 elif data["action"] == "a_Banquero":
                     self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
                 
@@ -104,8 +116,7 @@ class Server:
 
     def arduino(self, data, sender_socket):
         print("Comando recibido")
-        arduino_connection = arduino.ArduinoConnection(port="COM5")
-        arduino_connection.send(data["command"])
+        self.arduino_connection.send(data["command"])
         #response = arduino_connection.receive()
         response = "Comando enviado"
         sender_socket.send(response.encode('utf-8'))
@@ -214,8 +225,12 @@ class Server:
         
     def read_arduino_msg(self):# Recibe el mensaje del flame, enviado desde el Arduino
         while True:
-            ino_message = self.arduino.read_until(b"\n").decode('utf-8')
-            self.broadcast1(ino_message, self.server_socket)
+            line = self.arduino_connection.read()
+            line = line.split(",")
+            self.humidity = line[0]
+            self.flameDetection = line[1]
+            self.sismo = line[2]
+            
         
    
             
