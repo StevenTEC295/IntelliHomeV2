@@ -16,7 +16,7 @@ class Server:
         self.server_socket.bind((host, port))
         self.server_socket.listen(5)
         self.clients = []
-        self.arduino_connection = arduino.ArduinoConnection(port="COM5")
+        self.arduino_connection = arduino.ArduinoConnection(port="COM6")
 
 
         self.flameDetection = 0
@@ -44,8 +44,8 @@ class Server:
         self.thread.start()
 
         # Hilo para leer los mensajes del Arduino
-        self.threadArduino = threading.Thread(target=self.read_arduino_msg)
-        self.threadArduino.start()
+        #self.threadArduino = threading.Thread(target=self.read_arduino_msg)
+        #self.threadArduino.start()
 
         self.root.protocol("WM_DELETE_WINDOW", self.close_server)
         self.root.mainloop()
@@ -88,6 +88,8 @@ class Server:
                     client_socket.send(self.flameDetection.encode('utf-8'))
                 elif data["action"] == "a_Banquero":
                     self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
+                '''elif data["action"] == "noti_casa_alquilada":
+                    self.sendNotification();'''
                 
         except Exception as e:
             print(f"Surgió un Error: {e}")
@@ -96,7 +98,21 @@ class Server:
         client_socket.close()
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
 
+    '''def sendNotification(self):
+        from twilio.rest import Client
 
+        account_sid = 'AC2e431a4f1421fb0b09fffc18a1315c5e'
+        auth_token = 'AuthToken'
+        client = Client(account_sid, auth_token)
+
+        message = client.messages.create(
+        from_='whatsapp:+14155238886',
+        content_sid='HXb5b62575e6e4ff6129ad7c8efe1f983e',
+        body='Casa alquilada',
+        to='whatsapp:+50688194763'
+        )
+
+        print(message.sid)'''
     def sendABanquero(self,socket, day, month, IVA, comission, total):
         aBanquero = AlgoritmoBanquero.AlgoritmoBanquero()
         socket.send(str(aBanquero.calculateNewQuantity(day, month, IVA, comission, total)).encode('utf-8')   )
@@ -116,10 +132,10 @@ class Server:
 
     def arduino(self, data, sender_socket):
         print("Comando recibido")
-        self.arduino_connection.send(data["command"])
+        print(data)
+        self.arduino_connection.send(data["commands"])
         #response = arduino_connection.receive()
-        response = "Comando enviado"
-        sender_socket.send(response.encode('utf-8'))
+        
         #arduino_connection.close()
     
 
@@ -227,10 +243,13 @@ class Server:
         while True:
             line = self.arduino_connection.read()
             line = line.split(",")
-            self.humidity = line[0]
-            self.flameDetection = line[1]
-            self.sismo = line[2]
-            
+            print(line)
+            if line[0] != "":
+                
+                self.humidity = line[0]
+                self.flameDetection = line[1]
+                self.sismo = line[2]
+                
         
    
             
