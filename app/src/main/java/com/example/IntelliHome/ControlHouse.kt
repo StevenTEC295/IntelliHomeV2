@@ -80,12 +80,12 @@ class ControlHouse : AppCompatActivity() {
                     btnAbrir.text = "Cerrado"
                     btnAbrir.setBackgroundColor(ContextCompat.getColor(this@ControlHouse, R.color.rojo_de_la_app))
                     roomStates["Puerta"] = !roomStates["Puerta"]!!
-                    sendCommands(roomStates)
+                    sendDoorCommand(false)
                 }else{
                     btnAbrir.text = "Abierto"
                     btnAbrir.setBackgroundColor(ContextCompat.getColor(this@ControlHouse, R.color.green))
                     roomStates["Puerta"] = !roomStates["Puerta"]!!
-                    sendCommands(roomStates)
+                    sendDoorCommand(true)
                 }
                 isOpen = !isOpen
 
@@ -123,7 +123,7 @@ class ControlHouse : AppCompatActivity() {
             put("Cuarto1", if (states["Cuarto1"] == true) "C1_1" else "C1_0")
             put("Cuarto2", if (states["Cuarto2"] == true) "C2_1" else "C2_0")
             put("Baño", if (states["Baño"] == true) "B1_1" else "B1_0")
-            put("Puerta", if (states["Puerta"] == true) "SERVO_1" else "SERVO_0")
+
         }
         val values: Collection<String> = commands.values
         val comd = values.joinToString(",")
@@ -131,27 +131,39 @@ class ControlHouse : AppCompatActivity() {
             put("action", "arduino")
             put("commands", comd)  // Enviar todos los comandos
         }
-
         // Hacer el envío en un hilo separado
-        thread {
-            try {
-                // Conectar al servidor de sockets
-                val socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)  // Cambia la IP y puerto a los de tu servidor
-                val outputStream: OutputStream = socket.getOutputStream()
-                val writer = PrintWriter(outputStream, true)
+        sendToServer(json)
+    }
 
-                // Enviar el mensaje en formato JSON
-                writer.println(json.toString())  // Enviando el JSON que incluye todos los comandos
-
-                // Cerrar el socket
-                //writer.close()
-                //socket.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+    // Función para enviar solo el estado de la puerta
+    private fun sendDoorCommand(isDoorOpen: Boolean) {
+        val doorCommand = if (isDoorOpen) "SERVO_0" else "SERVO_1"
+        val json = JSONObject().apply {
+            put("action", "arduino")  // Action específico para la puerta
+            put("commands", doorCommand)  // Enviar solo el comando de la puerta
         }
+        // Hacer el envío en un hilo separado
+        sendToServer(json)
     }
 
 
+        // Hacer el envío en un hilo separado
+        private fun sendToServer(json: JSONObject) {
+            thread {
+                try {
+                    val socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
+                    val outputStream: OutputStream = socket.getOutputStream()
+                    val writer = PrintWriter(outputStream, true)
 
+                    // Enviar el mensaje en formato JSON
+                    writer.println(json.toString())
+
+                    // Cerrar el socket
+                    writer.close()
+                    socket.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
 }

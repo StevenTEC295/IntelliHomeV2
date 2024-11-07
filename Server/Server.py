@@ -88,6 +88,8 @@ class Server:
                     client_socket.send(self.flameDetection.encode('utf-8'))
                 elif data["action"] == "a_Banquero":
                     self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
+                
+                    
                 '''elif data["action"] == "noti_casa_alquilada":
                     self.sendNotification();'''
                 
@@ -134,8 +136,7 @@ class Server:
         print("Comando recibido")
         print(data)
         self.arduino_connection.send(data["commands"])
-        #response = arduino_connection.receive()
-        
+        #response = arduino_connection.receive(
         #arduino_connection.close()
     
 

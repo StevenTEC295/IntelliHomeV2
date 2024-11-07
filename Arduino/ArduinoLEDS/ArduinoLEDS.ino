@@ -119,7 +119,6 @@ void loop() {
 
     // Enviar el mensaje al servidor
     Serial.println(sensorStatus);
-
     delay(500); // Pequeña espera para evitar saturar la comunicación serial
   }
 }
