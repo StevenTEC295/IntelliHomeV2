@@ -16,7 +16,7 @@ class Server:
         self.server_socket.bind((host, port))
         self.server_socket.listen(5)
         self.clients = []
-        self.arduino_connection = arduino.ArduinoConnection(port="COM5")
+        self.arduino_connection = arduino.ArduinoConnection(port="COM1")
 
 
         self.flameDetection = 0
@@ -59,44 +59,93 @@ class Server:
             self.chat_display.insert(tk.END, f"Conexión de {addr}\n")
             self.chat_display.config(state='disabled')
             threading.Thread(target=self.handle_client, args=(client_socket,)).start() # Para que sea en hilo separado
+
+
     def handle_client(self, client_socket):
-    
         try:
-            
-            message = client_socket.recv(4096).decode("utf-8")  # recibe los mensajes
-            
-            print(type(message))
-            if message:  # Si no hay mensaje
-                #Convierte el texto en formato json
-                data = json.loads(message)
-                #data = dict(message)
-                print(data["action"])
-        
-            
+            while True:  # Bucle para recibir mensajes de forma continua
+                message = client_socket.recv(4096).decode("utf-8")
+                if not message:
+                    break  # Salir si el cliente cierra la conexión
                 
+                # Procesar el mensaje si existe
+                data = json.loads(message)
+                print(data["action"])
+
+                # Lógica para manejar las diferentes acciones
                 if data["action"] == "registro":
-                    self.register(message, client_socket)  # mandar mensaje a todo mundo 
+                    self.register(message, client_socket)
                 elif data["action"] == "login":
                     self.login(data, client_socket)
                 elif data["action"] == "arduino":
-                    self.arduino(data, client_socket)  
+                    self.arduino(data, client_socket)
                 elif data["action"] == "rq_house":
                     self.rq_housing(client_socket)
                 elif data["action"] == "sv_house":
                     self.sv_house(data, client_socket)
                 elif data["action"] == "rq_flame":
-                    client_socket.send(self.flameDetection.encode('utf-8'))
+                    client_socket.send(str(self.flameDetection).encode('utf-8'))
                 elif data["action"] == "a_Banquero":
                     self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
                 elif data["action"] == "noti_casa_alquilada":
-                    self.sendNotification();
-                
+                    self.sendNotification()
+
         except Exception as e:
             print(f"Surgió un Error: {e}")
+
+        finally:
+            client_socket.close()
+            self.clients.remove(client_socket)
+
+    # def handle_client(self, client_socket):
+    #     while True:
+    #         try:
+    #             message = client_socket.recv(4096).decode("utf-8")  # recibe los mensajes
+                
+    #             print(type(message))
+    #             if message:  # Si no hay mensaje
+    #                 #Convierte el texto en formato json
+    #                 data = json.loads(message)
+    #                 #data = dict(message)
+    #                 print(data["action"])
+    #                 if data["action"] == "registro":
+    #                     self.register(message, client_socket)  # mandar mensaje a todo mundo 
+    #                 elif data["action"] == "login":
+    #                     self.login(data, client_socket)
+    #                 elif data["action"] == "arduino":
+    #                     self.arduino(data, client_socket)  
+    #                 elif data["action"] == "rq_house":
+    #                     self.rq_housing(client_socket)
+    #                 elif data["action"] == "sv_house":
+    #                     self.sv_house(data, client_socket)
+    #                 elif data["action"] == "rq_flame":
+    #                     client_socket.send(self.flameDetection.encode('utf-8'))
+    #                 elif data["action"] == "a_Banquero":
+    #                     self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
+    #                 elif data["action"] == "noti_casa_alquilada":
+    #                     self.sendNotification();
+                    
+    #         except Exception as e:
+    #             print(f"Surgió un Error: {e}")
             
 
-        client_socket.close()
-        self.clients.remove(client_socket)  # elimina clientes cuando ya no están
+    #         client_socket.close()
+    #         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
+
+
+    # def handle_client(self, client_socket):
+    #     while True: #Siempre estar atento a recibir mensajes de cualquier cliente
+    #         try:
+    #             message = client_socket.recv(1024).decode('utf-8')#recibe los mensajes
+    #             if message:
+    #                 self.broadcast(message, client_socket) # mandar mensaje a todo mundo 
+    #             else:
+    #                 break
+    #         except:
+    #             break
+    #     client_socket.close()
+    #     self.clients.remove(client_socket) 
+
 
     def sendNotification(self):
         from twilio.rest import Client
@@ -132,10 +181,12 @@ class Server:
 
     def arduino(self, data, sender_socket):
         print("Comando recibido")
-        self.arduino_connection.send(data["command"])
+        print(data)
+        
+        #self.arduino_connection.send(data["command"])
         #response = arduino_connection.receive()
-        response = "Comando enviado"
-        sender_socket.send(response.encode('utf-8'))
+        #response = "Comando enviado"
+        #sender_socket.send(response.encode('utf-8'))
         #arduino_connection.close()
     
 

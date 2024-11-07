@@ -578,7 +578,7 @@ class guestView : AppCompatActivity() {
         return mediaArmonicaAjustada
     }
 
-    override fun onDestroy() {
+    /*override fun onDestroy() {
         super.onDestroy()
         try {
             if (out != null) out!!.close()
@@ -587,5 +587,5 @@ class guestView : AppCompatActivity() {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-    }
+    }*/
 }

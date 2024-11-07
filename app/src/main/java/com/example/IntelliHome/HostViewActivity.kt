@@ -33,6 +33,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.io.OutputStream
 import java.io.PrintWriter
 import java.net.Socket
@@ -40,6 +42,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.Scanner
 import java.util.TimeZone
 import java.util.UUID
 
@@ -99,6 +102,11 @@ class HostViewActivity : AppCompatActivity() {
     //UN CODIGO DE RESQUEST EL VALOR NO IMPORTA
     private val CODE =50
     private var nulllist = 0
+
+    private var out: PrintWriter? = null
+    private var socket: Socket? = null
+    private var inputmsg: Scanner? = null
+    private var inputReader: BufferedReader? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -275,7 +283,7 @@ class HostViewActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     val intent = Intent(this@HostViewActivity, ListofHostViewActivity::class.java)
                     startActivity(intent)
-                    finish()
+                    //finish()
                 }
             }
 

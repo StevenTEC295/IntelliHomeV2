@@ -195,7 +195,7 @@ class ControlHouse : AppCompatActivity() {
         }*/
     }
 
-    override fun onDestroy() {
+    /*override fun onDestroy() {
         super.onDestroy()
         try {
             if (out != null) out!!.close()
@@ -204,12 +204,12 @@ class ControlHouse : AppCompatActivity() {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-    }
+    }*/
 
     private fun sendMessage(message: String) {
         Thread {
             try {
-                out?.println(message)
+                out!!.println(message)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

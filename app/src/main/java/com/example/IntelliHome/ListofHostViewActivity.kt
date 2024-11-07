@@ -173,9 +173,8 @@ class ListofHostViewActivity : AppCompatActivity() {
     private fun navegarAlFormulariopropiedad() {
         val intent = Intent(this, HostViewActivity::class.java)
         startActivity(intent)
-        onDestroy()
+        //onDestroy()
         finish()
-
     }
 
     private fun navegarAlHome() {
@@ -184,7 +183,7 @@ class ListofHostViewActivity : AppCompatActivity() {
         finish()
     }
 
-    override fun onDestroy() {
+    /*override fun onDestroy() {
         super.onDestroy()
         try {
             if (out != null) out!!.close()
@@ -193,5 +192,5 @@ class ListofHostViewActivity : AppCompatActivity() {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-    }
+    }*/
 }
