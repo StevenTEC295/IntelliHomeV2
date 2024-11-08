@@ -103,9 +103,9 @@ class Server:
 
     def sendNotification(self, mensaje):
         from twilio.rest import Client 
-        account_sid = 'ACbff41f04597bcf910bed3b1d1ef87837'
-        auth_token = '00047831a590343cd1fe56e51c6995e3'
-        #17a18fc3d2939eeac6692b273fccad08
+        account_sid = 'Accountsid'
+        auth_token = 'authtoken'
+        
         client = Client(account_sid, auth_token)
 
         message = client.messages.create(
@@ -116,9 +116,9 @@ class Server:
     
         print(message.sid)
     '''
-        account_sid = 'AC4006d914bddc8dfa78b0d2eb33dc7cb6'
-        auth_token = 'ecde5c8ea962e1fffabf7361cfd2723b'
-        #17a18fc3d2939eeac6692b273fccad08
+        account_sid = ''
+        auth_token = ''
+       
         client = Client(account_sid, auth_token)
 
         message = client.messages.create(
