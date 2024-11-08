@@ -104,15 +104,15 @@ class Server:
     def sendNotification(self, mensaje):
         from twilio.rest import Client
 
-        account_sid = 'AC40acaf58f18829153297016d9034da97'
-        auth_token = '17a18fc3d2939eeac6692b273fccad08'
+        account_sid = 'AC4006d914bddc8dfa78b0d2eb33dc7cb6'
+        auth_token = 'ecde5c8ea962e1fffabf7361cfd2723b'
         #17a18fc3d2939eeac6692b273fccad08
         client = Client(account_sid, auth_token)
 
         message = client.messages.create(
         from_='whatsapp:+14155238886',
         body=mensaje,
-        to='whatsapp:+50661370491'
+        to='whatsapp:+50688194763'
         )
 
         print(message.sid)
@@ -243,6 +243,8 @@ class Server:
         self.server_socket.close()
         self.root.destroy()
         
+    
+                
     def read_arduino_msg(self):# Recibe el mensaje del flame, enviado desde el Arduino
         linea_anterior = ""
         while True:
@@ -254,24 +256,27 @@ class Server:
                 self.humidity = line_split[0]
                 self.flameDetection = line_split[1]
                 self.sismo = line_split[2]
+                
 
                 if linea_anterior != line:
                     self.send_message()
                 linea_anterior = line
-                
-                
+    
+
         
                 
     def send_message(self):
-        while True:
+        
+        if self.flameDetection == "1":
+            self.sendNotification("Fuego detectado")
+        if self.humidity == "1":
+            self.sendNotification("Humedad detectada")
+        if self.sismo == "1":
+            self.sendNotification("Sismo detectado")
 
-            if self.sismo == "1":
-                return self.sendNotification("Sismo detectado")
-            if self.humidity == "1":
-                return self.sendNotification("Humedad detectada")
-            if self.flameDetection == "1":
-                return self.sendNotification("Fuego detectado")
-            #time.sleep(5)
+       
+            
+           
              
             
 if __name__ == "__main__":
