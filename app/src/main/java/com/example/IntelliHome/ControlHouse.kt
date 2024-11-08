@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.IntelliHome.Constants
@@ -33,6 +34,11 @@ class ControlHouse : AppCompatActivity() {
     private var inputReader: BufferedReader? = null // Cambiado de Scanner a BufferedReader
     private var isMessageSent = false
 
+    // ImageView para alertas de sensores
+    private lateinit var alertFire: ImageView
+    private lateinit var alertHumidity: ImageView
+    private lateinit var alertEarthquake: ImageView
+    //
     private val roomStates = mutableMapOf(
         "Sala" to false,
         "Cuarto1" to false,
@@ -44,8 +50,14 @@ class ControlHouse : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_controlhouse)
         btnAbrir = findViewById(R.id.btnAbrirCasa)
-
+        // Alertas
+        alertFire = findViewById(R.id.alertFire)
+        alertHumidity = findViewById(R.id.alertHumidity)
+        alertEarthquake = findViewById(R.id.alertEarthquake)
+        //
         setupBiometricPrompt()
+        // Iniciar el hilo para recibir datos desde el servidor
+        startListeningToServer()
 
         val areaSala: View = findViewById(R.id.areaSala)
         areaSala.setOnClickListener {
@@ -78,6 +90,7 @@ class ControlHouse : AppCompatActivity() {
         btnAbrir.setOnClickListener {
             biometricPrompt.authenticate(promptInfo)
         }
+
 
         Thread {
             try {
@@ -187,6 +200,60 @@ class ControlHouse : AppCompatActivity() {
         // Hacer el envío en un hilo separado
         sendToServer(json)
     }
+    private fun startListeningToServer() {
+        Thread {
+            try {
+                socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
+                out = PrintWriter(socket!!.getOutputStream(), true)
+                inputReader = BufferedReader(InputStreamReader(socket!!.getInputStream()))
+
+                // Hilo para recibir datos del servidor
+                Thread {
+                    while (true) {
+                        val message = inputReader!!.readLine()
+                        if (message != null) {
+                            println("Mensaje recibido: $message") // Verificar mensaje recibido
+                            processSensorData(message)
+                        }
+                    }
+                }.start()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+    }
+
+    private fun processSensorData(data: String) {
+        try {
+            // Dividir el string recibido por comas para obtener cada valor
+            val list = data.split(",")
+
+            // Asegurarse de que el mensaje contenga tres elementos
+            if (list.size >= 3) {
+                val humedad = list[0].trim()
+                val fuego = list[1].trim()
+                val sismo = list[2].trim()
+
+                // Actualizar la interfaz de usuario en el hilo principal
+                runOnUiThread {
+                    println("Valores recibidos - Humedad: $humedad, Fuego: $fuego, Sismo: $sismo")
+
+                    // Cambiar la visibilidad de los ImageView basándose en los valores recibidos
+                    alertFire.visibility = if (fuego == "1") View.VISIBLE else View.GONE
+                    alertHumidity.visibility = if (humedad == "1") View.VISIBLE else View.GONE
+                    alertEarthquake.visibility = if (sismo == "1") View.VISIBLE else View.GONE
+                }
+            } else {
+                println("Error: La lista no contiene suficientes elementos.")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            println("Error al procesar los datos del sensor: ${e.message}")
+        }
+    }
+
+
+
 
     // Función para enviar solo el estado de la puerta
     private fun sendDoorCommand(isDoorOpen: Boolean) {
@@ -200,23 +267,24 @@ class ControlHouse : AppCompatActivity() {
     }
 
 
-        // Hacer el envío en un hilo separado
-        private fun sendToServer(json: JSONObject) {
-            thread {
-                try {
-                    val socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
-                    val outputStream: OutputStream = socket.getOutputStream()
-                    val writer = PrintWriter(outputStream, true)
+    // Hacer el envío en un hilo separado
+    private fun sendToServer(json: JSONObject) {
+        thread {
+            try {
+                val socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
+                val outputStream: OutputStream = socket.getOutputStream()
+                val writer = PrintWriter(outputStream, true)
 
-                    // Enviar el mensaje en formato JSON
-                    writer.println(json.toString())
+                // Enviar el mensaje en formato JSON
+                writer.println(json.toString())
 
-                    // Cerrar el socket
-                    writer.close()
-                    socket.close()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+                // Cerrar el socket
+                writer.close()
+                socket.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
+    }
+
 }
