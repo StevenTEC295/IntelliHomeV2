@@ -120,7 +120,7 @@ class LoginActivity : AppCompatActivity() {
             printWriter.println(jsonData)
             // Aquí debería tener la respuesta del backend
 
-            val serverResponse = inputStream.readLine()
+            /*val serverResponse = inputStream.readLine()
 
             if (serverResponse != null) {
                 if (serverResponse == "1") {
@@ -133,7 +133,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             } else {
                 println("No se recibió respuesta del servidor")
-            }
+            }*/
 
             // Cierra la conexion
             printWriter.close()

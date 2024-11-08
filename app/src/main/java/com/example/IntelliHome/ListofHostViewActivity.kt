@@ -173,7 +173,7 @@ class ListofHostViewActivity : AppCompatActivity() {
     private fun navegarAlFormulariopropiedad() {
         val intent = Intent(this, HostViewActivity::class.java)
         startActivity(intent)
-        onDestroy()
+        //onDestroy()
         finish()
 
     }

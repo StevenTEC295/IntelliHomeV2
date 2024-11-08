@@ -16,7 +16,7 @@ class Server:
         self.server_socket.bind((host, port))
         self.server_socket.listen(5)
         self.clients = []
-        self.arduino_connection = arduino.ArduinoConnection(port="COM5")
+        self.arduino_connection = arduino.ArduinoConnection(port="COM6")
 
 
         self.flameDetection = 0
@@ -46,6 +46,9 @@ class Server:
         # Hilo para leer los mensajes del Arduino
         self.threadArduino = threading.Thread(target=self.read_arduino_msg)
         self.threadArduino.start()
+        '''
+        self.threadsendMessages = threading.Thread(target=self.send_message)
+        self.threadsendMessages.start()'''
 
         self.root.protocol("WM_DELETE_WINDOW", self.close_server)
         self.root.mainloop()
@@ -84,10 +87,12 @@ class Server:
                     self.rq_housing(client_socket)
                 elif data["action"] == "sv_house":
                     self.sv_house(data, client_socket)
-                elif data["action"] == "rq_flame":
-                    client_socket.send(self.flameDetection.encode('utf-8'))
+                elif data["action"] == "rq_sensors":
+                    client_socket.send(f"{self.flameDetection},{self.humidity},{self.sismo}".encode('utf-8'))
                 elif data["action"] == "a_Banquero":
                     self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
+                elif data["action"] == "noti_casa_alquilada":
+                    self.sendNotification(data["message"]);
                 
         except Exception as e:
             print(f"Surgió un Error: {e}")
@@ -96,7 +101,22 @@ class Server:
         client_socket.close()
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
 
+    def sendNotification(self, mensaje):
+        from twilio.rest import Client
 
+        account_sid = 'AC40acaf58f18829153297016d9034da97'
+        auth_token = '17a18fc3d2939eeac6692b273fccad08'
+        client = Client(account_sid, auth_token)
+
+        message = client.messages.create(
+        from_='whatsapp:+14155238886',
+        body=mensaje,
+        to='whatsapp:+50661370491'
+        )
+
+        print(message.sid)
+
+        
     def sendABanquero(self,socket, day, month, IVA, comission, total):
         aBanquero = AlgoritmoBanquero.AlgoritmoBanquero()
         socket.send(str(aBanquero.calculateNewQuantity(day, month, IVA, comission, total)).encode('utf-8')   )
@@ -116,10 +136,9 @@ class Server:
 
     def arduino(self, data, sender_socket):
         print("Comando recibido")
-        self.arduino_connection.send(data["command"])
-        #response = arduino_connection.receive()
-        response = "Comando enviado"
-        sender_socket.send(response.encode('utf-8'))
+        print(data)
+        self.arduino_connection.send(data["commands"])
+        #response = arduino_connection.receive(
         #arduino_connection.close()
     
 
@@ -224,16 +243,35 @@ class Server:
         self.root.destroy()
         
     def read_arduino_msg(self):# Recibe el mensaje del flame, enviado desde el Arduino
+        linea_anterior = ""
         while True:
             line = self.arduino_connection.read()
-            line = line.split(",")
-            self.humidity = line[0]
-            self.flameDetection = line[1]
-            self.sismo = line[2]
-            
+            line_split = line.split(",")
+            print(line)
+            if line_split[0] != "":
+                
+                self.humidity = line_split[0]
+                self.flameDetection = line_split[1]
+                self.sismo = line_split[2]
+
+                if linea_anterior != line:
+                    self.send_message()
+                linea_anterior = line
+                
+                
         
-   
-            
+                
+    def send_message(self):
+        while True:
+
+            if self.sismo == "1":
+                return self.sendNotification("Sismo detectado")
+            if self.humidity == "1":
+                return self.sendNotification("Humedad detectada")
+            if self.flameDetection == "1":
+                return self.sendNotification("Fuego detectado")
+            #time.sleep(5)
+             
             
 if __name__ == "__main__":
     Server()

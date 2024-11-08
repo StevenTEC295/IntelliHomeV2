@@ -15,7 +15,7 @@ class ArduinoConnection:
         return self.arduino.readline().decode()
     
     def read(self):
-        return self.arduino.readline.decode().strip()
+        return self.arduino.readline().decode().strip()
         
     def close(self):
         self.arduino.close()
