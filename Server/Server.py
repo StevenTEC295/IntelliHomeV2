@@ -102,8 +102,20 @@ class Server:
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
 
     def sendNotification(self, mensaje):
-        from twilio.rest import Client
+        from twilio.rest import Client 
+        account_sid = 'ACbff41f04597bcf910bed3b1d1ef87837'
+        auth_token = '00047831a590343cd1fe56e51c6995e3'
+        #17a18fc3d2939eeac6692b273fccad08
+        client = Client(account_sid, auth_token)
 
+        message = client.messages.create(
+        from_='whatsapp:+14155238886',
+        body=mensaje,
+        to='whatsapp:+50683465389'
+        )
+    
+        print(message.sid)
+    '''
         account_sid = 'AC4006d914bddc8dfa78b0d2eb33dc7cb6'
         auth_token = 'ecde5c8ea962e1fffabf7361cfd2723b'
         #17a18fc3d2939eeac6692b273fccad08
@@ -113,9 +125,9 @@ class Server:
         from_='whatsapp:+14155238886',
         body=mensaje,
         to='whatsapp:+50688194763'
-        )
+        )'''
 
-        print(message.sid)
+        
 
         
     def sendABanquero(self,socket, day, month, IVA, comission, total):
