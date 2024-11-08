@@ -106,6 +106,7 @@ class Server:
 
         account_sid = 'AC40acaf58f18829153297016d9034da97'
         auth_token = '17a18fc3d2939eeac6692b273fccad08'
+        #17a18fc3d2939eeac6692b273fccad08
         client = Client(account_sid, auth_token)
 
         message = client.messages.create(
