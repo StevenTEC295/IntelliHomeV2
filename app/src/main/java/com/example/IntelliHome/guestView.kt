@@ -26,9 +26,11 @@ import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 import org.json.JSONObject
+import java.io.OutputStream
 import java.text.Normalizer
 import java.time.LocalDate
 import java.util.Scanner
+import kotlin.concurrent.thread
 
 class guestView : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -465,7 +467,7 @@ class guestView : AppCompatActivity() {
                 Toast.makeText(this@guestView, "Se alquilo la casa con exito", Toast.LENGTH_SHORT).show()
                 val msg = info.first.replace("\n", "")
                 val jsoncasa = sendMessagenotifi(Constants.NOTIFICASA,info.first)
-                sendMessage(jsoncasa)
+                sendToServer(jsoncasa)
                 println(jsoncasa)
             }
         })
@@ -586,6 +588,24 @@ class guestView : AppCompatActivity() {
             if (socket != null) socket!!.close()
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
+        }
+    }
+    private fun sendToServer(json: String) {
+        thread {
+            try {
+                val socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
+                val outputStream: OutputStream = socket.getOutputStream()
+                val writer = PrintWriter(outputStream, true)
+
+                // Enviar el mensaje en formato JSON
+                writer.println(json.toString())
+
+                // Cerrar el socket
+                writer.close()
+                socket.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }
