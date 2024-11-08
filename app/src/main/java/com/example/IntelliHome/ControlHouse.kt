@@ -17,11 +17,22 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
 import androidx.core.content.ContextCompat
+import com.example.IntelliHome.PropertyParser
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.util.Scanner
+
 class ControlHouse : AppCompatActivity() {
     private lateinit var btnAbrir: Button
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
     private var isOpen = false
+    private var out: PrintWriter? = null
+    private var socket: Socket? = null
+    private var inputmsg: Scanner? = null
+    private var inputReader: BufferedReader? = null // Cambiado de Scanner a BufferedReader
+    private var isMessageSent = false
+
     private val roomStates = mutableMapOf(
         "Sala" to false,
         "Cuarto1" to false,
@@ -67,6 +78,48 @@ class ControlHouse : AppCompatActivity() {
         btnAbrir.setOnClickListener {
             biometricPrompt.authenticate(promptInfo)
         }
+
+        Thread {
+            try {
+                socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
+                out = PrintWriter(socket!!.getOutputStream(), true)
+                inputmsg = Scanner(socket!!.getInputStream())  //Es casi lo mismo que el buffer los dos funcionan
+                inputReader = BufferedReader(InputStreamReader(socket!!.getInputStream())) // Inicializa BufferedReader
+                Thread {
+                    while (true) {
+                        val message = inputReader!!.readLine()
+                        if (message!=null) {
+
+                            //val list = message.trim('[', ']').split(",").map { it.trim().trim('\'') }
+                            val trimmedMessage = message.trim('[', ']', '"')
+
+                            // Step 2: Use a regex to split by comma only when it's not enclosed in single quotes
+                            val regex = Regex("'([^']*)'")
+                            val list = regex.findAll(trimmedMessage).map { it.groupValues[1] }.toList()
+                            println("Lista procesada: $list")
+
+
+                            if (list.size >= 3) {
+                                val humedad = list[0]
+                                val fuego = list[1]
+                                val sismo = list[2]
+                                // Print the extracted values
+                                println(humedad)
+                                println(fuego)
+                                println(sismo)
+                            } else {
+                                println("Error: La lista no contiene suficientes elementos.")
+                            }
+
+                            println(message)
+                        }
+                    }
+                }.start()
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
 
     }
     private fun setupBiometricPrompt() {
