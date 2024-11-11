@@ -16,7 +16,7 @@ class Server:
         self.server_socket.bind((host, port))
         self.server_socket.listen(5)
         self.clients = []
-        self.arduino_connection = arduino.ArduinoConnection(port="COM6")
+        #self.arduino_connection = arduino.ArduinoConnection(port="COM6")
 
 
         self.flameDetection = 0
@@ -63,20 +63,14 @@ class Server:
             self.chat_display.config(state='disabled')
             threading.Thread(target=self.handle_client, args=(client_socket,)).start() # Para que sea en hilo separado
     def handle_client(self, client_socket):
-    
         try:
-            
             message = client_socket.recv(4096).decode("utf-8")  # recibe los mensajes
-            
             print(type(message))
             if message:  # Si no hay mensaje
                 #Convierte el texto en formato json
                 data = json.loads(message)
                 #data = dict(message)
                 print(data["action"])
-        
-            
-                
                 if data["action"] == "registro":
                     self.register(message, client_socket)  # mandar mensaje a todo mundo 
                 elif data["action"] == "login":
@@ -100,6 +94,7 @@ class Server:
 
         client_socket.close()
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
+
 
     def sendNotification(self, mensaje):
         from twilio.rest import Client 
