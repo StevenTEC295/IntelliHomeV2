@@ -16,7 +16,7 @@ class Server:
         self.server_socket.bind((host, port))
         self.server_socket.listen(5)
         self.clients = []
-        #self.arduino_connection = arduino.ArduinoConnection(port="COM6")
+        self.arduino_connection = arduino.ArduinoConnection(port="COM6")
 
 
         self.flameDetection = 0
@@ -82,11 +82,11 @@ class Server:
                 elif data["action"] == "sv_house":
                     self.sv_house(data, client_socket)
                 elif data["action"] == "rq_sensors":
-                    client_socket.send(f"{self.flameDetection},{self.humidity},{self.sismo}".encode('utf-8'))
+                    client_socket.send(f"{self.humidity},{self.flameDetection},{self.sismo}".encode('utf-8'))
                 elif data["action"] == "a_Banquero":
                     self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
-                elif data["action"] == "noti_casa_alquilada":
-                    self.sendNotification(data["message"]);
+                #elif data["action"] == "noti_casa_alquilada":
+                    #self.sendNotification(data["message"]);
                 
         except Exception as e:
             print(f"Surgió un Error: {e}")
@@ -94,9 +94,10 @@ class Server:
 
         client_socket.close()
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
-
-
-    def sendNotification(self, mensaje):
+   
+        
+    '''
+        def sendNotification(self, mensaje):
         from twilio.rest import Client 
         account_sid = 'ACbff41f04597bcf910bed3b1d1ef87837'
         auth_token = '00047831a590343cd1fe56e51c6995e3'
@@ -110,7 +111,7 @@ class Server:
         )
     
         print(message.sid)
-    '''
+   
         account_sid = 'AC4006d914bddc8dfa78b0d2eb33dc7cb6'
         auth_token = 'ecde5c8ea962e1fffabf7361cfd2723b'
         #17a18fc3d2939eeac6692b273fccad08
@@ -265,13 +266,14 @@ class Server:
                 self.sismo = line_split[2]
                 
 
-                if linea_anterior != line:
-                    self.send_message()
-                linea_anterior = line
+                #if linea_anterior != line:
+                    #self.send_message()
+                    
+                #linea_anterior = line
     
 
         
-                
+    '''         
     def send_message(self):
         
         if self.flameDetection == "1":
@@ -280,7 +282,7 @@ class Server:
             self.sendNotification("Humedad detectada")
         if self.sismo == "1":
             self.sendNotification("Sismo detectado")
-
+'''
        
             
            
