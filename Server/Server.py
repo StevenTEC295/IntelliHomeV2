@@ -109,7 +109,7 @@ class Server:
         message = client.messages.create(
         from_='whatsapp:+14155238886',
         body=mensaje,
-        to='whatsapp:+50683465389'
+        to="whatsapp:+50688194763"
         )
     
         print(message.sid)
