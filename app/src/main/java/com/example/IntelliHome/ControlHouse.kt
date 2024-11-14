@@ -184,7 +184,12 @@ class ControlHouse : AppCompatActivity() {
                     if (sismo == "1") {
                         vibratePhone()
                     }
-
+                    if (humedad == "1") {
+                        vibratePhone()
+                    }
+                    if (fuego == "1") {
+                        vibratePhone()
+                    }
                 }
             } else {
                 println("Error: La lista no contiene suficientes elementos.")
