@@ -10,6 +10,8 @@ import time
 import ArduinoConnection as arduino
 import AlgoritmoBanquero
 import os
+from dotenv import load_dotenv
+from twilio.rest import Client
 class Server:
     def __init__(self, host='0.0.0.0', port=8080):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -17,6 +19,11 @@ class Server:
         self.server_socket.listen(5)
         self.clients = []
         self.arduino_connection = arduino.ArduinoConnection(port="COM6")
+
+        load_dotenv()
+
+        self.account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+        self.auth_token = os.getenv('TWILIO_AUTH_TOKEN')
 
 
         self.flameDetection = 0
@@ -46,9 +53,7 @@ class Server:
         # Hilo para leer los mensajes del Arduino
         self.threadArduino = threading.Thread(target=self.read_arduino_msg)
         self.threadArduino.start()
-        '''
-        self.threadsendMessages = threading.Thread(target=self.send_message)
-        self.threadsendMessages.start()'''
+        
 
         self.root.protocol("WM_DELETE_WINDOW", self.close_server)
         self.root.mainloop()
@@ -94,15 +99,12 @@ class Server:
 
         client_socket.close()
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
-   
+
+
+    def sendNotification(self, mensaje):
         
-    '''
-        def sendNotification(self, mensaje):
-        from twilio.rest import Client 
-        account_sid = 'ACbff41f04597bcf910bed3b1d1ef87837'
-        auth_token = '00047831a590343cd1fe56e51c6995e3'
-        #17a18fc3d2939eeac6692b273fccad08
-        client = Client(account_sid, auth_token)
+        
+        client = Client(self.account_sid, self.auth_token)
 
         message = client.messages.create(
         from_='whatsapp:+14155238886',
@@ -111,21 +113,7 @@ class Server:
         )
     
         print(message.sid)
-   
-        account_sid = 'AC4006d914bddc8dfa78b0d2eb33dc7cb6'
-        auth_token = 'ecde5c8ea962e1fffabf7361cfd2723b'
-        #17a18fc3d2939eeac6692b273fccad08
-        client = Client(account_sid, auth_token)
 
-        message = client.messages.create(
-        from_='whatsapp:+14155238886',
-        body=mensaje,
-        to='whatsapp:+50688194763'
-        )'''
-
-        
-
-        
     def sendABanquero(self,socket, day, month, IVA, comission, total):
         aBanquero = AlgoritmoBanquero.AlgoritmoBanquero()
         socket.send(str(aBanquero.calculateNewQuantity(day, month, IVA, comission, total)).encode('utf-8')   )
@@ -266,14 +254,14 @@ class Server:
                 self.sismo = line_split[2]
                 
 
-                #if linea_anterior != line:
-                    #self.send_message()
+                if linea_anterior != line:
+                    self.send_message()
                     
-                #linea_anterior = line
+                linea_anterior = line
     
 
         
-    '''         
+            
     def send_message(self):
         
         if self.flameDetection == "1":
@@ -282,8 +270,7 @@ class Server:
             self.sendNotification("Humedad detectada")
         if self.sismo == "1":
             self.sendNotification("Sismo detectado")
-'''
-       
+
             
            
              

@@ -14,3 +14,4 @@
 .cxx
 local.properties
 /Server/__pycache__
+/Server/.env
