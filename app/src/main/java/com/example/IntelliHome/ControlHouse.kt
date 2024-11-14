@@ -1,7 +1,11 @@
 package com.example.intellihome
 
+import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -28,12 +32,6 @@ class ControlHouse : AppCompatActivity() {
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
     private var isOpen = false
-    private var out: PrintWriter? = null
-    private var socket: Socket? = null
-    private var inputmsg: Scanner? = null
-    private var inputReader: BufferedReader? = null // Cambiado de Scanner a BufferedReader
-    private var isMessageSent = false
-
     // ImageView para alertas de sensores
     private lateinit var alertFire: ImageView
     private lateinit var alertHumidity: ImageView
@@ -46,6 +44,9 @@ class ControlHouse : AppCompatActivity() {
         "Baño" to false,
         "Puerta" to false
     )
+
+    private val handler = android.os.Handler()
+    private val repeatInterval: Long = 10000 //  (10000ms = 10 segundos)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_controlhouse)
@@ -57,7 +58,7 @@ class ControlHouse : AppCompatActivity() {
         //
         setupBiometricPrompt()
         // Iniciar el hilo para recibir datos desde el servidor
-        startListeningToServer()
+        //startListeningToServer()
 
         val areaSala: View = findViewById(R.id.areaSala)
         areaSala.setOnClickListener {
@@ -90,49 +91,7 @@ class ControlHouse : AppCompatActivity() {
         btnAbrir.setOnClickListener {
             biometricPrompt.authenticate(promptInfo)
         }
-
-
-        Thread {
-            try {
-                socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
-                out = PrintWriter(socket!!.getOutputStream(), true)
-                inputmsg = Scanner(socket!!.getInputStream())  //Es casi lo mismo que el buffer los dos funcionan
-                inputReader = BufferedReader(InputStreamReader(socket!!.getInputStream())) // Inicializa BufferedReader
-                Thread {
-                    while (true) {
-                        val message = inputReader!!.readLine()
-                        if (message!=null) {
-
-                            //val list = message.trim('[', ']').split(",").map { it.trim().trim('\'') }
-                            val trimmedMessage = message.trim('[', ']', '"')
-
-                            // Step 2: Use a regex to split by comma only when it's not enclosed in single quotes
-                            val regex = Regex("'([^']*)'")
-                            val list = regex.findAll(trimmedMessage).map { it.groupValues[1] }.toList()
-                            println("Lista procesada: $list")
-
-
-                            if (list.size >= 3) {
-                                val humedad = list[0]
-                                val fuego = list[1]
-                                val sismo = list[2]
-                                // Print the extracted values
-                                println(humedad)
-                                println(fuego)
-                                println(sismo)
-                            } else {
-                                println("Error: La lista no contiene suficientes elementos.")
-                            }
-
-                            println(message)
-                        }
-                    }
-                }.start()
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }.start()
+        handler.post(messageRepeater)
 
     }
     private fun setupBiometricPrompt() {
@@ -200,28 +159,7 @@ class ControlHouse : AppCompatActivity() {
         // Hacer el envío en un hilo separado
         sendToServer(json)
     }
-    private fun startListeningToServer() {
-        Thread {
-            try {
-                socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
-                out = PrintWriter(socket!!.getOutputStream(), true)
-                inputReader = BufferedReader(InputStreamReader(socket!!.getInputStream()))
 
-                // Hilo para recibir datos del servidor
-                Thread {
-                    while (true) {
-                        val message = inputReader!!.readLine()
-                        if (message != null) {
-                            println("Mensaje recibido: $message") // Verificar mensaje recibido
-                            processSensorData(message)
-                        }
-                    }
-                }.start()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }.start()
-    }
 
     private fun processSensorData(data: String) {
         try {
@@ -242,6 +180,16 @@ class ControlHouse : AppCompatActivity() {
                     alertFire.visibility = if (fuego == "1") View.VISIBLE else View.GONE
                     alertHumidity.visibility = if (humedad == "1") View.VISIBLE else View.GONE
                     alertEarthquake.visibility = if (sismo == "1") View.VISIBLE else View.GONE
+                    // Hacer que el teléfono vibre si hay un sismo
+                    if (sismo == "1") {
+                        vibratePhone()
+                    }
+                    if (humedad == "1") {
+                        vibratePhone()
+                    }
+                    if (fuego == "1") {
+                        vibratePhone()
+                    }
                 }
             } else {
                 println("Error: La lista no contiene suficientes elementos.")
@@ -252,8 +200,11 @@ class ControlHouse : AppCompatActivity() {
         }
     }
 
-
-
+    private fun vibratePhone() {
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        // Versión de Android 8.0 o superior
+        vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
+    }
 
     // Función para enviar solo el estado de la puerta
     private fun sendDoorCommand(isDoorOpen: Boolean) {
@@ -274,17 +225,30 @@ class ControlHouse : AppCompatActivity() {
                 val socket = Socket(Constants.SERVER_IP, Constants.SERVER_PORT)
                 val outputStream: OutputStream = socket.getOutputStream()
                 val writer = PrintWriter(outputStream, true)
-
                 // Enviar el mensaje en formato JSON
                 writer.println(json.toString())
+                //Leemos los mensajes del server
+                val inputReader2 = BufferedReader(InputStreamReader(socket.getInputStream()))
+                val message = inputReader2.readLine()
+                processSensorData(message)
+                println("Mensja del sensor:$message\n")
 
                 // Cerrar el socket
                 writer.close()
+                inputReader2.close()
                 socket.close()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
-
+    private val messageRepeater = object : Runnable {
+        override fun run() {
+            val json = JSONObject().apply {
+                put("action", Constants.SENSORES)  // Action específico para la puerta
+            }
+            sendToServer(json)
+            handler.postDelayed(this, repeatInterval) // Schedule the next execution
+        }
+    }
 }

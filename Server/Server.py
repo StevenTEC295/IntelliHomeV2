@@ -53,9 +53,7 @@ class Server:
         # Hilo para leer los mensajes del Arduino
         self.threadArduino = threading.Thread(target=self.read_arduino_msg)
         self.threadArduino.start()
-        '''
-        self.threadsendMessages = threading.Thread(target=self.send_message)
-        self.threadsendMessages.start()'''
+        
 
         self.root.protocol("WM_DELETE_WINDOW", self.close_server)
         self.root.mainloop()
@@ -70,20 +68,14 @@ class Server:
             self.chat_display.config(state='disabled')
             threading.Thread(target=self.handle_client, args=(client_socket,)).start() # Para que sea en hilo separado
     def handle_client(self, client_socket):
-    
         try:
-            
             message = client_socket.recv(4096).decode("utf-8")  # recibe los mensajes
-            
             print(type(message))
             if message:  # Si no hay mensaje
                 #Convierte el texto en formato json
                 data = json.loads(message)
                 #data = dict(message)
                 print(data["action"])
-        
-            
-                
                 if data["action"] == "registro":
                     self.register(message, client_socket)  # mandar mensaje a todo mundo 
                 elif data["action"] == "login":
@@ -95,11 +87,11 @@ class Server:
                 elif data["action"] == "sv_house":
                     self.sv_house(data, client_socket)
                 elif data["action"] == "rq_sensors":
-                    client_socket.send(f"{self.flameDetection},{self.humidity},{self.sismo}".encode('utf-8'))
+                    client_socket.send(f"{self.humidity},{self.flameDetection},{self.sismo}".encode('utf-8'))
                 elif data["action"] == "a_Banquero":
                     self.sendABanquero(client_socket, data["day"], data["month"], data["IVA"], data["comission"], data["total"])
-                elif data["action"] == "noti_casa_alquilada":
-                    self.sendNotification(data["message"]);
+                #elif data["action"] == "noti_casa_alquilada":
+                    #self.sendNotification(data["message"]);
                 
         except Exception as e:
             print(f"Surgió un Error: {e}")
@@ -107,6 +99,7 @@ class Server:
 
         client_socket.close()
         self.clients.remove(client_socket)  # elimina clientes cuando ya no están
+
 
     def sendNotification(self, mensaje):
         
@@ -120,7 +113,7 @@ class Server:
         )
     
         print(message.sid)
-    
+
     def sendABanquero(self,socket, day, month, IVA, comission, total):
         aBanquero = AlgoritmoBanquero.AlgoritmoBanquero()
         socket.send(str(aBanquero.calculateNewQuantity(day, month, IVA, comission, total)).encode('utf-8')   )
@@ -263,11 +256,12 @@ class Server:
 
                 if linea_anterior != line:
                     self.send_message()
+                    
                 linea_anterior = line
     
 
         
-                
+            
     def send_message(self):
         
         if self.flameDetection == "1":
@@ -277,7 +271,6 @@ class Server:
         if self.sismo == "1":
             self.sendNotification("Sismo detectado")
 
-       
             
            
              
