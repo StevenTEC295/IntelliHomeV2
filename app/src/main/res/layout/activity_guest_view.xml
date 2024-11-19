@@ -218,12 +218,12 @@
             android:src="@drawable/search" />
 
         <ImageView
-            android:id="@+id/historial"
+            android:id="@+id/historammmml"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/h_de_historial" />
+            android:src="@drawable/ic_historial" />
     </RelativeLayout>
 
 

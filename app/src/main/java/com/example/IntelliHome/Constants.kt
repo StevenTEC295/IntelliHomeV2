@@ -10,5 +10,6 @@ object Constants {
     const val SVHOUSE = "sv_house"
     const val ABANQUERO = "a_Banquero"
     const val NOTIFICASA = "noti_casa_alquilada"
+    const val SENSORES = "rq_sensors"
 
 }

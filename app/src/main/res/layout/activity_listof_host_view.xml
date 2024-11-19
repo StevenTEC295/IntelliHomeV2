@@ -82,7 +82,7 @@
             android:id="@+id/historial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/h_de_historial"
+            app:srcCompat="@drawable/ic_historial"
             android:layout_below="@+id/recycleViewListadeCasas"
             android:layout_marginTop="310dp"
             android:layout_marginStart="280dp"
